@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${spaceGrotesk.variable} bg-[#f7f7f5] text-[#1a1a1a] min-h-screen font-sans selection:bg-[#ff4500] selection:text-white`}>
+      <body className={`${outfit.variable} ${spaceGrotesk.variable} bg-[#f7f7f5] text-[#1a1a1a] min-h-screen font-sans selection:bg-[#ff4500] selection:text-[#1a1a1a]`}>
         <ThreadCursor />
         {children}
       </body>

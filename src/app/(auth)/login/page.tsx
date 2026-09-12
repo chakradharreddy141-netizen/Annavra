@@ -70,8 +70,8 @@ export default function LoginPage() {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-white">Welcome back</h2>
-        <p className="text-xs text-gray-400 mt-0.5">Sign in to access your daily targets and tracking</p>
+        <h2 className="text-xl font-bold text-[#1a1a1a]">Welcome back</h2>
+        <p className="text-xs text-[#6b7280] mt-0.5">Sign in to access your daily targets and tracking</p>
       </div>
 
       {error && (
@@ -82,56 +82,56 @@ export default function LoginPage() {
 
       <form onSubmit={handleEmailLogin} className="space-y-4">
         <div>
-          <label className="block text-xs font-medium text-gray-300 mb-1.5">Email address</label>
+          <label className="block text-xs font-medium text-[#1a1a1a] mb-1.5">Email address</label>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#181b26] border border-[#232738] text-white text-sm focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:outline-none focus:border-[#ff4500] transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-300 mb-1.5">Password</label>
+          <label className="block text-xs font-medium text-[#1a1a1a] mb-1.5">Password</label>
           <input
             type="password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#181b26] border border-[#232738] text-white text-sm focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:outline-none focus:border-[#ff4500] transition-colors"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-gray-950 font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-2.5 px-4 rounded-xl bg-[#ff4500] hover:bg-[#e63e00] disabled:opacity-50 text-gray-950 font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
         >
           {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign In'}
         </button>
       </form>
 
       <div className="text-right mt-2">
-        <Link href="/forgot-password" className="text-xs text-gray-400 hover:text-emerald-400 transition-colors">
+        <Link href="/forgot-password" className="text-xs text-[#6b7280] hover:text-[#ff4500] transition-colors">
           Forgot password?
         </Link>
       </div>
 
       <div className="relative my-6 text-center">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#232738]"></div>
+          <div className="w-full border-t border-[#1a1a1a]/10"></div>
         </div>
-        <span className="relative px-3 bg-[#12141c] text-xs text-gray-500 uppercase tracking-wider">or</span>
+        <span className="relative px-3 bg-[#ffffff] text-xs text-[#6b7280] uppercase tracking-wider">or</span>
       </div>
 
       <button
         type="button"
         onClick={handleGoogleLogin}
         disabled={googleLoading}
-        className="w-full py-2.5 px-4 rounded-xl bg-[#181b26] hover:bg-[#202433] border border-[#232738] text-white text-sm font-medium transition-colors flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50"
+        className="w-full py-2.5 px-4 rounded-xl bg-[#fafafa] hover:bg-[#202433] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm font-medium transition-colors flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50"
       >
         {googleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
         <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -156,9 +156,9 @@ export default function LoginPage() {
         {googleLoading ? 'Signing in...' : 'Continue with Google'}
       </button>
 
-      <p className="mt-6 text-center text-xs text-gray-400">
+      <p className="mt-6 text-center text-xs text-[#6b7280]">
         Don&apos;t have an account?{' '}
-        <Link href="/signup" className="text-emerald-400 hover:text-emerald-300 font-medium">
+        <Link href="/signup" className="text-[#ff4500] hover:text-[#e63e00] font-medium">
           Create one now
         </Link>
       </p>
