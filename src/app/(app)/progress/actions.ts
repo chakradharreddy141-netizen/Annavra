@@ -77,3 +77,32 @@ export async function updateStepTarget(target: number) {
     return { error: error.message || "Failed to update step target" };
   }
 }
+
+export async function logWeight(weight: number) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: "Not authenticated" };
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+
+    const { error } = await supabase
+      .from('weight_entries')
+      .upsert(
+        { user_id: user.id, date: today, weight_kg: weight, notes: 'Logged from progress page' },
+        { onConflict: 'user_id, date' }
+      );
+
+    if (error) throw error;
+
+    revalidatePath('/progress');
+    revalidatePath('/dashboard');
+    return { success: true };
+  } catch (error: any) {
+    console.error("Log weight error:", error);
+    return { error: error.message || "Failed to log weight" };
+  }
+}

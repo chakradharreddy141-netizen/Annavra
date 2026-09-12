@@ -15,6 +15,30 @@ export default async function ActiveWorkoutPage() {
     .or(`user_id.is.null,user_id.eq.${user.id}`)
     .order('name');
 
+  // Provide some default preset exercises if the DB doesn't have them yet
+  const presetExercises = [
+    { id: 'p1', name: 'Bench Press', muscle_group: 'Chest' },
+    { id: 'p2', name: 'Squat', muscle_group: 'Legs' },
+    { id: 'p3', name: 'Deadlift', muscle_group: 'Back' },
+    { id: 'p4', name: 'Overhead Press', muscle_group: 'Shoulders' },
+    { id: 'p5', name: 'Pull-up', muscle_group: 'Back' },
+    { id: 'p6', name: 'Barbell Row', muscle_group: 'Back' },
+    { id: 'p7', name: 'Dumbbell Curl', muscle_group: 'Arms' },
+    { id: 'p8', name: 'Tricep Extension', muscle_group: 'Arms' },
+    { id: 'p9', name: 'Leg Press', muscle_group: 'Legs' },
+    { id: 'p10', name: 'Lateral Raise', muscle_group: 'Shoulders' },
+    { id: 'p11', name: 'Incline Bench Press', muscle_group: 'Chest' },
+    { id: 'p12', name: 'Lat Pulldown', muscle_group: 'Back' },
+    { id: 'p13', name: 'Leg Curl', muscle_group: 'Legs' },
+    { id: 'p14', name: 'Leg Extension', muscle_group: 'Legs' },
+    { id: 'p15', name: 'Calf Raise', muscle_group: 'Legs' },
+  ];
+
+  const allExercises = [...presetExercises, ...(exercises || [])];
+  
+  // Deduplicate by name
+  const uniqueExercises = Array.from(new Map(allExercises.map(item => [item.name.toLowerCase(), item])).values());
+
   const today = new Date().toISOString().split('T')[0];
   const dayOfWeek = new Date().getDay();
 
@@ -32,7 +56,7 @@ export default async function ActiveWorkoutPage() {
 
   return (
     <ActiveWorkoutClient 
-      exercises={exercises || []} 
+      exercises={uniqueExercises.sort((a, b) => a.name.localeCompare(b.name))} 
       defaultWorkoutName={defaultName} 
     />
   );

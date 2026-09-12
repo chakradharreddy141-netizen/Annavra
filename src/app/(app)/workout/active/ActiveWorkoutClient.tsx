@@ -236,25 +236,53 @@ export default function ActiveWorkoutClient({
                       <div className="w-10 text-center text-xs font-bold text-gray-400">
                         {setIndex + 1}
                       </div>
-                      <div className="flex-1 px-1">
+                      <div className="flex-1 px-1 flex items-center bg-[#181b26] rounded">
+                        <button 
+                          disabled={set.isCompleted} 
+                          onClick={() => handleUpdateSet(exIndex, setIndex, 'weight_kg', Math.max(0, (parseFloat(set.weight_kg) || 0) - 2.5).toString())} 
+                          className="px-1 text-gray-500 hover:text-white disabled:opacity-50"
+                        >
+                          -
+                        </button>
                         <input
                           type="number"
                           placeholder="0"
                           value={set.weight_kg}
                           onChange={(e) => handleUpdateSet(exIndex, setIndex, 'weight_kg', e.target.value)}
                           disabled={set.isCompleted}
-                          className="w-full text-center bg-transparent font-semibold text-white outline-none focus:bg-[#1f2331] rounded py-1 disabled:opacity-70"
+                          className="w-full text-center bg-transparent font-semibold text-white outline-none focus:bg-[#1f2331] rounded py-1 disabled:opacity-70 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
+                        <button 
+                          disabled={set.isCompleted} 
+                          onClick={() => handleUpdateSet(exIndex, setIndex, 'weight_kg', ((parseFloat(set.weight_kg) || 0) + 2.5).toString())} 
+                          className="px-1 text-gray-500 hover:text-white disabled:opacity-50"
+                        >
+                          +
+                        </button>
                       </div>
-                      <div className="flex-1 px-1">
+                      <div className="flex-1 px-1 flex items-center bg-[#181b26] rounded">
+                        <button 
+                          disabled={set.isCompleted} 
+                          onClick={() => handleUpdateSet(exIndex, setIndex, 'reps', Math.max(0, (parseInt(set.reps) || 0) - 1).toString())} 
+                          className="px-1 text-gray-500 hover:text-white disabled:opacity-50"
+                        >
+                          -
+                        </button>
                         <input
                           type="number"
                           placeholder="0"
                           value={set.reps}
                           onChange={(e) => handleUpdateSet(exIndex, setIndex, 'reps', e.target.value)}
                           disabled={set.isCompleted}
-                          className="w-full text-center bg-transparent font-semibold text-white outline-none focus:bg-[#1f2331] rounded py-1 disabled:opacity-70"
+                          className="w-full text-center bg-transparent font-semibold text-white outline-none focus:bg-[#1f2331] rounded py-1 disabled:opacity-70 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
+                        <button 
+                          disabled={set.isCompleted} 
+                          onClick={() => handleUpdateSet(exIndex, setIndex, 'reps', ((parseInt(set.reps) || 0) + 1).toString())} 
+                          className="px-1 text-gray-500 hover:text-white disabled:opacity-50"
+                        >
+                          +
+                        </button>
                       </div>
                       <div className="w-12 flex justify-center">
                         <button
@@ -313,9 +341,21 @@ export default function ActiveWorkoutClient({
             </div>
             <div className="flex-1 overflow-y-auto p-2">
               {filteredExercises.length === 0 ? (
-                <div className="p-8 text-center text-sm text-gray-500">No exercises found.</div>
+                <div className="p-8 text-center">
+                  <p className="text-sm text-gray-500 mb-4">No exercises found.</p>
+                  {exerciseSearch.trim().length > 0 && (
+                    <button
+                      onClick={() => handleAddExercise({ id: crypto.randomUUID(), name: exerciseSearch.trim(), muscle_group: 'Custom' })}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 font-medium text-sm transition-colors"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Create &quot;{exerciseSearch.trim()}&quot;
+                    </button>
+                  )}
+                </div>
               ) : (
-                filteredExercises.map(ex => (
+                <>
+                  {filteredExercises.map(ex => (
                   <button
                     key={ex.id}
                     onClick={() => handleAddExercise(ex)}
@@ -327,7 +367,22 @@ export default function ActiveWorkoutClient({
                     </div>
                     <Plus className="w-4 h-4 text-gray-500 group-hover:text-emerald-400" />
                   </button>
-                ))
+                  ))}
+                  
+                  {/* Option to create custom if not exactly matching any result */}
+                  {exerciseSearch.trim().length > 0 && !filteredExercises.some(e => e.name.toLowerCase() === exerciseSearch.trim().toLowerCase()) && (
+                    <div className="mt-4 pt-4 border-t border-[#232738] text-center">
+                      <p className="text-xs text-gray-500 mb-2">Don&apos;t see what you&apos;re looking for?</p>
+                      <button
+                        onClick={() => handleAddExercise({ id: crypto.randomUUID(), name: exerciseSearch.trim(), muscle_group: 'Custom' })}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500/20 font-medium text-sm transition-colors"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Create &quot;{exerciseSearch.trim()}&quot;
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

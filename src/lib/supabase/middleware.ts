@@ -37,7 +37,7 @@ export async function updateSession(request: NextRequest) {
   const isAuthPage = url.pathname.startsWith('/login') || url.pathname.startsWith('/signup');
   const isPublicAsset = url.pathname.startsWith('/_next') || url.pathname.startsWith('/api') || url.pathname.includes('.');
 
-  if (!user && !isAuthPage && !isPublicAsset && url.pathname !== '/') {
+  if (!user && !isAuthPage && !isPublicAsset && url.pathname !== '/' && url.pathname !== '/onboarding') {
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
@@ -45,6 +45,20 @@ export async function updateSession(request: NextRequest) {
   if (user && isAuthPage) {
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);
+  }
+
+  // Redirect users who haven't completed onboarding
+  if (user && !isAuthPage && !isPublicAsset && url.pathname !== '/onboarding' && url.pathname !== '/') {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('onboarding_completed')
+      .eq('id', user.id)
+      .single();
+
+    if (!profile || !profile.onboarding_completed) {
+      url.pathname = '/onboarding';
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;

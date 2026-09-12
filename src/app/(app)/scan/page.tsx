@@ -262,7 +262,7 @@ export default function ScanPage() {
                     
                     <button
                       onClick={() => handleRemoveItem(index)}
-                      className="absolute top-4 right-4 p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                      className="absolute top-4 right-4 p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

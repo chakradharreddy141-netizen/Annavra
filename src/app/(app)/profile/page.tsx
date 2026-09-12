@@ -15,7 +15,8 @@ import {
   Calendar,
   Loader2,
   Droplets,
-  Edit3
+  Edit3,
+  LogOut
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -217,6 +218,12 @@ export default function ProfilePage() {
         >
           <RotateCcw className="w-4 h-4" /> Recalculate Targets
         </button>
+        <a
+          href="/auth/signout"
+          className="px-4 py-2.5 rounded-xl bg-[#181b26] hover:bg-red-500/10 border border-[#232738] hover:border-red-500/30 text-gray-400 hover:text-red-400 font-semibold text-xs transition-all flex items-center gap-2"
+        >
+          <LogOut className="w-4 h-4" /> Sign Out
+        </a>
       </div>
 
       {successMsg && (

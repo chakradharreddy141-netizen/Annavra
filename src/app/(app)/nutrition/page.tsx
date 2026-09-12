@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, UtensilsCrossed } from 'lucide-react';
 import MealCard from './MealCard';
+import { QuickLogModal } from './QuickLogModal';
 
 export default async function NutritionPage(props: {
   searchParams: Promise<{ date?: string }>
@@ -83,23 +84,23 @@ export default async function NutritionPage(props: {
   return (
     <div className="max-w-xl mx-auto py-8 px-4 pb-24 space-y-6">
       {/* Header & Date Navigation */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">Nutrition Log</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h1 className="text-2xl font-extrabold text-[#f3f4f6] tracking-tight font-space">Nutrition Log</h1>
         
-        <div className="flex items-center bg-[#181b26] border border-[#232738] rounded-xl p-1">
+        <div className="flex items-center self-start sm:self-auto cyber-panel rounded-xl p-1">
           <Link 
             href={`/nutrition?date=${prevDateStr}`}
-            className="p-1.5 text-gray-400 hover:text-white hover:bg-[#232738] rounded-lg transition-colors"
+            className="p-1.5 text-[#9ca3af] hover:text-[#00f0ff] hover:bg-[#00f0ff]/10 rounded-lg transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </Link>
-          <div className="px-3 flex items-center gap-2 text-sm font-semibold text-white min-w-[110px] justify-center">
-            <CalendarIcon className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="px-3 flex items-center gap-2 text-sm font-semibold text-[#f3f4f6] min-w-[110px] justify-center">
+            <CalendarIcon className="w-3.5 h-3.5 text-[#00f0ff] glow-cyan" />
             {isToday ? 'Today' : displayDate}
           </div>
           <Link 
             href={`/nutrition?date=${nextDateStr}`}
-            className={`p-1.5 rounded-lg transition-colors ${isToday ? 'text-gray-600 cursor-default' : 'text-gray-400 hover:text-white hover:bg-[#232738]'}`}
+            className={`p-1.5 rounded-lg transition-colors ${isToday ? 'text-[#9ca3af] opacity-50 cursor-default' : 'text-[#9ca3af] hover:text-[#00f0ff] hover:bg-[#00f0ff]/10'}`}
             style={{ pointerEvents: isToday ? 'none' : 'auto' }}
           >
             <ChevronRight className="w-5 h-5" />
@@ -108,20 +109,20 @@ export default async function NutritionPage(props: {
       </div>
 
       {/* Main Macro Summary */}
-      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl">
+      <div className="cyber-panel rounded-2xl p-5">
         <div className="flex justify-between items-end mb-6">
           <div>
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Calories</span>
-            <div className="flex items-baseline gap-2 mt-1">
+            <span className="text-xs font-semibold text-[#9ca3af] uppercase tracking-wider">Calories</span>
+            <div className="flex items-baseline gap-2 mt-1 font-space">
               <span className="text-4xl font-black text-white">{Math.round(consumedCalories)}</span>
-              <span className="text-sm font-medium text-gray-500">/ {Math.round(targetCalories)} kcal</span>
+              <span className="text-sm font-medium text-[#9ca3af]">/ {Math.round(targetCalories)} kcal</span>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-black text-emerald-400">
+            <div className="text-3xl font-black text-[#00f0ff] glow-cyan font-space">
               {Math.max(0, Math.round(targetCalories - consumedCalories))}
             </div>
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Remaining</span>
+            <span className="text-xs font-semibold text-[#9ca3af] uppercase tracking-wider">Remaining</span>
           </div>
         </div>
 
@@ -129,61 +130,61 @@ export default async function NutritionPage(props: {
           {/* Protein */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="font-semibold text-blue-400">Protein</span>
-              <span className="text-gray-400">{Math.round(consumedProtein)}g</span>
+              <span className="font-semibold text-[#00f0ff]">Protein</span>
+              <span className="text-[#9ca3af] font-space">{Math.round(consumedProtein)}g</span>
             </div>
-            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#0d1117] rounded-full overflow-hidden border border-[#00f0ff]/20">
               <div 
-                className="h-full bg-blue-500 rounded-full"
+                className="h-full bg-[#00f0ff] rounded-full"
                 style={{ width: `${Math.min(100, (consumedProtein / targetProtein) * 100)}%` }}
               />
             </div>
-            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetProtein)}g</div>
+            <div className="text-[10px] text-[#9ca3af] text-right font-space">{Math.round(targetProtein)}g</div>
           </div>
 
           {/* Carbs */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="font-semibold text-amber-400">Carbs</span>
-              <span className="text-gray-400">{Math.round(consumedCarbs)}g</span>
+              <span className="font-semibold text-[#a855f7]">Carbs</span>
+              <span className="text-[#9ca3af] font-space">{Math.round(consumedCarbs)}g</span>
             </div>
-            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#0d1117] rounded-full overflow-hidden border border-[#a855f7]/20">
               <div 
-                className="h-full bg-amber-500 rounded-full"
+                className="h-full bg-[#a855f7] rounded-full"
                 style={{ width: `${Math.min(100, (consumedCarbs / targetCarbs) * 100)}%` }}
               />
             </div>
-            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetCarbs)}g</div>
+            <div className="text-[10px] text-[#9ca3af] text-right font-space">{Math.round(targetCarbs)}g</div>
           </div>
 
           {/* Fat */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="font-semibold text-rose-400">Fat</span>
-              <span className="text-gray-400">{Math.round(consumedFat)}g</span>
+              <span className="font-semibold text-[#10b981]">Fat</span>
+              <span className="text-[#9ca3af] font-space">{Math.round(consumedFat)}g</span>
             </div>
-            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#0d1117] rounded-full overflow-hidden border border-[#10b981]/20">
               <div 
-                className="h-full bg-rose-500 rounded-full"
+                className="h-full bg-[#10b981] rounded-full"
                 style={{ width: `${Math.min(100, (consumedFat / targetFat) * 100)}%` }}
               />
             </div>
-            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetFat)}g</div>
+            <div className="text-[10px] text-[#9ca3af] text-right font-space">{Math.round(targetFat)}g</div>
           </div>
           
           {/* Fiber */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="font-semibold text-purple-400">Fiber</span>
-              <span className="text-gray-400">{Math.round(consumedFiber)}g</span>
+              <span className="font-semibold text-[#ef4444]">Fiber</span>
+              <span className="text-[#9ca3af] font-space">{Math.round(consumedFiber)}g</span>
             </div>
-            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-[#0d1117] rounded-full overflow-hidden border border-[#ef4444]/20">
               <div 
-                className="h-full bg-purple-500 rounded-full"
+                className="h-full bg-[#ef4444] rounded-full"
                 style={{ width: `${Math.min(100, (consumedFiber / targetFiber) * 100)}%` }}
               />
             </div>
-            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetFiber)}g</div>
+            <div className="text-[10px] text-[#9ca3af] text-right font-space">{Math.round(targetFiber)}g</div>
           </div>
         </div>
       </div>
@@ -191,22 +192,25 @@ export default async function NutritionPage(props: {
       {/* Meals List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-lg font-bold text-white">Logged Meals</h2>
+          <h2 className="text-lg font-bold text-[#f3f4f6] font-space">Logged Meals</h2>
           {isToday && (
-            <Link href="/scan" className="text-sm font-semibold text-emerald-400 hover:text-emerald-300">
-              + Log Food
-            </Link>
+            <div className="flex items-center gap-3">
+              <QuickLogModal date={targetDate} goalId={activeGoal?.id} />
+              <Link href="/scan" className="text-sm font-semibold text-[#00f0ff] hover:text-[#00f0ff]/80 transition-colors">
+                + Log Food
+              </Link>
+            </div>
           )}
         </div>
 
         {!meals || meals.length === 0 ? (
-          <div className="py-10 text-center border border-dashed border-[#232738] rounded-2xl bg-[#12141c]/50">
-            <div className="w-12 h-12 rounded-full bg-[#181b26] flex items-center justify-center mx-auto mb-3">
-              <UtensilsCrossed className="w-5 h-5 text-gray-500" />
+          <div className="py-10 text-center border border-dashed border-[#00f0ff]/20 rounded-2xl cyber-panel">
+            <div className="w-12 h-12 rounded-full bg-[#00f0ff]/10 flex items-center justify-center mx-auto mb-3">
+              <UtensilsCrossed className="w-5 h-5 text-[#00f0ff] glow-cyan" />
             </div>
-            <p className="text-sm font-medium text-gray-300">No meals logged on this date</p>
+            <p className="text-sm font-medium text-[#f3f4f6]">No meals logged on this date</p>
             {isToday && (
-              <p className="text-xs text-gray-500 mt-1 max-w-[200px] mx-auto">
+              <p className="text-xs text-[#9ca3af] mt-1 max-w-[200px] mx-auto">
                 Use the scanner or log manually to hit your targets
               </p>
             )}

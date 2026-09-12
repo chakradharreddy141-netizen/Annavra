@@ -2,6 +2,7 @@ import React from 'react';
 import { createClient } from '@/lib/supabase/server';
 import { WeightChart, ConsistencyHeatmap, StepChart } from './ProgressCharts';
 import { StepLogger } from './StepLogger';
+import { WeightLogger, StepTargetEditor } from './ProgressInputs';
 import { TrendingUp, Scale, Target, Flame, CalendarDays, Footprints } from 'lucide-react';
 
 export default async function ProgressPage() {
@@ -117,6 +118,9 @@ export default async function ProgressPage() {
             )}
           </div>
         </div>
+        <div className="mb-6">
+          <WeightLogger todayWeight={weightData.find(w => w.date === todayStr)?.weight || 0} />
+        </div>
         <WeightChart data={weightData} />
       </div>
 
@@ -127,9 +131,12 @@ export default async function ProgressPage() {
             <Footprints className="w-4 h-4 text-blue-400" />
             Step Tracker
           </h2>
-          <p className="text-xs text-gray-400 mt-1">
-            Log your daily steps. Target: {stepTarget.toLocaleString()} steps.
-          </p>
+          <div className="flex items-center justify-between mt-1">
+            <p className="text-xs text-gray-400">
+              Target: {stepTarget.toLocaleString()} steps.
+            </p>
+            <StepTargetEditor currentTarget={stepTarget} />
+          </div>
         </div>
         
         <div className="mb-6">

@@ -275,10 +275,11 @@ export default function OnboardingPage() {
 
         {/* Card Content */}
         <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-6 sm:p-8 shadow-xl">
-          {/* STEP 1: Personal Bio */}
-          {currentStep === 1 && (
-            <div className="space-y-4">
-              <h2 className="text-lg font-bold text-white mb-2">Tell us about yourself</h2>
+          <div key={currentStep} className="animate-fade-in-up">
+            {/* STEP 1: Personal Bio */}
+            {currentStep === 1 && (
+              <div className="space-y-4">
+                <h2 className="text-lg font-bold text-white mb-2">Tell us about yourself</h2>
               
               <div>
                 <label className="block text-xs font-medium text-gray-300 mb-1">Your Name</label>
@@ -650,6 +651,7 @@ export default function OnboardingPage() {
               </div>
             </div>
           )}
+          </div>
         </div>
       </div>
 

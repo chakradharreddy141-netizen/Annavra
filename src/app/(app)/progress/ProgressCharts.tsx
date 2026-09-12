@@ -79,6 +79,19 @@ export function ConsistencyHeatmap({
   today.setHours(0,0,0,0);
   
   const days = [];
+  const todayDate = new Date(today);
+  
+  // Start from 27 days ago
+  const startDate = new Date(todayDate);
+  startDate.setDate(todayDate.getDate() - 27);
+  
+  // Calculate padding (Mon=1, Tue=2, ..., Sun=7)
+  // JS getDay(): Sun=0, Mon=1, ..., Sat=6
+  let startDayOfWeek = startDate.getDay();
+  // Convert JS day to ISO day (1-7 where Mon=1)
+  startDayOfWeek = startDayOfWeek === 0 ? 7 : startDayOfWeek;
+  const emptyPadding = startDayOfWeek - 1; // Number of empty cells before the first day
+
   for (let i = 27; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
@@ -114,7 +127,9 @@ export function ConsistencyHeatmap({
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
           <div key={day} className="text-[10px] text-center text-gray-500 font-semibold uppercase">{day}</div>
         ))}
-        {/* Fill empty cells to align with proper weekday - Simplified for MVP by just rendering 28 days (4 weeks) ending today */}
+        {Array.from({ length: emptyPadding }).map((_, i) => (
+          <div key={`empty-${i}`} className="aspect-square rounded-md opacity-0" />
+        ))}
         {days.map((day, i) => (
           <div 
             key={i} 

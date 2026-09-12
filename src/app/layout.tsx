@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
+import { Outfit, Space_Grotesk } from 'next/font/google';
 import './globals.css';
+
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-sans' });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
 
 export const metadata: Metadata = {
   title: 'Annavra — Intelligent Nutrition & Fitness Companion',
@@ -13,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-[#090a0f] text-gray-100 min-h-screen">
+      <body className={`${outfit.variable} ${spaceGrotesk.variable} bg-[#07080b] text-[#f3f4f6] min-h-screen font-sans`}>
         {children}
       </body>
     </html>
