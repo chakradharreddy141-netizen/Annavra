@@ -32,7 +32,7 @@ export function StepLogger({ todaySteps }: { todaySteps: number }) {
       <button
         onClick={handleSave}
         disabled={isSaving || !steps}
-        className="px-3 py-2 bg-[#232738] hover:bg-[#2a2f42] text-[#1a1a1a] rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 flex items-center gap-1.5"
+        className="px-3 py-2 bg-[#1a1a1a] hover:bg-black text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 flex items-center gap-1.5"
       >
         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
         Log
