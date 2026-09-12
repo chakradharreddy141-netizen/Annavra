@@ -21,19 +21,26 @@ export async function POST(req: NextRequest) {
     
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     
-    const prompt = `Analyze this food image. Identify all food items and their estimated portions. 
-Return ONLY a valid JSON array of objects representing each identified food item.
-Each object must strictly have these fields:
-- "food_name" (string)
-- "quantity" (number, e.g. 1, 150)
-- "unit" (string, e.g. "serving", "grams", "cup")
-- "calories" (number)
+    const prompt = `You are a precise food nutrition analyzer. Analyze this food image carefully.
+
+CRITICAL RULES (follow in order):
+1. **READ THE PACKAGING FIRST.** If the image shows packaged food with visible nutrition info, net weight, or serving size printed on it, USE THOSE EXACT NUMBERS. Do NOT guess or use generic database values when the label is visible.
+2. For packaged foods: identify the net weight of the ENTIRE package (e.g. "36g" printed on front). Then calculate macros for the full package weight using the per-100g or per-serving values visible on the label.
+3. For unpackaged/homemade food: estimate portions visually and use standard USDA database values.
+4. If you can read the brand name, use brand-specific nutrition data, not generic category averages.
+5. When in doubt, OVERESTIMATE calories rather than underestimate. Accuracy matters more than being conservative.
+
+Return ONLY a valid JSON array of objects. Each object must have these fields:
+- "food_name" (string - include brand if visible, e.g. "Hershey's Kisses")
+- "quantity" (number - the actual weight in grams if visible on packaging, or portion count)
+- "unit" (string - "grams" for packaged with visible weight, or "serving"/"cup" etc. for unpackaged)
+- "calories" (number - total for the identified quantity, NOT per 100g)
 - "protein_g" (number)
 - "carbs_g" (number)
 - "fat_g" (number)
 - "fiber_g" (number)
 
-Base your macro estimation on standard USDA database values. If there are multiple different foods (e.g. rice and chicken), list them as separate objects in the array.`;
+If there are multiple food items, list each as a separate object.`;
 
     const result = await model.generateContent({
       contents: [
