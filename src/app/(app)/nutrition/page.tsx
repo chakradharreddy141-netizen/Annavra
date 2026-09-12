@@ -1,0 +1,225 @@
+import React from 'react';
+import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, UtensilsCrossed } from 'lucide-react';
+import MealCard from './MealCard';
+
+export default async function NutritionPage(props: {
+  searchParams: Promise<{ date?: string }>
+}) {
+  const searchParams = await props.searchParams;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  // Determine target date
+  const today = new Date().toISOString().split('T')[0];
+  const currentDateStr = searchParams?.date || today;
+  
+  // Validate date format (YYYY-MM-DD)
+  const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(currentDateStr);
+  const targetDate = isValidDate ? currentDateStr : today;
+
+  // Calculate prev/next dates for navigation
+  const dateObj = new Date(targetDate);
+  const prevDateObj = new Date(dateObj);
+  prevDateObj.setDate(prevDateObj.getDate() - 1);
+  const prevDateStr = prevDateObj.toISOString().split('T')[0];
+
+  const nextDateObj = new Date(dateObj);
+  nextDateObj.setDate(nextDateObj.getDate() + 1);
+  const nextDateStr = nextDateObj.toISOString().split('T')[0];
+
+  const isToday = targetDate === today;
+
+  // Fetch Active Goal
+  const { data: activeGoal } = await supabase
+    .from('goals')
+    .select('*')
+    .eq('user_id', user.id)
+    .eq('is_active', true)
+    .single();
+
+  // Fetch meals for the date
+  const { data: meals } = await supabase
+    .from('meals')
+    .select('*')
+    .eq('user_id', user.id)
+    .eq('date', targetDate)
+    .order('meal_number', { ascending: true });
+
+  // Fetch items for all meals today
+  const mealIds = (meals || []).map(m => m.id);
+  let allMealItems: any[] = [];
+  if (mealIds.length > 0) {
+    const { data: items } = await supabase
+      .from('meal_items')
+      .select('*')
+      .in('meal_id', mealIds);
+    allMealItems = items || [];
+  }
+
+  // Calculate Aggregates
+  const consumedCalories = (meals || []).reduce((sum, m) => sum + (Number(m.total_calories) || 0), 0);
+  const consumedProtein = (meals || []).reduce((sum, m) => sum + (Number(m.total_protein_g) || 0), 0);
+  const consumedCarbs = (meals || []).reduce((sum, m) => sum + (Number(m.total_carbs_g) || 0), 0);
+  const consumedFat = (meals || []).reduce((sum, m) => sum + (Number(m.total_fat_g) || 0), 0);
+  const consumedFiber = (meals || []).reduce((sum, m) => sum + (Number(m.total_fiber_g) || 0), 0);
+
+  const targetCalories = activeGoal?.daily_calories || 2400;
+  const targetProtein = activeGoal?.daily_protein_g || 140;
+  const targetCarbs = activeGoal?.daily_carbs_g || 280;
+  const targetFat = activeGoal?.daily_fat_g || 65;
+  const targetFiber = activeGoal?.daily_fiber_g || 30;
+
+  // Format date for display
+  const displayDate = new Date(targetDate).toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric'
+  });
+
+  return (
+    <div className="max-w-xl mx-auto py-8 px-4 pb-24 space-y-6">
+      {/* Header & Date Navigation */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-extrabold text-white tracking-tight">Nutrition Log</h1>
+        
+        <div className="flex items-center bg-[#181b26] border border-[#232738] rounded-xl p-1">
+          <Link 
+            href={`/nutrition?date=${prevDateStr}`}
+            className="p-1.5 text-gray-400 hover:text-white hover:bg-[#232738] rounded-lg transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Link>
+          <div className="px-3 flex items-center gap-2 text-sm font-semibold text-white min-w-[110px] justify-center">
+            <CalendarIcon className="w-3.5 h-3.5 text-emerald-400" />
+            {isToday ? 'Today' : displayDate}
+          </div>
+          <Link 
+            href={`/nutrition?date=${nextDateStr}`}
+            className={`p-1.5 rounded-lg transition-colors ${isToday ? 'text-gray-600 cursor-default' : 'text-gray-400 hover:text-white hover:bg-[#232738]'}`}
+            style={{ pointerEvents: isToday ? 'none' : 'auto' }}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </div>
+
+      {/* Main Macro Summary */}
+      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl">
+        <div className="flex justify-between items-end mb-6">
+          <div>
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Calories</span>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-4xl font-black text-white">{Math.round(consumedCalories)}</span>
+              <span className="text-sm font-medium text-gray-500">/ {Math.round(targetCalories)} kcal</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-3xl font-black text-emerald-400">
+              {Math.max(0, Math.round(targetCalories - consumedCalories))}
+            </div>
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Remaining</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-4 gap-3">
+          {/* Protein */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs">
+              <span className="font-semibold text-blue-400">Protein</span>
+              <span className="text-gray-400">{Math.round(consumedProtein)}g</span>
+            </div>
+            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-blue-500 rounded-full"
+                style={{ width: `${Math.min(100, (consumedProtein / targetProtein) * 100)}%` }}
+              />
+            </div>
+            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetProtein)}g</div>
+          </div>
+
+          {/* Carbs */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs">
+              <span className="font-semibold text-amber-400">Carbs</span>
+              <span className="text-gray-400">{Math.round(consumedCarbs)}g</span>
+            </div>
+            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-amber-500 rounded-full"
+                style={{ width: `${Math.min(100, (consumedCarbs / targetCarbs) * 100)}%` }}
+              />
+            </div>
+            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetCarbs)}g</div>
+          </div>
+
+          {/* Fat */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs">
+              <span className="font-semibold text-rose-400">Fat</span>
+              <span className="text-gray-400">{Math.round(consumedFat)}g</span>
+            </div>
+            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-rose-500 rounded-full"
+                style={{ width: `${Math.min(100, (consumedFat / targetFat) * 100)}%` }}
+              />
+            </div>
+            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetFat)}g</div>
+          </div>
+          
+          {/* Fiber */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-xs">
+              <span className="font-semibold text-purple-400">Fiber</span>
+              <span className="text-gray-400">{Math.round(consumedFiber)}g</span>
+            </div>
+            <div className="h-1.5 w-full bg-[#181b26] rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-purple-500 rounded-full"
+                style={{ width: `${Math.min(100, (consumedFiber / targetFiber) * 100)}%` }}
+              />
+            </div>
+            <div className="text-[10px] text-gray-500 text-right">{Math.round(targetFiber)}g</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Meals List */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-lg font-bold text-white">Logged Meals</h2>
+          {isToday && (
+            <Link href="/scan" className="text-sm font-semibold text-emerald-400 hover:text-emerald-300">
+              + Log Food
+            </Link>
+          )}
+        </div>
+
+        {!meals || meals.length === 0 ? (
+          <div className="py-10 text-center border border-dashed border-[#232738] rounded-2xl bg-[#12141c]/50">
+            <div className="w-12 h-12 rounded-full bg-[#181b26] flex items-center justify-center mx-auto mb-3">
+              <UtensilsCrossed className="w-5 h-5 text-gray-500" />
+            </div>
+            <p className="text-sm font-medium text-gray-300">No meals logged on this date</p>
+            {isToday && (
+              <p className="text-xs text-gray-500 mt-1 max-w-[200px] mx-auto">
+                Use the scanner or log manually to hit your targets
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {meals.map((meal) => {
+              const items = allMealItems.filter(item => item.meal_id === meal.id);
+              return <MealCard key={meal.id} meal={meal} items={items} />;
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
