@@ -80,7 +80,7 @@ export default async function ProgressPage() {
       </div>
 
       {/* Goal Summary */}
-      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl flex items-center justify-between">
+      <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
             <Target className="w-6 h-6 text-emerald-400" />
@@ -99,7 +99,7 @@ export default async function ProgressPage() {
       </div>
 
       {/* Weight Trends */}
-      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl">
+      <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h2 className="text-base font-bold text-white flex items-center gap-2">
@@ -125,7 +125,7 @@ export default async function ProgressPage() {
       </div>
 
       {/* Step Tracker */}
-      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl">
+      <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl">
         <div className="mb-6">
           <h2 className="text-base font-bold text-white flex items-center gap-2">
             <Footprints className="w-4 h-4 text-blue-400" />
@@ -147,7 +147,7 @@ export default async function ProgressPage() {
       </div>
 
       {/* Consistency Heatmap */}
-      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl">
+      <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl">
         <div className="mb-6">
           <h2 className="text-base font-bold text-white flex items-center gap-2">
             <CalendarDays className="w-4 h-4 text-blue-400" />
@@ -160,7 +160,7 @@ export default async function ProgressPage() {
         
         <ConsistencyHeatmap data={heatmapData} />
         
-        <div className="mt-4 pt-4 border-t border-[#232738]/50 grid grid-cols-2 gap-4">
+        <div className="mt-4 pt-4 border-t border-[#1a1a1a]/10/50 grid grid-cols-2 gap-4">
           <div>
             <div className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Calories</div>
             <div className="text-sm font-medium text-white">Target: {activeGoal?.daily_calories || 2400} kcal</div>

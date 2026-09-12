@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Outfit, Space_Grotesk } from 'next/font/google';
 import './globals.css';
+import ThreadCursor from '@/components/ui/ThreadCursor';
 
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-sans' });
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
@@ -17,8 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${outfit.variable} ${spaceGrotesk.variable} bg-[#07080b] text-[#f3f4f6] min-h-screen font-sans`}>
+    <html lang="en">
+      <body className={`${outfit.variable} ${spaceGrotesk.variable} bg-[#f7f7f5] text-[#1a1a1a] min-h-screen font-sans selection:bg-[#ff4500] selection:text-white`}>
+        <ThreadCursor />
         {children}
       </body>
     </html>

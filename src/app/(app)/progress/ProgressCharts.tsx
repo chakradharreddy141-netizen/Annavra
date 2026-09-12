@@ -117,7 +117,7 @@ export function ConsistencyHeatmap({
       case 'perfect': return 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]';
       case 'partial': return 'bg-emerald-500/50';
       case 'poor': return 'bg-red-500/50';
-      default: return 'bg-[#181b26] border border-[#232738]';
+      default: return 'bg-[#fafafa] border border-[#1a1a1a]/10';
     }
   };
 
@@ -141,7 +141,7 @@ export function ConsistencyHeatmap({
       <div className="flex items-center gap-3 mt-4 text-[10px] text-gray-500 font-medium">
         <span className="uppercase">Less</span>
         <div className="flex gap-1">
-          <div className="w-3 h-3 rounded-sm bg-[#181b26] border border-[#232738]" />
+          <div className="w-3 h-3 rounded-sm bg-[#fafafa] border border-[#1a1a1a]/10" />
           <div className="w-3 h-3 rounded-sm bg-emerald-500/50" />
           <div className="w-3 h-3 rounded-sm bg-emerald-500" />
         </div>
@@ -197,7 +197,7 @@ export function StepChart({
     <div className="space-y-4">
       <div className="flex justify-between items-center px-1">
         <div className="text-sm text-gray-400">Avg: <span className="text-white font-bold">{avgSteps.toLocaleString()}</span> / day</div>
-        <div className="flex bg-[#181b26] border border-[#232738] rounded-lg p-0.5">
+        <div className="flex bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg p-0.5">
           <button 
             onClick={() => setView('weekly')}
             className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'weekly' ? 'bg-[#232738] text-white' : 'text-gray-500 hover:text-gray-300'}`}

@@ -250,7 +250,7 @@ export default function ProfilePage() {
         </button>
         <a
           href="/auth/signout"
-          className="px-4 py-2.5 rounded-xl bg-[#181b26] hover:bg-red-500/10 border border-[#232738] hover:border-red-500/30 text-gray-400 hover:text-red-400 font-semibold text-xs transition-all flex items-center gap-2"
+          className="px-4 py-2.5 rounded-xl bg-[#fafafa] hover:bg-red-500/10 border border-[#1a1a1a]/10 hover:border-red-500/30 text-gray-400 hover:text-red-400 font-semibold text-xs transition-all flex items-center gap-2"
         >
           <LogOut className="w-4 h-4" /> Sign Out
         </a>
@@ -266,8 +266,8 @@ export default function ProfilePage() {
       {/* Profile Overview Card */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Bio Details */}
-        <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl space-y-4">
-          <div className="flex items-center gap-3 border-b border-[#232738] pb-4">
+        <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center gap-3 border-b border-[#1a1a1a]/10 pb-4">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center font-black text-emerald-400 text-xl">
               {profile?.name ? profile.name.charAt(0).toUpperCase() : 'U'}
             </div>
@@ -306,8 +306,8 @@ export default function ProfilePage() {
         </div>
 
         {/* Current Active Goal Breakdown */}
-        <div className="md:col-span-2 bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-xl space-y-4">
-          <div className="flex items-center justify-between border-b border-[#232738] pb-4">
+        <div className="md:col-span-2 bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl space-y-4">
+          <div className="flex items-center justify-between border-b border-[#1a1a1a]/10 pb-4">
             <div className="flex items-center gap-2">
               <Target className="w-5 h-5 text-emerald-400" />
               <h2 className="font-bold text-base text-white">Active Nutrition Target</h2>
@@ -318,34 +318,34 @@ export default function ProfilePage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3 rounded-xl bg-[#181b26] border border-[#232738]">
+            <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
               <div className="text-[10px] text-gray-500 uppercase font-semibold">Calories</div>
               <div className="text-lg font-black text-emerald-400 mt-0.5">{activeGoal?.daily_calories} <span className="text-xs text-gray-400 font-normal">kcal</span></div>
             </div>
-            <div className="p-3 rounded-xl bg-[#181b26] border border-[#232738]">
+            <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
               <div className="text-[10px] text-gray-500 uppercase font-semibold">Protein</div>
               <div className="text-lg font-black text-blue-400 mt-0.5">{activeGoal?.daily_protein_g} <span className="text-xs text-gray-400 font-normal">g</span></div>
             </div>
-            <div className="p-3 rounded-xl bg-[#181b26] border border-[#232738]">
+            <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
               <div className="text-[10px] text-gray-500 uppercase font-semibold">Carbs</div>
               <div className="text-lg font-black text-amber-400 mt-0.5">{activeGoal?.daily_carbs_g} <span className="text-xs text-gray-400 font-normal">g</span></div>
             </div>
-            <div className="p-3 rounded-xl bg-[#181b26] border border-[#232738]">
+            <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
               <div className="text-[10px] text-gray-500 uppercase font-semibold">Fat</div>
               <div className="text-lg font-black text-rose-400 mt-0.5">{activeGoal?.daily_fat_g} <span className="text-xs text-gray-400 font-normal">g</span></div>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3 pt-2 text-xs">
-            <div className="p-3 rounded-xl bg-[#181b26] border border-[#232738]">
+            <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
               <span className="text-gray-400">BMR / TDEE</span>
               <div className="font-bold text-white mt-0.5">{activeGoal?.bmr} / {activeGoal?.tdee} kcal</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#181b26] border border-[#232738]">
+            <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
               <span className="text-gray-400">BMI Category</span>
               <div className="font-bold text-white mt-0.5">{activeGoal?.bmi} ({activeGoal?.bmi_category})</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#181b26] border border-[#232738]">
+            <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
               <span className="text-gray-400">Water / Fiber</span>
               <div className="font-bold text-white mt-0.5">{((activeGoal?.daily_water_ml || 2500) / 1000).toFixed(1)}L / {activeGoal?.daily_fiber_g}g</div>
             </div>
@@ -354,7 +354,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Target Versioning History (Section 4 & 16 Requirement) */}
-      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+      <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
         <div className="flex items-center gap-2">
           <History className="w-4 h-4 text-emerald-400" />
           <h2 className="text-base font-bold text-white">Target Version History (10+ Year Preserved)</h2>
@@ -370,7 +370,7 @@ export default function ProfilePage() {
               className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
                 g.is_active
                   ? 'bg-emerald-500/5 border-emerald-500/30'
-                  : 'bg-[#181b26] border-[#232738]'
+                  : 'bg-[#fafafa] border-[#1a1a1a]/10'
               }`}
             >
               <div>
@@ -399,9 +399,9 @@ export default function ProfilePage() {
       </div>
 
       {/* Push Notifications Section */}
-      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+      <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
         <div className="flex items-center gap-2">
-          <Bell className="w-4 h-4 text-[#00f0ff]" />
+          <Bell className="w-4 h-4 text-[#ff4500]" />
           <h2 className="text-base font-bold text-white">Notifications</h2>
         </div>
         <p className="text-xs text-gray-400">
@@ -410,7 +410,7 @@ export default function ProfilePage() {
         <button
           onClick={subscribeToPush}
           disabled={pushStatus === 'granted'}
-          className="w-full sm:w-auto px-6 py-3 rounded-xl btn-cyber text-[#f3f4f6] font-bold text-sm transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto px-6 py-3 rounded-xl btn-cyber text-[#1a1a1a] font-bold text-sm transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {pushStatus === 'granted' ? 'Notifications Enabled' : 'Enable Notifications'}
         </button>
@@ -419,7 +419,7 @@ export default function ProfilePage() {
       {/* Recalculate Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4">
+          <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4">
             <div>
               <h3 className="text-lg font-bold text-white">Recalculate Nutrition Targets</h3>
               <p className="text-xs text-gray-400 mt-1">
@@ -436,7 +436,7 @@ export default function ProfilePage() {
                   required
                   value={newWeight}
                   onChange={(e) => setNewWeight(parseFloat(e.target.value) || 0)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#181b26] border border-[#232738] text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
                 />
               </div>
 
@@ -445,7 +445,7 @@ export default function ProfilePage() {
                 <select
                   value={newGoal}
                   onChange={(e) => setNewGoal(e.target.value as FitnessGoal)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#181b26] border border-[#232738] text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
                 >
                   <option value="lose_fat">Lose Fat (20% Deficit)</option>
                   <option value="maintain">Maintain Weight</option>
@@ -461,7 +461,7 @@ export default function ProfilePage() {
                 <select
                   value={newActivity}
                   onChange={(e) => setNewActivity(e.target.value as ActivityLevel)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#181b26] border border-[#232738] text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
                 >
                   <option value="sedentary">Sedentary (Desk job)</option>
                   <option value="lightly_active">Lightly Active (1-2 days/wk)</option>
@@ -479,15 +479,15 @@ export default function ProfilePage() {
                   value={newTargetWeight}
                   onChange={(e) => setNewTargetWeight(e.target.value)}
                   placeholder="e.g. 78"
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#181b26] border border-[#232738] text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-[#232738]">
+              <div className="flex justify-end gap-2 pt-3 border-t border-[#1a1a1a]/10">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-[#181b26] hover:bg-[#202433] text-gray-300 text-xs font-semibold cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#fafafa] hover:bg-[#202433] text-gray-300 text-xs font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>

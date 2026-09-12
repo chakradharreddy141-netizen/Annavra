@@ -27,7 +27,7 @@ export function WeightLogger({ todayWeight }: { todayWeight: number }) {
           placeholder="Weight (kg)"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          className="w-full bg-[#181b26] border border-[#232738] rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:border-emerald-500 outline-none transition-colors"
+          className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:border-emerald-500 outline-none transition-colors"
         />
       </div>
       <button
@@ -73,7 +73,7 @@ export function StepTargetEditor({ currentTarget }: { currentTarget: number }) {
         step="500"
         value={target}
         onChange={(e) => setTarget(e.target.value)}
-        className="w-24 bg-[#181b26] border border-[#232738] rounded-lg px-2 py-1 text-xs text-white focus:border-emerald-500 outline-none"
+        className="w-24 bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg px-2 py-1 text-xs text-white focus:border-emerald-500 outline-none"
       />
       <button
         onClick={handleSave}

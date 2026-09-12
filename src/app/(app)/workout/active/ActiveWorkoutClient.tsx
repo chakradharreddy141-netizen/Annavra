@@ -170,7 +170,7 @@ export default function ActiveWorkoutClient({
   return (
     <div className="max-w-xl mx-auto min-h-screen bg-[#0b0c10] pb-32">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-40 bg-[#0b0c10]/80 backdrop-blur-md border-b border-[#232738] p-4 flex items-center justify-between">
+      <div className="sticky top-0 z-40 bg-[#0b0c10]/80 backdrop-blur-md border-b border-[#1a1a1a]/10 p-4 flex items-center justify-between">
         <div className="flex-1">
           <input
             type="text"
@@ -195,15 +195,15 @@ export default function ActiveWorkoutClient({
 
       <div className="p-4 space-y-6">
         {activeExercises.length === 0 ? (
-          <div className="py-12 text-center border border-dashed border-[#232738] rounded-2xl bg-[#12141c]/50">
-            <div className="w-12 h-12 rounded-full bg-[#181b26] flex items-center justify-center mx-auto mb-3">
+          <div className="py-12 text-center border border-dashed border-[#1a1a1a]/10 rounded-2xl bg-[#ffffff]/50">
+            <div className="w-12 h-12 rounded-full bg-[#fafafa] flex items-center justify-center mx-auto mb-3">
               <Dumbbell className="w-5 h-5 text-gray-500" />
             </div>
             <p className="text-sm font-medium text-gray-300">Empty Workout</p>
             <p className="text-xs text-gray-500 mt-1 mb-4">Add your first exercise to begin tracking.</p>
             <button
               onClick={() => setIsAddingExercise(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#181b26] hover:bg-[#202433] border border-[#232738] text-emerald-400 text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#fafafa] hover:bg-[#202433] border border-[#1a1a1a]/10 text-emerald-400 text-xs font-semibold transition-colors"
             >
               <Plus className="w-4 h-4" /> Add Exercise
             </button>
@@ -211,8 +211,8 @@ export default function ActiveWorkoutClient({
         ) : (
           <div className="space-y-6">
             {activeExercises.map((ex, exIndex) => (
-              <div key={ex.id} className="bg-[#181b26] border border-[#232738] rounded-2xl overflow-hidden">
-                <div className="p-3 bg-[#1f2331]/50 border-b border-[#232738] flex items-center justify-between">
+              <div key={ex.id} className="bg-[#fafafa] border border-[#1a1a1a]/10 rounded-2xl overflow-hidden">
+                <div className="p-3 bg-[#1f2331]/50 border-b border-[#1a1a1a]/10 flex items-center justify-between">
                   <h3 className="font-bold text-emerald-400 text-sm">{ex.exercise_name}</h3>
                   <button onClick={() => handleRemoveExercise(exIndex)} className="text-gray-500 hover:text-red-400 p-1">
                     <X className="w-4 h-4" />
@@ -231,12 +231,12 @@ export default function ActiveWorkoutClient({
                   {ex.sets.map((set, setIndex) => (
                     <div 
                       key={set.id} 
-                      className={`flex items-center p-1.5 rounded-lg transition-colors ${set.isCompleted ? 'bg-emerald-500/10' : 'bg-[#12141c]'}`}
+                      className={`flex items-center p-1.5 rounded-lg transition-colors ${set.isCompleted ? 'bg-emerald-500/10' : 'bg-[#ffffff]'}`}
                     >
                       <div className="w-10 text-center text-xs font-bold text-gray-400">
                         {setIndex + 1}
                       </div>
-                      <div className="flex-1 px-1 flex items-center bg-[#181b26] rounded">
+                      <div className="flex-1 px-1 flex items-center bg-[#fafafa] rounded">
                         <button 
                           disabled={set.isCompleted} 
                           onClick={() => handleUpdateSet(exIndex, setIndex, 'weight_kg', Math.max(0, (parseFloat(set.weight_kg) || 0) - 2.5).toString())} 
@@ -260,7 +260,7 @@ export default function ActiveWorkoutClient({
                           +
                         </button>
                       </div>
-                      <div className="flex-1 px-1 flex items-center bg-[#181b26] rounded">
+                      <div className="flex-1 px-1 flex items-center bg-[#fafafa] rounded">
                         <button 
                           disabled={set.isCompleted} 
                           onClick={() => handleUpdateSet(exIndex, setIndex, 'reps', Math.max(0, (parseInt(set.reps) || 0) - 1).toString())} 
@@ -311,7 +311,7 @@ export default function ActiveWorkoutClient({
 
             <button
               onClick={() => setIsAddingExercise(true)}
-              className="w-full py-4 flex items-center justify-center gap-2 border-2 border-dashed border-[#232738] rounded-xl text-emerald-400 hover:text-emerald-300 hover:bg-[#181b26] transition-colors font-semibold"
+              className="w-full py-4 flex items-center justify-center gap-2 border-2 border-dashed border-[#1a1a1a]/10 rounded-xl text-emerald-400 hover:text-emerald-300 hover:bg-[#fafafa] transition-colors font-semibold"
             >
               <Plus className="w-5 h-5" /> Add Another Exercise
             </button>
@@ -322,20 +322,20 @@ export default function ActiveWorkoutClient({
       {/* Add Exercise Modal */}
       {isAddingExercise && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-[#12141c] border border-[#232738] rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
-            <div className="p-4 border-b border-[#232738] flex items-center justify-between">
+          <div className="w-full max-w-md bg-[#ffffff] border border-[#1a1a1a]/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
+            <div className="p-4 border-b border-[#1a1a1a]/10 flex items-center justify-between">
               <h3 className="font-bold text-white">Select Exercise</h3>
-              <button onClick={() => setIsAddingExercise(false)} className="p-1 text-gray-400 hover:text-white bg-[#181b26] rounded-lg">
+              <button onClick={() => setIsAddingExercise(false)} className="p-1 text-gray-400 hover:text-white bg-[#fafafa] rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-4 border-b border-[#232738] bg-[#0b0c10]">
+            <div className="p-4 border-b border-[#1a1a1a]/10 bg-[#0b0c10]">
               <input
                 type="text"
                 placeholder="Search exercises..."
                 value={exerciseSearch}
                 onChange={(e) => setExerciseSearch(e.target.value)}
-                className="w-full bg-[#181b26] border border-[#232738] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500"
+                className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500"
                 autoFocus
               />
             </div>
@@ -359,7 +359,7 @@ export default function ActiveWorkoutClient({
                   <button
                     key={ex.id}
                     onClick={() => handleAddExercise(ex)}
-                    className="w-full text-left p-3 hover:bg-[#181b26] rounded-xl flex justify-between items-center group transition-colors"
+                    className="w-full text-left p-3 hover:bg-[#fafafa] rounded-xl flex justify-between items-center group transition-colors"
                   >
                     <div>
                       <div className="font-medium text-gray-200 group-hover:text-emerald-400 transition-colors">{ex.name}</div>
@@ -371,7 +371,7 @@ export default function ActiveWorkoutClient({
                   
                   {/* Option to create custom if not exactly matching any result */}
                   {exerciseSearch.trim().length > 0 && !filteredExercises.some(e => e.name.toLowerCase() === exerciseSearch.trim().toLowerCase()) && (
-                    <div className="mt-4 pt-4 border-t border-[#232738] text-center">
+                    <div className="mt-4 pt-4 border-t border-[#1a1a1a]/10 text-center">
                       <p className="text-xs text-gray-500 mb-2">Don&apos;t see what you&apos;re looking for?</p>
                       <button
                         onClick={() => handleAddExercise({ id: crypto.randomUUID(), name: exerciseSearch.trim(), muscle_group: 'Custom' })}

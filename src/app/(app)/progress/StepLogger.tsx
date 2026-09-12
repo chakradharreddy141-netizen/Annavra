@@ -26,7 +26,7 @@ export function StepLogger({ todaySteps }: { todaySteps: number }) {
           placeholder="Steps today"
           value={steps}
           onChange={(e) => setSteps(e.target.value)}
-          className="w-full bg-[#181b26] border border-[#232738] rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:border-blue-500 outline-none transition-colors"
+          className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:border-blue-500 outline-none transition-colors"
         />
       </div>
       <button

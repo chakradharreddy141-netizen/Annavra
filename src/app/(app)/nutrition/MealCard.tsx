@@ -23,38 +23,38 @@ export default function MealCard({ meal, items }: { meal: any, items: any[] }) {
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div>
-          <div className="font-semibold text-[#f3f4f6] font-space">{meal.meal_name}</div>
-          <div className="text-xs text-[#9ca3af] mt-1 flex items-center gap-1.5">
+          <div className="font-semibold text-[#1a1a1a] font-space">{meal.meal_name}</div>
+          <div className="text-xs text-[#6b7280] mt-1 flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5" />
             {new Date(meal.logged_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <div className="font-bold text-[#00f0ff] glow-cyan font-space">{Math.round(meal.total_calories)} kcal</div>
-            <div className="text-[11px] text-[#9ca3af] mt-1">
+            <div className="font-bold text-[#ff4500] glow-cyan font-space">{Math.round(meal.total_calories)} kcal</div>
+            <div className="text-[11px] text-[#6b7280] mt-1">
               {Math.round(meal.total_protein_g)}P &bull; {Math.round(meal.total_carbs_g)}C &bull; {Math.round(meal.total_fat_g)}F
             </div>
           </div>
-          <div className="text-[#9ca3af]">
+          <div className="text-[#6b7280]">
             {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           </div>
         </div>
       </div>
 
       {isExpanded && (
-        <div className="px-4 pb-4 border-t border-[#00f0ff]/10 pt-4 bg-[#07080b]/50">
+        <div className="px-4 pb-4 border-t border-[#1a1a1a]/10 pt-4 bg-[#f7f7f5]/50">
           {items.length > 0 ? (
             <div className="space-y-3">
               {items.map((item) => (
                 <div key={item.id} className="flex justify-between items-center text-sm">
                   <div>
-                    <div className="font-medium text-[#f3f4f6]">{item.food_name}</div>
-                    <div className="text-xs text-[#9ca3af] mt-0.5">{item.quantity} {item.unit}</div>
+                    <div className="font-medium text-[#1a1a1a]">{item.food_name}</div>
+                    <div className="text-xs text-[#6b7280] mt-0.5">{item.quantity} {item.unit}</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold text-[#00f0ff] font-space">{Math.round(item.calories)} kcal</div>
-                    <div className="text-[10px] text-[#9ca3af]">
+                    <div className="font-semibold text-[#ff4500] font-space">{Math.round(item.calories)} kcal</div>
+                    <div className="text-[10px] text-[#6b7280]">
                       {Math.round(item.protein_g)}p {Math.round(item.carbs_g)}c {Math.round(item.fat_g)}f
                     </div>
                   </div>
@@ -62,10 +62,10 @@ export default function MealCard({ meal, items }: { meal: any, items: any[] }) {
               ))}
             </div>
           ) : (
-            <div className="text-xs text-[#9ca3af] italic py-2">No individual items recorded for this meal.</div>
+            <div className="text-xs text-[#6b7280] italic py-2">No individual items recorded for this meal.</div>
           )}
 
-          <div className="mt-5 pt-4 border-t border-[#00f0ff]/10 flex justify-end">
+          <div className="mt-5 pt-4 border-t border-[#1a1a1a]/10 flex justify-end">
             <button
               onClick={handleDelete}
               disabled={isDeleting}
