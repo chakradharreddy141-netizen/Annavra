@@ -212,7 +212,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
           <div className="w-full max-w-md bg-[#ffffff] border border-[#1a1a1a]/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
             <div className="p-4 border-b border-[#1a1a1a]/10 flex items-center justify-between bg-[#0b0c10]">
               <h3 className="font-bold text-[#1a1a1a] font-space">Quick Log</h3>
-              <button onClick={() => setIsOpen(false)} className="p-1 text-[#6b7280] hover:text-white bg-[#ff4500]/10 rounded-lg">
+              <button onClick={() => setIsOpen(false)} className="p-1 text-[#6b7280] hover:text-[#1a1a1a] bg-[#ff4500]/10 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -240,7 +240,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                     <select 
                       value={mealName}
                       onChange={(e) => setMealName(e.target.value)}
-                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#00f0ff]"
+                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
                     >
                       <option value="Breakfast">Breakfast</option>
                       <option value="Lunch">Lunch</option>
@@ -257,7 +257,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                       value={foodName}
                       onChange={(e) => setFoodName(e.target.value)}
                       placeholder="e.g. 2 Eggs & Toast"
-                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-[#00f0ff]"
+                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder-gray-500 outline-none focus:border-[#00f0ff]"
                     />
                   </div>
 
@@ -269,7 +269,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                       value={calories}
                       onChange={(e) => setCalories(e.target.value)}
                       placeholder="Kcal"
-                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-[#00f0ff]"
+                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder-gray-500 outline-none focus:border-[#00f0ff]"
                     />
                   </div>
 
@@ -281,7 +281,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                         value={protein}
                         onChange={(e) => setProtein(e.target.value)}
                         placeholder="0"
-                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-white outline-none focus:border-[#00f0ff]"
+                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
                       />
                     </div>
                     <div className="space-y-1">
@@ -291,7 +291,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                         value={carbs}
                         onChange={(e) => setCarbs(e.target.value)}
                         placeholder="0"
-                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-white outline-none focus:border-[#00f0ff]"
+                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
                       />
                     </div>
                     <div className="space-y-1">
@@ -301,7 +301,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                         value={fat}
                         onChange={(e) => setFat(e.target.value)}
                         placeholder="0"
-                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-white outline-none focus:border-[#00f0ff]"
+                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
                       />
                     </div>
                   </div>

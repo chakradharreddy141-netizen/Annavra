@@ -114,7 +114,7 @@ export default async function NutritionPage(props: {
           <div>
             <span className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Calories</span>
             <div className="flex items-baseline gap-2 mt-1 font-space">
-              <span className="text-4xl font-black text-white">{Math.round(consumedCalories)}</span>
+              <span className="text-4xl font-black text-[#1a1a1a]">{Math.round(consumedCalories)}</span>
               <span className="text-sm font-medium text-[#6b7280]">/ {Math.round(targetCalories)} kcal</span>
             </div>
           </div>

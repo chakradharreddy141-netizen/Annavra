@@ -38,7 +38,7 @@ export default async function AppLayout({
               <div className="w-8 h-8 rounded-xl bg-[#ff4500]/10 border border-[#1a1a1a]/10 flex items-center justify-center font-black text-[#ff4500] text-base glow-cyan">
                 A
               </div>
-              <span className="font-extrabold text-lg tracking-tight text-white font-space">Annavra</span>
+              <span className="font-extrabold text-lg tracking-tight text-[#1a1a1a] font-space">Annavra</span>
             </Link>
 
             {/* Desktop Navigation */}

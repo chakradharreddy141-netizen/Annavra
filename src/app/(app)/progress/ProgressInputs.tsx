@@ -19,7 +19,7 @@ export function WeightLogger({ todayWeight }: { todayWeight: number }) {
     <div className="flex items-center gap-3">
       <div className="relative flex-1">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Scale className="h-4 w-4 text-gray-500" />
+          <Scale className="h-4 w-4 text-[#6b7280]" />
         </div>
         <input
           type="number"
@@ -27,13 +27,13 @@ export function WeightLogger({ todayWeight }: { todayWeight: number }) {
           placeholder="Weight (kg)"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:border-emerald-500 outline-none transition-colors"
+          className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl pl-9 pr-4 py-2 text-sm text-[#1a1a1a] focus:border-emerald-500 outline-none transition-colors"
         />
       </div>
       <button
         onClick={handleSave}
         disabled={isSaving || !weight}
-        className="px-3 py-2 bg-[#232738] hover:bg-[#2a2f42] text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 flex items-center gap-1.5"
+        className="px-3 py-2 bg-[#232738] hover:bg-[#2a2f42] text-[#1a1a1a] rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 flex items-center gap-1.5"
       >
         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
         Log
@@ -59,7 +59,7 @@ export function StepTargetEditor({ currentTarget }: { currentTarget: number }) {
     return (
       <button
         onClick={() => setIsEditing(true)}
-        className="text-xs text-gray-400 hover:text-emerald-400 flex items-center gap-1 transition-colors"
+        className="text-xs text-[#6b7280] hover:text-emerald-400 flex items-center gap-1 transition-colors"
       >
         <Settings className="w-3 h-3" /> Edit target
       </button>
@@ -73,7 +73,7 @@ export function StepTargetEditor({ currentTarget }: { currentTarget: number }) {
         step="500"
         value={target}
         onChange={(e) => setTarget(e.target.value)}
-        className="w-24 bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg px-2 py-1 text-xs text-white focus:border-emerald-500 outline-none"
+        className="w-24 bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg px-2 py-1 text-xs text-[#1a1a1a] focus:border-emerald-500 outline-none"
       />
       <button
         onClick={handleSave}
@@ -82,7 +82,7 @@ export function StepTargetEditor({ currentTarget }: { currentTarget: number }) {
       >
         {isSaving ? '...' : 'Save'}
       </button>
-      <button onClick={() => setIsEditing(false)} className="text-xs text-gray-500">Cancel</button>
+      <button onClick={() => setIsEditing(false)} className="text-xs text-[#6b7280]">Cancel</button>
     </div>
   );
 }

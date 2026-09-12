@@ -76,7 +76,7 @@ export default async function ProgressPage() {
   return (
     <div className="max-w-xl mx-auto py-8 px-4 pb-24 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">Progress Analytics</h1>
+        <h1 className="text-2xl font-extrabold text-[#1a1a1a] tracking-tight">Progress Analytics</h1>
       </div>
 
       {/* Goal Summary */}
@@ -86,14 +86,14 @@ export default async function ProgressPage() {
             <Target className="w-6 h-6 text-emerald-400" />
           </div>
           <div>
-            <div className="text-sm font-semibold text-white capitalize">
+            <div className="text-sm font-semibold text-[#1a1a1a] capitalize">
               {activeGoal?.fitness_goal?.replace('_', ' ') || 'Maintain'}
             </div>
-            <div className="text-xs text-gray-400 mt-0.5">Current Target</div>
+            <div className="text-xs text-[#6b7280] mt-0.5">Current Target</div>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-xl font-bold text-white">{targetWeight} <span className="text-sm text-gray-500 font-normal">kg</span></div>
+          <div className="text-xl font-bold text-[#1a1a1a]">{targetWeight} <span className="text-sm text-[#6b7280] font-normal">kg</span></div>
           <div className="text-xs text-emerald-400 font-medium">Goal Weight</div>
         </div>
       </div>
@@ -102,14 +102,14 @@ export default async function ProgressPage() {
       <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <h2 className="text-base font-bold text-[#1a1a1a] flex items-center gap-2">
               <Scale className="w-4 h-4 text-emerald-400" />
               Weight Trend
             </h2>
-            <p className="text-xs text-gray-400 mt-1">Past 30 days</p>
+            <p className="text-xs text-[#6b7280] mt-1">Past 30 days</p>
           </div>
           <div className="text-right">
-            <div className="text-xl font-bold text-white">{latestWeight} <span className="text-sm text-gray-500 font-normal">kg</span></div>
+            <div className="text-xl font-bold text-[#1a1a1a]">{latestWeight} <span className="text-sm text-[#6b7280] font-normal">kg</span></div>
             {weightData.length > 1 && (
               <div className={`text-xs font-semibold flex items-center gap-1 justify-end mt-1 ${weightChange <= 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
                 <TrendingUp className={`w-3 h-3 ${weightChange <= 0 ? 'rotate-180' : ''}`} />
@@ -127,12 +127,12 @@ export default async function ProgressPage() {
       {/* Step Tracker */}
       <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl">
         <div className="mb-6">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <h2 className="text-base font-bold text-[#1a1a1a] flex items-center gap-2">
             <Footprints className="w-4 h-4 text-blue-400" />
             Step Tracker
           </h2>
           <div className="flex items-center justify-between mt-1">
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-[#6b7280]">
               Target: {stepTarget.toLocaleString()} steps.
             </p>
             <StepTargetEditor currentTarget={stepTarget} />
@@ -149,11 +149,11 @@ export default async function ProgressPage() {
       {/* Consistency Heatmap */}
       <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl">
         <div className="mb-6">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <h2 className="text-base font-bold text-[#1a1a1a] flex items-center gap-2">
             <CalendarDays className="w-4 h-4 text-blue-400" />
             Discipline Heatmap
           </h2>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-[#6b7280] mt-1">
             Tracks days you hit your calorie target and completed a workout.
           </p>
         </div>
@@ -162,12 +162,12 @@ export default async function ProgressPage() {
         
         <div className="mt-4 pt-4 border-t border-[#1a1a1a]/10/50 grid grid-cols-2 gap-4">
           <div>
-            <div className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Calories</div>
-            <div className="text-sm font-medium text-white">Target: {activeGoal?.daily_calories || 2400} kcal</div>
+            <div className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider mb-1">Calories</div>
+            <div className="text-sm font-medium text-[#1a1a1a]">Target: {activeGoal?.daily_calories || 2400} kcal</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Workouts</div>
-            <div className="text-sm font-medium text-white">{summaries?.filter(s => s.workout_completed).length || 0} sessions</div>
+            <div className="text-[10px] text-[#6b7280] font-semibold uppercase tracking-wider mb-1">Workouts</div>
+            <div className="text-sm font-medium text-[#1a1a1a]">{summaries?.filter(s => s.workout_completed).length || 0} sessions</div>
           </div>
         </div>
       </div>

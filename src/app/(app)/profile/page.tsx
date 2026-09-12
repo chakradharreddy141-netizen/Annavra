@@ -236,8 +236,8 @@ export default function ProfilePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Profile & Goals</h1>
-          <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1a1a1a] tracking-tight">Profile & Goals</h1>
+          <p className="text-xs sm:text-sm text-[#6b7280] mt-0.5">
             Manage your physiological stats, target versioning, and preferences.
           </p>
         </div>
@@ -250,7 +250,7 @@ export default function ProfilePage() {
         </button>
         <a
           href="/auth/signout"
-          className="px-4 py-2.5 rounded-xl bg-[#fafafa] hover:bg-red-500/10 border border-[#1a1a1a]/10 hover:border-red-500/30 text-gray-400 hover:text-red-400 font-semibold text-xs transition-all flex items-center gap-2"
+          className="px-4 py-2.5 rounded-xl bg-[#fafafa] hover:bg-red-500/10 border border-[#1a1a1a]/10 hover:border-red-500/30 text-[#6b7280] hover:text-red-400 font-semibold text-xs transition-all flex items-center gap-2"
         >
           <LogOut className="w-4 h-4" /> Sign Out
         </a>
@@ -272,35 +272,35 @@ export default function ProfilePage() {
               {profile?.name ? profile.name.charAt(0).toUpperCase() : 'U'}
             </div>
             <div>
-              <h2 className="font-bold text-base text-white">{profile?.name || 'Athlete'}</h2>
-              <div className="text-xs text-gray-400">{profile?.email}</div>
+              <h2 className="font-bold text-base text-[#1a1a1a]">{profile?.name || 'Athlete'}</h2>
+              <div className="text-xs text-[#6b7280]">{profile?.email}</div>
             </div>
           </div>
 
           <div className="space-y-2.5 text-xs">
             <div className="flex justify-between py-1 border-b border-[#181b26]">
-              <span className="text-gray-400">Age</span>
-              <span className="text-white font-medium">{profile?.age || '--'} yrs</span>
+              <span className="text-[#6b7280]">Age</span>
+              <span className="text-[#1a1a1a] font-medium">{profile?.age || '--'} yrs</span>
             </div>
             <div className="flex justify-between py-1 border-b border-[#181b26]">
-              <span className="text-gray-400">Gender</span>
-              <span className="text-white font-medium capitalize">{profile?.gender || '--'}</span>
+              <span className="text-[#6b7280]">Gender</span>
+              <span className="text-[#1a1a1a] font-medium capitalize">{profile?.gender || '--'}</span>
             </div>
             <div className="flex justify-between py-1 border-b border-[#181b26]">
-              <span className="text-gray-400">Height</span>
-              <span className="text-white font-medium">{profile?.height_cm || '--'} cm</span>
+              <span className="text-[#6b7280]">Height</span>
+              <span className="text-[#1a1a1a] font-medium">{profile?.height_cm || '--'} cm</span>
             </div>
             <div className="flex justify-between py-1 border-b border-[#181b26]">
-              <span className="text-gray-400">Current Weight</span>
-              <span className="text-white font-medium">{activeGoal?.current_weight_kg || '--'} kg</span>
+              <span className="text-[#6b7280]">Current Weight</span>
+              <span className="text-[#1a1a1a] font-medium">{activeGoal?.current_weight_kg || '--'} kg</span>
             </div>
             <div className="flex justify-between py-1 border-b border-[#181b26]">
-              <span className="text-gray-400">Activity Level</span>
-              <span className="text-white font-medium capitalize">{profile?.activity_level?.replace('_', ' ') || '--'}</span>
+              <span className="text-[#6b7280]">Activity Level</span>
+              <span className="text-[#1a1a1a] font-medium capitalize">{profile?.activity_level?.replace('_', ' ') || '--'}</span>
             </div>
             <div className="flex justify-between py-1">
-              <span className="text-gray-400">Dietary Style</span>
-              <span className="text-white font-medium capitalize">{profile?.dietary_preference?.replace('_', ' ') || '--'}</span>
+              <span className="text-[#6b7280]">Dietary Style</span>
+              <span className="text-[#1a1a1a] font-medium capitalize">{profile?.dietary_preference?.replace('_', ' ') || '--'}</span>
             </div>
           </div>
         </div>
@@ -310,7 +310,7 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between border-b border-[#1a1a1a]/10 pb-4">
             <div className="flex items-center gap-2">
               <Target className="w-5 h-5 text-emerald-400" />
-              <h2 className="font-bold text-base text-white">Active Nutrition Target</h2>
+              <h2 className="font-bold text-base text-[#1a1a1a]">Active Nutrition Target</h2>
             </div>
             <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-[10px] uppercase tracking-wider">
               Active Since {activeGoal?.effective_from || 'Today'}
@@ -319,35 +319,35 @@ export default function ProfilePage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
-              <div className="text-[10px] text-gray-500 uppercase font-semibold">Calories</div>
-              <div className="text-lg font-black text-emerald-400 mt-0.5">{activeGoal?.daily_calories} <span className="text-xs text-gray-400 font-normal">kcal</span></div>
+              <div className="text-[10px] text-[#6b7280] uppercase font-semibold">Calories</div>
+              <div className="text-lg font-black text-emerald-400 mt-0.5">{activeGoal?.daily_calories} <span className="text-xs text-[#6b7280] font-normal">kcal</span></div>
             </div>
             <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
-              <div className="text-[10px] text-gray-500 uppercase font-semibold">Protein</div>
-              <div className="text-lg font-black text-blue-400 mt-0.5">{activeGoal?.daily_protein_g} <span className="text-xs text-gray-400 font-normal">g</span></div>
+              <div className="text-[10px] text-[#6b7280] uppercase font-semibold">Protein</div>
+              <div className="text-lg font-black text-blue-400 mt-0.5">{activeGoal?.daily_protein_g} <span className="text-xs text-[#6b7280] font-normal">g</span></div>
             </div>
             <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
-              <div className="text-[10px] text-gray-500 uppercase font-semibold">Carbs</div>
-              <div className="text-lg font-black text-amber-400 mt-0.5">{activeGoal?.daily_carbs_g} <span className="text-xs text-gray-400 font-normal">g</span></div>
+              <div className="text-[10px] text-[#6b7280] uppercase font-semibold">Carbs</div>
+              <div className="text-lg font-black text-amber-400 mt-0.5">{activeGoal?.daily_carbs_g} <span className="text-xs text-[#6b7280] font-normal">g</span></div>
             </div>
             <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
-              <div className="text-[10px] text-gray-500 uppercase font-semibold">Fat</div>
-              <div className="text-lg font-black text-rose-400 mt-0.5">{activeGoal?.daily_fat_g} <span className="text-xs text-gray-400 font-normal">g</span></div>
+              <div className="text-[10px] text-[#6b7280] uppercase font-semibold">Fat</div>
+              <div className="text-lg font-black text-rose-400 mt-0.5">{activeGoal?.daily_fat_g} <span className="text-xs text-[#6b7280] font-normal">g</span></div>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3 pt-2 text-xs">
             <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
-              <span className="text-gray-400">BMR / TDEE</span>
-              <div className="font-bold text-white mt-0.5">{activeGoal?.bmr} / {activeGoal?.tdee} kcal</div>
+              <span className="text-[#6b7280]">BMR / TDEE</span>
+              <div className="font-bold text-[#1a1a1a] mt-0.5">{activeGoal?.bmr} / {activeGoal?.tdee} kcal</div>
             </div>
             <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
-              <span className="text-gray-400">BMI Category</span>
-              <div className="font-bold text-white mt-0.5">{activeGoal?.bmi} ({activeGoal?.bmi_category})</div>
+              <span className="text-[#6b7280]">BMI Category</span>
+              <div className="font-bold text-[#1a1a1a] mt-0.5">{activeGoal?.bmi} ({activeGoal?.bmi_category})</div>
             </div>
             <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10">
-              <span className="text-gray-400">Water / Fiber</span>
-              <div className="font-bold text-white mt-0.5">{((activeGoal?.daily_water_ml || 2500) / 1000).toFixed(1)}L / {activeGoal?.daily_fiber_g}g</div>
+              <span className="text-[#6b7280]">Water / Fiber</span>
+              <div className="font-bold text-[#1a1a1a] mt-0.5">{((activeGoal?.daily_water_ml || 2500) / 1000).toFixed(1)}L / {activeGoal?.daily_fiber_g}g</div>
             </div>
           </div>
         </div>
@@ -357,9 +357,9 @@ export default function ProfilePage() {
       <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
         <div className="flex items-center gap-2">
           <History className="w-4 h-4 text-emerald-400" />
-          <h2 className="text-base font-bold text-white">Target Version History (10+ Year Preserved)</h2>
+          <h2 className="text-base font-bold text-[#1a1a1a]">Target Version History (10+ Year Preserved)</h2>
         </div>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-[#6b7280]">
           When your weight or fitness goals change, previous targets remain permanently tied to their respective date windows rather than overwriting past performance.
         </p>
 
@@ -375,19 +375,19 @@ export default function ProfilePage() {
             >
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-white capitalize">{g.fitness_goal.replace('_', ' ')}</span>
+                  <span className="font-bold text-[#1a1a1a] capitalize">{g.fitness_goal.replace('_', ' ')}</span>
                   {g.is_active && (
                     <span className="px-2 py-0.5 rounded-full bg-emerald-500 text-gray-950 font-bold text-[9px]">
                       CURRENT
                     </span>
                   )}
                 </div>
-                <div className="text-gray-400 text-[11px] mt-0.5">
+                <div className="text-[#6b7280] text-[11px] mt-0.5">
                   Weight: {g.current_weight_kg} kg &bull; Active: {g.effective_from} {g.effective_until ? `to ${g.effective_until}` : 'to Present'}
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 text-gray-300">
+              <div className="flex items-center gap-4 text-[#1a1a1a]">
                 <div><strong className="text-emerald-400">{g.daily_calories}</strong> kcal</div>
                 <div><strong className="text-blue-400">{g.daily_protein_g}g</strong> P</div>
                 <div><strong className="text-amber-400">{g.daily_carbs_g}g</strong> C</div>
@@ -402,9 +402,9 @@ export default function ProfilePage() {
       <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
         <div className="flex items-center gap-2">
           <Bell className="w-4 h-4 text-[#ff4500]" />
-          <h2 className="text-base font-bold text-white">Notifications</h2>
+          <h2 className="text-base font-bold text-[#1a1a1a]">Notifications</h2>
         </div>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-[#6b7280]">
           Enable push notifications to receive workout reminders and logging nudges.
         </p>
         <button
@@ -421,31 +421,31 @@ export default function ProfilePage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4">
             <div>
-              <h3 className="text-lg font-bold text-white">Recalculate Nutrition Targets</h3>
-              <p className="text-xs text-gray-400 mt-1">
+              <h3 className="text-lg font-bold text-[#1a1a1a]">Recalculate Nutrition Targets</h3>
+              <p className="text-xs text-[#6b7280] mt-1">
                 Enter your updated weight or change your goal. A new versioned record will be archived without modifying past tracking history.
               </p>
             </div>
 
             <form onSubmit={handleRecalculateAndSave} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-gray-300 mb-1">New Weight (kg)</label>
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">New Weight (kg)</label>
                 <input
                   type="number"
                   step="0.1"
                   required
                   value={newWeight}
                   onChange={(e) => setNewWeight(parseFloat(e.target.value) || 0)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-emerald-500 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-300 mb-1">Fitness Goal</label>
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Fitness Goal</label>
                 <select
                   value={newGoal}
                   onChange={(e) => setNewGoal(e.target.value as FitnessGoal)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-emerald-500 outline-none"
                 >
                   <option value="lose_fat">Lose Fat (20% Deficit)</option>
                   <option value="maintain">Maintain Weight</option>
@@ -457,11 +457,11 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-300 mb-1">Activity Level</label>
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Activity Level</label>
                 <select
                   value={newActivity}
                   onChange={(e) => setNewActivity(e.target.value as ActivityLevel)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-emerald-500 outline-none"
                 >
                   <option value="sedentary">Sedentary (Desk job)</option>
                   <option value="lightly_active">Lightly Active (1-2 days/wk)</option>
@@ -472,14 +472,14 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-300 mb-1">Target Weight (kg) - Optional</label>
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Target Weight (kg) - Optional</label>
                 <input
                   type="number"
                   step="0.1"
                   value={newTargetWeight}
                   onChange={(e) => setNewTargetWeight(e.target.value)}
                   placeholder="e.g. 78"
-                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-emerald-500 outline-none"
                 />
               </div>
 
@@ -487,7 +487,7 @@ export default function ProfilePage() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-[#fafafa] hover:bg-[#202433] text-gray-300 text-xs font-semibold cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#fafafa] hover:bg-[#202433] text-[#1a1a1a] text-xs font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>

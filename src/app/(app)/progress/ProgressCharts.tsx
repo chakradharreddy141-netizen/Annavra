@@ -16,7 +16,7 @@ import {
 
 export function WeightChart({ data }: { data: { date: string, weight: number }[] }) {
   if (!data || data.length === 0) {
-    return <div className="text-sm text-gray-500 py-8 text-center">No weight data available yet.</div>;
+    return <div className="text-sm text-[#6b7280] py-8 text-center">No weight data available yet.</div>;
   }
 
   // Format date for X-axis (e.g. "Sep 12")
@@ -125,7 +125,7 @@ export function ConsistencyHeatmap({
     <div>
       <div className="grid grid-cols-7 gap-2">
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-          <div key={day} className="text-[10px] text-center text-gray-500 font-semibold uppercase">{day}</div>
+          <div key={day} className="text-[10px] text-center text-[#6b7280] font-semibold uppercase">{day}</div>
         ))}
         {Array.from({ length: emptyPadding }).map((_, i) => (
           <div key={`empty-${i}`} className="aspect-square rounded-md opacity-0" />
@@ -138,7 +138,7 @@ export function ConsistencyHeatmap({
           />
         ))}
       </div>
-      <div className="flex items-center gap-3 mt-4 text-[10px] text-gray-500 font-medium">
+      <div className="flex items-center gap-3 mt-4 text-[10px] text-[#6b7280] font-medium">
         <span className="uppercase">Less</span>
         <div className="flex gap-1">
           <div className="w-3 h-3 rounded-sm bg-[#fafafa] border border-[#1a1a1a]/10" />
@@ -161,7 +161,7 @@ export function StepChart({
   const [view, setView] = React.useState<'weekly' | 'monthly'>('weekly');
 
   if (!data || data.length === 0) {
-    return <div className="text-sm text-gray-500 py-8 text-center">No step data available yet.</div>;
+    return <div className="text-sm text-[#6b7280] py-8 text-center">No step data available yet.</div>;
   }
 
   // Filter data based on view
@@ -196,17 +196,17 @@ export function StepChart({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center px-1">
-        <div className="text-sm text-gray-400">Avg: <span className="text-white font-bold">{avgSteps.toLocaleString()}</span> / day</div>
+        <div className="text-sm text-[#6b7280]">Avg: <span className="text-[#1a1a1a] font-bold">{avgSteps.toLocaleString()}</span> / day</div>
         <div className="flex bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg p-0.5">
           <button 
             onClick={() => setView('weekly')}
-            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'weekly' ? 'bg-[#232738] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'weekly' ? 'bg-[#232738] text-[#1a1a1a]' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
           >
             Weekly
           </button>
           <button 
             onClick={() => setView('monthly')}
-            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'monthly' ? 'bg-[#232738] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'monthly' ? 'bg-[#232738] text-[#1a1a1a]' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
           >
             Monthly
           </button>

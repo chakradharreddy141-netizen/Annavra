@@ -138,7 +138,7 @@ export default function ScanPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black/50 border border-[#1a1a1a]/10">
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-white/80 border border-[#1a1a1a]/10">
             <img src={imagePreview} alt="Meal preview" className="w-full h-full object-cover" />
             
             {!mealItems.length && (
@@ -163,7 +163,7 @@ export default function ScanPage() {
             {!isScanning && !mealItems.length && (
               <button 
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-md rounded-lg text-white hover:bg-black/70 transition-colors"
+                className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-md rounded-lg text-[#1a1a1a] hover:bg-white/90 transition-colors"
               >
                 <Upload className="w-4 h-4" />
               </button>
