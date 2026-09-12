@@ -16,7 +16,8 @@ import {
   Loader2,
   Droplets,
   Edit3,
-  LogOut
+  LogOut,
+  Bell
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -28,6 +29,7 @@ export default function ProfilePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [pushStatus, setPushStatus] = useState<'default' | 'granted' | 'denied'>('default');
 
   // Recalculation Form State
   const [newWeight, setNewWeight] = useState<number>(72);
@@ -83,7 +85,35 @@ export default function ProfilePage() {
 
   useEffect(() => {
     fetchProfileData();
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      setPushStatus(Notification.permission as any);
+    }
   }, []);
+
+  const subscribeToPush = async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    try {
+      const permission = await Notification.requestPermission();
+      setPushStatus(permission as any);
+      if (permission !== 'granted') return;
+
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+      });
+
+      await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(subscription)
+      });
+      setSuccessMsg('Push notifications enabled successfully!');
+      setTimeout(() => setSuccessMsg(null), 3000);
+    } catch (err) {
+      console.error('Push subscription failed:', err);
+    }
+  };
 
   const handleRecalculateAndSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -366,6 +396,24 @@ export default function ProfilePage() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Push Notifications Section */}
+      <div className="bg-[#12141c] border border-[#232738] rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+        <div className="flex items-center gap-2">
+          <Bell className="w-4 h-4 text-[#00f0ff]" />
+          <h2 className="text-base font-bold text-white">Notifications</h2>
+        </div>
+        <p className="text-xs text-gray-400">
+          Enable push notifications to receive workout reminders and logging nudges.
+        </p>
+        <button
+          onClick={subscribeToPush}
+          disabled={pushStatus === 'granted'}
+          className="w-full sm:w-auto px-6 py-3 rounded-xl btn-cyber text-[#f3f4f6] font-bold text-sm transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {pushStatus === 'granted' ? 'Notifications Enabled' : 'Enable Notifications'}
+        </button>
       </div>
 
       {/* Recalculate Modal */}

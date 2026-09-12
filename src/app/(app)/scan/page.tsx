@@ -105,10 +105,10 @@ export default function ScanPage() {
   return (
     <div className="max-w-xl mx-auto py-8 px-4 pb-24 space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/dashboard" className="p-2 -ml-2 rounded-xl text-gray-400 hover:text-white hover:bg-[#202433] transition-colors">
+        <Link href="/dashboard" className="p-2 -ml-2 rounded-xl text-[#9ca3af] hover:text-[#00f0ff] hover:bg-[#00f0ff]/10 transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
-        <h1 className="text-lg font-semibold text-white">Scan Meal</h1>
+        <h1 className="text-lg font-bold text-[#f3f4f6] font-space">Scan Meal</h1>
         <div className="w-9" />
       </div>
 
@@ -125,33 +125,33 @@ export default function ScanPage() {
         <div className="space-y-4">
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="w-full aspect-square border-2 border-dashed border-[#2a2f42] rounded-3xl flex flex-col items-center justify-center gap-4 text-gray-400 hover:text-emerald-400 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all group"
+            className="w-full aspect-square border-2 border-dashed border-[#00f0ff]/20 rounded-3xl flex flex-col items-center justify-center gap-4 text-[#9ca3af] hover:text-[#00f0ff] hover:border-[#00f0ff]/40 hover:bg-[#00f0ff]/5 transition-all group"
           >
-            <div className="w-16 h-16 rounded-2xl bg-[#181b26] flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Camera className="w-8 h-8" />
+            <div className="w-16 h-16 rounded-2xl bg-[#00f0ff]/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Camera className="w-8 h-8 text-[#00f0ff] glow-cyan" />
             </div>
             <div className="text-center">
-              <p className="font-medium text-white group-hover:text-emerald-400 transition-colors">Take a Photo</p>
-              <p className="text-sm mt-1">or upload from gallery</p>
+              <p className="font-medium text-[#f3f4f6] group-hover:text-[#00f0ff] transition-colors">Take a Photo</p>
+              <p className="text-sm mt-1 font-space">or upload from gallery</p>
             </div>
           </button>
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black/50 border border-[#2a2f42]">
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black/50 border border-[#00f0ff]/20">
             <img src={imagePreview} alt="Meal preview" className="w-full h-full object-cover" />
             
             {!mealItems.length && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
                 {isScanning ? (
                   <div className="flex flex-col items-center gap-3">
-                    <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
-                    <p className="text-sm font-medium text-emerald-400 animate-pulse">Analyzing meal...</p>
+                    <Loader2 className="w-8 h-8 text-[#00f0ff] animate-spin" />
+                    <p className="text-sm font-bold text-[#00f0ff] animate-pulse glow-cyan font-space">Analyzing meal...</p>
                   </div>
                 ) : (
                   <button
                     onClick={handleScan}
-                    className="flex items-center gap-2 px-6 py-3 bg-emerald-500 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all active:scale-95"
+                    className="flex items-center gap-2 px-6 py-3 btn-cyber text-[#f3f4f6] rounded-xl font-bold transition-all active:scale-95"
                   >
                     <ScanLine className="w-5 h-5" />
                     Identify Food
@@ -179,34 +179,34 @@ export default function ScanPage() {
           {mealItems.length > 0 && (
             <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="flex items-center justify-between px-1">
-                <h2 className="text-lg font-semibold text-white">Identified Items</h2>
-                <span className="text-sm font-medium text-emerald-400">{totalCalories} kcal total</span>
+                <h2 className="text-lg font-bold text-[#f3f4f6] font-space">Review AI Results</h2>
+                <span className="text-sm font-bold text-[#00f0ff] glow-cyan font-space">{totalCalories} kcal total</span>
               </div>
               
               <div className="space-y-3">
                 {mealItems.map((item, index) => (
-                  <div key={index} className="p-4 rounded-2xl bg-[#181b26] border border-[#2a2f42] space-y-4 relative overflow-hidden group">
+                  <div key={index} className="p-4 rounded-2xl cyber-panel space-y-4 relative overflow-hidden group">
                     <div className="flex items-start gap-3">
                       <div className="flex-1 space-y-1">
                         <input
                           type="text"
                           value={item.food_name}
                           onChange={(e) => handleItemChange(index, 'food_name', e.target.value)}
-                          className="w-full bg-transparent text-white font-semibold outline-none focus:border-b border-emerald-500/50 pb-1"
+                          className="w-full bg-transparent text-[#f3f4f6] font-bold font-space outline-none focus:border-b border-[#00f0ff]/50 pb-1"
                           placeholder="Food name"
                         />
-                        <div className="flex gap-2 text-sm text-gray-400">
+                        <div className="flex gap-2 text-sm text-[#9ca3af]">
                           <input
                             type="number"
                             value={item.quantity}
                             onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                            className="w-16 bg-transparent outline-none focus:text-white"
+                            className="w-16 bg-transparent outline-none focus:text-[#00f0ff]"
                           />
                           <input
                             type="text"
                             value={item.unit}
                             onChange={(e) => handleItemChange(index, 'unit', e.target.value)}
-                            className="w-24 bg-transparent outline-none focus:text-white"
+                            className="w-24 bg-transparent outline-none focus:text-[#00f0ff]"
                           />
                         </div>
                       </div>
@@ -215,54 +215,54 @@ export default function ScanPage() {
                           type="number"
                           value={item.calories}
                           onChange={(e) => handleItemChange(index, 'calories', e.target.value)}
-                          className="w-16 bg-transparent text-emerald-400 font-semibold text-right outline-none focus:border-b border-emerald-500/50 pb-1"
+                          className="w-16 bg-transparent text-[#00f0ff] font-bold font-space text-right outline-none focus:border-b border-[#00f0ff]/50 pb-1"
                         />
-                        <span className="text-xs text-gray-500 ml-1">kcal</span>
+                        <span className="text-xs text-[#9ca3af] ml-1">kcal</span>
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#2a2f42]">
+                    <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#00f0ff]/10">
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase text-gray-500 tracking-wider">Protein</p>
+                        <p className="text-[10px] uppercase text-[#00f0ff] tracking-wider">Protein</p>
                         <div className="flex items-center">
                           <input
                             type="number"
                             value={item.protein_g}
                             onChange={(e) => handleItemChange(index, 'protein_g', e.target.value)}
-                            className="w-10 bg-transparent text-sm text-white font-medium outline-none"
+                            className="w-10 bg-transparent text-sm text-[#f3f4f6] font-medium outline-none"
                           />
-                          <span className="text-xs text-gray-400">g</span>
+                          <span className="text-xs text-[#9ca3af]">g</span>
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase text-gray-500 tracking-wider">Carbs</p>
+                        <p className="text-[10px] uppercase text-[#a855f7] tracking-wider">Carbs</p>
                         <div className="flex items-center">
                           <input
                             type="number"
                             value={item.carbs_g}
                             onChange={(e) => handleItemChange(index, 'carbs_g', e.target.value)}
-                            className="w-10 bg-transparent text-sm text-white font-medium outline-none"
+                            className="w-10 bg-transparent text-sm text-[#f3f4f6] font-medium outline-none"
                           />
-                          <span className="text-xs text-gray-400">g</span>
+                          <span className="text-xs text-[#9ca3af]">g</span>
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <p className="text-[10px] uppercase text-gray-500 tracking-wider">Fat</p>
+                        <p className="text-[10px] uppercase text-[#10b981] tracking-wider">Fat</p>
                         <div className="flex items-center">
                           <input
                             type="number"
                             value={item.fat_g}
                             onChange={(e) => handleItemChange(index, 'fat_g', e.target.value)}
-                            className="w-10 bg-transparent text-sm text-white font-medium outline-none"
+                            className="w-10 bg-transparent text-sm text-[#f3f4f6] font-medium outline-none"
                           />
-                          <span className="text-xs text-gray-400">g</span>
+                          <span className="text-xs text-[#9ca3af]">g</span>
                         </div>
                       </div>
                     </div>
                     
                     <button
                       onClick={() => handleRemoveItem(index)}
-                      className="absolute top-4 right-4 p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                      className="absolute top-4 right-4 p-1.5 text-[#9ca3af] hover:text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -272,7 +272,7 @@ export default function ScanPage() {
               
               <button
                 onClick={handleAddItem}
-                className="w-full py-3 flex items-center justify-center gap-2 border-2 border-dashed border-[#2a2f42] rounded-xl text-gray-400 hover:text-white hover:bg-[#181b26] transition-colors"
+                className="w-full py-3 flex items-center justify-center gap-2 border-2 border-dashed border-[#00f0ff]/20 rounded-xl text-[#9ca3af] hover:text-[#00f0ff] hover:bg-[#00f0ff]/10 transition-colors font-space"
               >
                 <Plus className="w-4 h-4" />
                 Add Item Manually
@@ -281,10 +281,10 @@ export default function ScanPage() {
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="w-full py-4 mt-6 bg-emerald-500 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all active:scale-95 disabled:opacity-70 disabled:pointer-events-none flex items-center justify-center gap-2"
+                className="w-full py-4 mt-6 btn-cyber text-[#f3f4f6] rounded-xl font-bold transition-all active:scale-95 disabled:opacity-70 disabled:pointer-events-none flex items-center justify-center gap-2 font-space"
               >
                 {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="w-5 h-5" />}
-                {isSaving ? 'Saving Meal...' : 'Save Meal'}
+                {isSaving ? 'Saving Meal...' : 'Confirm & Save Meal'}
               </button>
             </div>
           )}

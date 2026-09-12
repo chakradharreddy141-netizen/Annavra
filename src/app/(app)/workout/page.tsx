@@ -26,7 +26,7 @@ export default async function WorkoutHubPage() {
   // 2. Fetch Recent Workouts (last 5)
   const { data: recentWorkouts } = await supabase
     .from('workouts')
-    .select('*')
+    .select('*, workout_sets(is_pr)')
     .eq('user_id', user.id)
     .order('date', { ascending: false })
     .limit(5);
@@ -102,7 +102,12 @@ export default async function WorkoutHubPage() {
             {recentWorkouts.map((workout) => (
               <div key={workout.id} className="p-4 rounded-xl cyber-panel cyber-panel-hover flex items-center justify-between group">
                 <div>
-                  <div className="font-semibold text-sm text-[#f3f4f6] font-space">{workout.name || workout.workout_type}</div>
+                  <div className="font-semibold text-sm text-[#f3f4f6] font-space flex items-center gap-2">
+                    {workout.name || workout.workout_type}
+                    {workout.workout_sets?.some((s: any) => s.is_pr) && (
+                      <Trophy className="w-4 h-4 text-[#a855f7]" style={{ filter: 'drop-shadow(0 0 4px #a855f7)' }} />
+                    )}
+                  </div>
                   <div className="text-xs text-[#9ca3af] mt-1 flex items-center gap-3">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5" />

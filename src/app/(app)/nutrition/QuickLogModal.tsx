@@ -11,6 +11,23 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
   const router = useRouter();
   const supabase = createClient();
 
+  const [activeTab, setActiveTab] = useState<'manual' | 'saved'>('manual');
+  const [savedMeals, setSavedMeals] = useState<any[]>([]);
+
+  // Fetch saved meals when modal opens
+  React.useEffect(() => {
+    if (isOpen) {
+      const fetchSaved = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data } = await supabase.from('custom_meals').select('*').eq('user_id', user.id).order('name');
+          if (data) setSavedMeals(data);
+        }
+      };
+      fetchSaved();
+    }
+  }, [isOpen, supabase]);
+
   const [mealName, setMealName] = useState('Snack');
   const [foodName, setFoodName] = useState('');
   const [calories, setCalories] = useState('');
@@ -106,77 +123,235 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
     }
   };
 
+  const handleLogSaved = async (meal: any) => {
+    setLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      // Create meal
+      const { data: newMeal, error: mealErr } = await supabase
+        .from('meals')
+        .insert({
+          user_id: user.id,
+          date,
+          meal_name: meal.name,
+          total_calories: meal.calories,
+          total_protein_g: meal.protein_g,
+          total_carbs_g: meal.carbs_g,
+          total_fat_g: meal.fat_g,
+          total_fiber_g: meal.fiber_g,
+        })
+        .select()
+        .single();
+      
+      if (mealErr) throw mealErr;
+
+      // Create item
+      await supabase.from('meal_items').insert({
+        meal_id: newMeal.id,
+        food_name: meal.name,
+        quantity: 1,
+        unit: 'serving',
+        calories: meal.calories,
+        protein_g: meal.protein_g,
+        carbs_g: meal.carbs_g,
+        fat_g: meal.fat_g,
+        fiber_g: meal.fiber_g
+      });
+
+      // Update daily summary
+      const { data: summary } = await supabase
+        .from('daily_summaries')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('date', date)
+        .single();
+
+      if (summary) {
+        await supabase.from('daily_summaries').update({
+          total_calories: Number(summary.total_calories) + meal.calories,
+          total_protein_g: Number(summary.total_protein_g) + meal.protein_g,
+          total_carbs_g: Number(summary.total_carbs_g) + meal.carbs_g,
+          total_fat_g: Number(summary.total_fat_g) + meal.fat_g,
+          meals_logged: Number(summary.meals_logged) + 1
+        }).eq('id', summary.id);
+      } else {
+        await supabase.from('daily_summaries').insert({
+          user_id: user.id,
+          date,
+          total_calories: meal.calories,
+          total_protein_g: meal.protein_g,
+          total_carbs_g: meal.carbs_g,
+          total_fat_g: meal.fat_g,
+          meals_logged: 1,
+          goal_id: goalId
+        });
+      }
+
+      setIsOpen(false);
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="text-xs font-semibold text-gray-400 hover:text-white transition-colors"
+        className="w-12 h-12 bg-[#00f0ff] hover:bg-[#00f0ff]/80 text-black rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
       >
-        Manual Entry
+        <Plus className="w-6 h-6" />
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-sm bg-[#12141c] border border-[#232738] rounded-2xl p-5 shadow-2xl">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-white">Quick Log</h3>
-              <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-white">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[#12141c] border border-[#00f0ff]/20 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+            <div className="p-4 border-b border-[#00f0ff]/20 flex items-center justify-between bg-[#0b0c10]">
+              <h3 className="font-bold text-[#f3f4f6] font-space">Quick Log</h3>
+              <button onClick={() => setIsOpen(false)} className="p-1 text-[#9ca3af] hover:text-white bg-[#00f0ff]/10 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
-
-            <form onSubmit={handleSave} className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  required
-                  placeholder="Food Name (e.g. 2 Boiled Eggs)"
-                  value={foodName}
-                  onChange={e => setFoodName(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#181b26] border border-[#232738] rounded-xl text-white text-sm focus:border-emerald-500 outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="number"
-                  required
-                  placeholder="Calories"
-                  value={calories}
-                  onChange={e => setCalories(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#181b26] border border-[#232738] rounded-xl text-emerald-400 font-bold text-sm focus:border-emerald-500 outline-none"
-                />
-                <input
-                  type="number"
-                  placeholder="Protein (g)"
-                  value={protein}
-                  onChange={e => setProtein(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#181b26] border border-[#232738] rounded-xl text-blue-400 text-sm focus:border-blue-500 outline-none"
-                />
-                <input
-                  type="number"
-                  placeholder="Carbs (g)"
-                  value={carbs}
-                  onChange={e => setCarbs(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#181b26] border border-[#232738] rounded-xl text-amber-400 text-sm focus:border-amber-500 outline-none"
-                />
-                <input
-                  type="number"
-                  placeholder="Fat (g)"
-                  value={fat}
-                  onChange={e => setFat(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#181b26] border border-[#232738] rounded-xl text-rose-400 text-sm focus:border-rose-500 outline-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold text-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            
+            <div className="flex border-b border-[#00f0ff]/20 bg-[#0b0c10]">
+              <button 
+                className={`flex-1 py-3 text-sm font-bold font-space text-center border-b-2 transition-colors ${activeTab === 'manual' ? 'border-[#00f0ff] text-[#00f0ff]' : 'border-transparent text-[#9ca3af] hover:text-[#f3f4f6]'}`}
+                onClick={() => setActiveTab('manual')}
               >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Meal'}
+                Manual Entry
               </button>
-            </form>
+              <button 
+                className={`flex-1 py-3 text-sm font-bold font-space text-center border-b-2 transition-colors ${activeTab === 'saved' ? 'border-[#00f0ff] text-[#00f0ff]' : 'border-transparent text-[#9ca3af] hover:text-[#f3f4f6]'}`}
+                onClick={() => setActiveTab('saved')}
+              >
+                Saved Meals
+              </button>
+            </div>
+
+            <div className="p-5 overflow-y-auto max-h-[60vh]">
+              {activeTab === 'manual' ? (
+                <form onSubmit={handleSave} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-xs text-[#9ca3af] font-medium ml-1">Meal Type</label>
+                    <select 
+                      value={mealName}
+                      onChange={(e) => setMealName(e.target.value)}
+                      className="w-full bg-[#181b26] border border-[#00f0ff]/20 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#00f0ff]"
+                    >
+                      <option value="Breakfast">Breakfast</option>
+                      <option value="Lunch">Lunch</option>
+                      <option value="Dinner">Dinner</option>
+                      <option value="Snack">Snack</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs text-[#9ca3af] font-medium ml-1">Food Description</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={foodName}
+                      onChange={(e) => setFoodName(e.target.value)}
+                      placeholder="e.g. 2 Eggs & Toast"
+                      className="w-full bg-[#181b26] border border-[#00f0ff]/20 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-[#00f0ff]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs text-[#9ca3af] font-medium ml-1">Total Calories</label>
+                    <input 
+                      type="number" 
+                      required
+                      value={calories}
+                      onChange={(e) => setCalories(e.target.value)}
+                      placeholder="Kcal"
+                      className="w-full bg-[#181b26] border border-[#00f0ff]/20 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-[#00f0ff]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3 pt-2">
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase text-[#00f0ff] font-medium ml-1">Protein (g)</label>
+                      <input 
+                        type="number" 
+                        value={protein}
+                        onChange={(e) => setProtein(e.target.value)}
+                        placeholder="0"
+                        className="w-full bg-[#181b26] border border-[#00f0ff]/20 rounded-xl px-3 py-2.5 text-sm text-white outline-none focus:border-[#00f0ff]"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase text-[#a855f7] font-medium ml-1">Carbs (g)</label>
+                      <input 
+                        type="number" 
+                        value={carbs}
+                        onChange={(e) => setCarbs(e.target.value)}
+                        placeholder="0"
+                        className="w-full bg-[#181b26] border border-[#00f0ff]/20 rounded-xl px-3 py-2.5 text-sm text-white outline-none focus:border-[#00f0ff]"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase text-[#10b981] font-medium ml-1">Fat (g)</label>
+                      <input 
+                        type="number" 
+                        value={fat}
+                        onChange={(e) => setFat(e.target.value)}
+                        placeholder="0"
+                        className="w-full bg-[#181b26] border border-[#00f0ff]/20 rounded-xl px-3 py-2.5 text-sm text-white outline-none focus:border-[#00f0ff]"
+                      />
+                    </div>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={loading || !foodName || !calories}
+                    className="w-full py-4 mt-2 btn-cyber text-[#f3f4f6] rounded-xl font-bold flex justify-center items-center gap-2 disabled:opacity-50 disabled:pointer-events-none"
+                  >
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
+                    {loading ? 'Logging...' : 'Log Meal'}
+                  </button>
+                </form>
+              ) : (
+                <div className="space-y-3">
+                  {savedMeals.length === 0 ? (
+                    <div className="text-center py-6">
+                      <p className="text-sm text-[#9ca3af] mb-4">No saved meals yet.</p>
+                      <a href="/nutrition/custom" className="text-sm font-bold text-[#00f0ff] hover:underline font-space">
+                        Manage Saved Meals →
+                      </a>
+                    </div>
+                  ) : (
+                    <>
+                      {savedMeals.map(meal => (
+                        <button 
+                          key={meal.id} 
+                          onClick={() => handleLogSaved(meal)}
+                          disabled={loading}
+                          className="w-full text-left p-4 rounded-xl border border-[#00f0ff]/20 bg-[#0b0c10] hover:border-[#00f0ff]/50 transition-colors disabled:opacity-50 disabled:pointer-events-none group"
+                        >
+                          <p className="font-bold text-[#f3f4f6] font-space group-hover:text-[#00f0ff]">{meal.name}</p>
+                          <div className="flex gap-3 text-xs text-[#9ca3af] mt-1">
+                            <span className="text-[#00f0ff] font-bold">{meal.calories} kcal</span>
+                            <span>P: {meal.protein_g}g</span>
+                            <span>C: {meal.carbs_g}g</span>
+                            <span>F: {meal.fat_g}g</span>
+                          </div>
+                        </button>
+                      ))}
+                      <div className="text-center mt-4">
+                        <a href="/nutrition/custom" className="text-xs font-bold text-[#00f0ff] hover:underline font-space">
+                          Manage Saved Meals
+                        </a>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
