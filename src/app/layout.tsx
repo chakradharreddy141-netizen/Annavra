@@ -8,6 +8,7 @@ const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space
 export const metadata: Metadata = {
   title: 'Annavra — Intelligent Nutrition & Fitness Companion',
   description: 'Personalized health, nutrition, workout tracking, and AI food analysis.',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
