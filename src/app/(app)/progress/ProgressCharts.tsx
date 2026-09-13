@@ -200,13 +200,13 @@ export function StepChart({
         <div className="flex bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg p-0.5">
           <button 
             onClick={() => setView('weekly')}
-            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'weekly' ? 'bg-[#232738] text-[#1a1a1a]' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
+            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'weekly' ? 'bg-[#1a1a1a] text-white' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
           >
             Weekly
           </button>
           <button 
             onClick={() => setView('monthly')}
-            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'monthly' ? 'bg-[#232738] text-[#1a1a1a]' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
+            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'monthly' ? 'bg-[#1a1a1a] text-white' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
           >
             Monthly
           </button>

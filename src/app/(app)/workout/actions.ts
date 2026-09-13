@@ -128,3 +128,33 @@ export async function saveWorkout(workoutData: {
     return { error: error.message || "An unexpected error occurred" };
   }
 }
+
+export async function deleteWorkout(workoutId: string) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: "Not authenticated" };
+    }
+
+    // Delete sets first (to avoid foreign key constraint issues if ON DELETE CASCADE is missing)
+    await supabase.from('workout_sets').delete().eq('workout_id', workoutId).eq('user_id', user.id);
+    
+    // Delete workout
+    const { error } = await supabase.from('workouts').delete().eq('id', workoutId).eq('user_id', user.id);
+    
+    if (error) {
+      console.error("Error deleting workout:", error);
+      return { error: "Failed to delete workout" };
+    }
+    
+    revalidatePath('/workout');
+    revalidatePath('/progress');
+    revalidatePath('/dashboard');
+    return { success: true };
+  } catch (error: any) {
+    console.error("Delete error:", error);
+    return { error: error.message || "An unexpected error occurred" };
+  }
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { Dumbbell, Calendar, Clock, Trophy, ArrowRight, Play, CheckCircle2 } from 'lucide-react';
+import DeleteWorkoutButton from './DeleteWorkoutButton';
 
 export default async function WorkoutHubPage() {
   const supabase = await createClient();
@@ -137,8 +138,11 @@ export default async function WorkoutHubPage() {
                     )}
                   </div>
                 </div>
-                <div className="p-2 text-[#6b7280] group-hover:text-[#1a1a1a] transition-colors">
-                  <ArrowRight className="w-4 h-4" />
+                <div className="flex items-center gap-2 p-2">
+                  <DeleteWorkoutButton workoutId={workout.id} />
+                  <div className="text-[#6b7280] group-hover:text-[#1a1a1a] transition-colors p-2">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
             ))}
