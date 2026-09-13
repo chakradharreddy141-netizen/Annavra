@@ -158,3 +158,35 @@ export async function deleteWorkout(workoutId: string) {
     return { error: error.message || "An unexpected error occurred" };
   }
 }
+
+export async function createCustomExercise(name: string, primaryMuscles: string[], secondaryMuscles: string[]) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: "Not authenticated" };
+    }
+
+    const { data: newExercise, error } = await supabase
+      .from('exercises')
+      .insert({
+        name: name,
+        muscle_group: 'Custom',
+        primary_muscles: primaryMuscles,
+        secondary_muscles: secondaryMuscles
+      })
+      .select()
+      .single();
+      
+    if (error) {
+      console.error("Error creating custom exercise:", error);
+      return { error: "Failed to create exercise" };
+    }
+    
+    return { success: true, exercise: newExercise };
+  } catch (error: any) {
+    console.error("Create exercise error:", error);
+    return { error: error.message || "An unexpected error occurred" };
+  }
+}

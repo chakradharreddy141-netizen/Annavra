@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Play, Square, Plus, Trash2, Check, Clock, Dumbbell, 
-  ChevronDown, X, Loader2
+  ChevronDown, X, Loader2, Save, CheckCircle, Search, ArrowLeft, Trophy, HelpCircle
 } from 'lucide-react';
 import { saveWorkout } from '../actions';
 import Link from 'next/link';
 import WorkoutMuscleMap from '../WorkoutMuscleMap';
+import CustomExerciseModal from './CustomExerciseModal';
 
 type Exercise = {
   id: string;
@@ -55,6 +56,7 @@ export default function ActiveWorkoutClient({
   // Modal state
   const [isAddingExercise, setIsAddingExercise] = useState(false);
   const [exerciseSearch, setExerciseSearch] = useState('');
+  const [creatingCustom, setCreatingCustom] = useState<string | null>(null);
 
   // Update timer
   useEffect(() => {
@@ -370,7 +372,7 @@ export default function ActiveWorkoutClient({
                   <p className="text-sm text-[#6b7280] mb-4">No exercises found.</p>
                   {exerciseSearch.trim().length > 0 && (
                     <button
-                      onClick={() => handleAddExercise({ id: crypto.randomUUID(), name: exerciseSearch.trim(), muscle_group: 'Custom' })}
+                      onClick={() => setCreatingCustom(exerciseSearch.trim())}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[#1a1a1a]/10 text-[#ff4500] rounded-xl hover:bg-[#1a1a1a]/20 font-medium text-sm transition-colors"
                     >
                       <Plus className="w-4 h-4" />
@@ -399,7 +401,7 @@ export default function ActiveWorkoutClient({
                     <div className="mt-4 pt-4 border-t border-[#1a1a1a]/10 text-center">
                       <p className="text-xs text-[#6b7280] mb-2">Don&apos;t see what you&apos;re looking for?</p>
                       <button
-                        onClick={() => handleAddExercise({ id: crypto.randomUUID(), name: exerciseSearch.trim(), muscle_group: 'Custom' })}
+                        onClick={() => setCreatingCustom(exerciseSearch.trim())}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-[#1a1a1a]/10 text-[#ff4500] rounded-xl hover:bg-[#1a1a1a]/20 font-medium text-sm transition-colors"
                       >
                         <Plus className="w-4 h-4" />
@@ -412,6 +414,17 @@ export default function ActiveWorkoutClient({
             </div>
           </div>
         </div>
+      )}
+
+      {creatingCustom && (
+        <CustomExerciseModal
+          initialName={creatingCustom}
+          onClose={() => setCreatingCustom(null)}
+          onSuccess={(newExercise) => {
+            setCreatingCustom(null);
+            handleAddExercise(newExercise);
+          }}
+        />
       )}
     </div>
   );
