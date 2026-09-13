@@ -3,6 +3,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
+import { getUserLocalDate } from "@/lib/date";
+
 export async function logSteps(steps: number) {
   try {
     const supabase = await createClient();
@@ -12,7 +14,9 @@ export async function logSteps(steps: number) {
       return { error: "Not authenticated" };
     }
 
-    const today = new Date().toISOString().split('T')[0];
+    const { data: profile } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();
+    const tz = profile?.timezone || 'UTC';
+    const today = getUserLocalDate(tz);
 
     // Upsert into step_entries
     const { error: stepError } = await supabase
@@ -87,7 +91,9 @@ export async function logWeight(weight: number) {
       return { error: "Not authenticated" };
     }
 
-    const today = new Date().toISOString().split('T')[0];
+    const { data: profile } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();
+    const tz = profile?.timezone || 'UTC';
+    const today = getUserLocalDate(tz);
 
     const { error } = await supabase
       .from('weight_entries')

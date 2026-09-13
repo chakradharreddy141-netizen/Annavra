@@ -79,15 +79,7 @@ export default function ScanPage() {
     setError(null);
 
     try {
-      const totalMacros = mealItems.reduce((acc, item) => ({
-        calories: acc.calories + (Number(item.calories) || 0),
-        protein_g: acc.protein_g + (Number(item.protein_g) || 0),
-        carbs_g: acc.carbs_g + (Number(item.carbs_g) || 0),
-        fat_g: acc.fat_g + (Number(item.fat_g) || 0),
-        fiber_g: acc.fiber_g + (Number(item.fiber_g) || 0),
-      }), { calories: 0, protein_g: 0, carbs_g: 0, fat_g: 0, fiber_g: 0 });
-
-      const result = await logMeal(mealItems, totalMacros);
+      const result = await logMeal(mealItems);
 
       if (result.error) {
         throw new Error(result.error);

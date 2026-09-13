@@ -35,23 +35,11 @@ export async function deleteMeal(mealId: string) {
       return { error: "Failed to delete meal" };
     }
 
-    // Update daily summary
-    const { data: summary } = await supabase
-      .from('daily_summaries')
-      .select('*')
-      .eq('user_id', user.id)
-      .eq('date', meal.date)
-      .single();
-
-    if (summary) {
-      await supabase.from('daily_summaries').update({
-        total_calories: Math.max(0, Number(summary.total_calories) - Number(meal.total_calories)),
-        total_protein_g: Math.max(0, Number(summary.total_protein_g) - Number(meal.total_protein_g)),
-        total_carbs_g: Math.max(0, Number(summary.total_carbs_g) - Number(meal.total_carbs_g)),
-        total_fat_g: Math.max(0, Number(summary.total_fat_g) - Number(meal.total_fat_g)),
-        meals_logged: Math.max(0, Number(summary.meals_logged) - 1)
-      }).eq('id', summary.id);
-    }
+    // Recalculate daily summary via RPC
+    await supabase.rpc('recalculate_daily_summary', {
+      p_user_id: user.id,
+      p_date: meal.date
+    });
 
     revalidatePath('/nutrition');
     revalidatePath('/dashboard');

@@ -142,7 +142,7 @@ export function calculateNutritionTargets(input: CalculationInput): CalculatedNu
   };
 }
 
-function generateMealTargets(
+export function generateMealTargets(
   mealCount: number,
   totalCalories: number,
   totalProtein: number,

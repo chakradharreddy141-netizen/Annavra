@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { Dumbbell, Calendar, Clock, Trophy, ArrowRight, Play, CheckCircle2 } from 'lucide-react';
 import DeleteWorkoutButton from './DeleteWorkoutButton';
+import { getUserLocalDate } from '@/lib/date';
 
 export default async function WorkoutHubPage() {
   const supabase = await createClient();
@@ -10,8 +11,13 @@ export default async function WorkoutHubPage() {
 
   if (!user) return null;
 
-  const today = new Date().toISOString().split('T')[0];
-  const dayOfWeek = new Date().getDay();
+  const { data: profile } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();
+  const tz = profile?.timezone || 'UTC';
+  const today = getUserLocalDate(tz);
+  
+  // Get local day of week properly using tz
+  const localDateObj = new Date(new Date().toLocaleString("en-US", { timeZone: tz }));
+  const dayOfWeek = localDateObj.getDay();
 
   // 1. Fetch Today's Schedule
   const { data: scheduledDay } = await supabase

@@ -41,73 +41,21 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
     setLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      const numCals = parseFloat(calories) || 0;
-      const numPro = parseFloat(protein) || 0;
-      const numCarb = parseFloat(carbs) || 0;
-      const numFat = parseFloat(fat) || 0;
-
-      // Create meal
-      const { data: meal, error: mealErr } = await supabase
-        .from('meals')
-        .insert({
-          user_id: user.id,
-          date,
-          meal_name: mealName,
-          total_calories: numCals,
-          total_protein_g: numPro,
-          total_carbs_g: numCarb,
-          total_fat_g: numFat,
-          total_fiber_g: 0,
-        })
-        .select()
-        .single();
-      
-      if (mealErr) throw mealErr;
-
-      // Create item
-      await supabase.from('meal_items').insert({
-        meal_id: meal.id,
+      const { logMeal } = await import('@/app/(app)/scan/actions');
+      const item = {
         food_name: foodName,
         quantity: 1,
         unit: 'serving',
-        calories: numCals,
-        protein_g: numPro,
-        carbs_g: numCarb,
-        fat_g: numFat,
-        fiber_g: 0
-      });
+        calories: parseFloat(calories) || 0,
+        protein_g: parseFloat(protein) || 0,
+        carbs_g: parseFloat(carbs) || 0,
+        fat_g: parseFloat(fat) || 0,
+        fiber_g: 0,
+        nutrition_source: 'user_entered'
+      };
 
-      // Update daily summary
-      const { data: summary } = await supabase
-        .from('daily_summaries')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('date', date)
-        .single();
-
-      if (summary) {
-        await supabase.from('daily_summaries').update({
-          total_calories: Number(summary.total_calories) + numCals,
-          total_protein_g: Number(summary.total_protein_g) + numPro,
-          total_carbs_g: Number(summary.total_carbs_g) + numCarb,
-          total_fat_g: Number(summary.total_fat_g) + numFat,
-          meals_logged: Number(summary.meals_logged) + 1
-        }).eq('id', summary.id);
-      } else {
-        await supabase.from('daily_summaries').insert({
-          user_id: user.id,
-          date,
-          total_calories: numCals,
-          total_protein_g: numPro,
-          total_carbs_g: numCarb,
-          total_fat_g: numFat,
-          meals_logged: 1,
-          goal_id: goalId
-        });
-      }
+      const result = await logMeal([item]);
+      if (result.error) throw new Error(result.error);
 
       setIsOpen(false);
       setFoodName('');
@@ -117,6 +65,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
       setFat('');
       router.refresh();
     } catch (e) {
+      console.error(e);
       alert("Failed to log meal");
     } finally {
       setLoading(false);
@@ -126,30 +75,8 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
   const handleLogSaved = async (meal: any) => {
     setLoading(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      // Create meal
-      const { data: newMeal, error: mealErr } = await supabase
-        .from('meals')
-        .insert({
-          user_id: user.id,
-          date,
-          meal_name: meal.name,
-          total_calories: meal.calories,
-          total_protein_g: meal.protein_g,
-          total_carbs_g: meal.carbs_g,
-          total_fat_g: meal.fat_g,
-          total_fiber_g: meal.fiber_g,
-        })
-        .select()
-        .single();
-      
-      if (mealErr) throw mealErr;
-
-      // Create item
-      await supabase.from('meal_items').insert({
-        meal_id: newMeal.id,
+      const { logMeal } = await import('@/app/(app)/scan/actions');
+      const item = {
         food_name: meal.name,
         quantity: 1,
         unit: 'serving',
@@ -157,42 +84,18 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
         protein_g: meal.protein_g,
         carbs_g: meal.carbs_g,
         fat_g: meal.fat_g,
-        fiber_g: meal.fiber_g
-      });
+        fiber_g: meal.fiber_g,
+        nutrition_source: 'user_entered'
+      };
 
-      // Update daily summary
-      const { data: summary } = await supabase
-        .from('daily_summaries')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('date', date)
-        .single();
-
-      if (summary) {
-        await supabase.from('daily_summaries').update({
-          total_calories: Number(summary.total_calories) + meal.calories,
-          total_protein_g: Number(summary.total_protein_g) + meal.protein_g,
-          total_carbs_g: Number(summary.total_carbs_g) + meal.carbs_g,
-          total_fat_g: Number(summary.total_fat_g) + meal.fat_g,
-          meals_logged: Number(summary.meals_logged) + 1
-        }).eq('id', summary.id);
-      } else {
-        await supabase.from('daily_summaries').insert({
-          user_id: user.id,
-          date,
-          total_calories: meal.calories,
-          total_protein_g: meal.protein_g,
-          total_carbs_g: meal.carbs_g,
-          total_fat_g: meal.fat_g,
-          meals_logged: 1,
-          goal_id: goalId
-        });
-      }
+      const result = await logMeal([item]);
+      if (result.error) throw new Error(result.error);
 
       setIsOpen(false);
       router.refresh();
     } catch (err) {
       console.error(err);
+      alert("Failed to log saved meal");
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getUserLocalDate } from '@/lib/date';
 import { createClient } from '@/lib/supabase/server';
 import { BentoCard } from '@/components/ui/BentoCard';
 import { MagneticButton } from '@/components/ui/MagneticButton';
@@ -29,12 +30,14 @@ export default async function DashboardPage() {
   const { data: activeGoal } = await supabase.from('goals').select('*').eq('user_id', user.id).eq('is_active', true).order('created_at', { ascending: false }).limit(1).single();
   const { data: mealTargets } = await supabase.from('meal_targets').select('*').eq('user_id', user.id).eq('is_active', true).order('meal_number', { ascending: true });
   
-  const today = new Date().toISOString().split('T')[0];
+  const tz = profile?.timezone || 'UTC';
+  const today = getUserLocalDate(tz);
   const { data: todayMeals } = await supabase.from('meals').select('*').eq('user_id', user.id).eq('date', today).order('meal_number', { ascending: true });
   const { data: todaySteps } = await supabase.from('step_entries').select('steps').eq('user_id', user.id).eq('date', today).single();
   const { data: latestWeight } = await supabase.from('weight_entries').select('weight_kg, date').eq('user_id', user.id).order('date', { ascending: false }).limit(1).single();
   
-  const dayOfWeek = new Date().getDay();
+  const localDateObj = new Date(new Date().toLocaleString("en-US", { timeZone: tz }));
+  const dayOfWeek = localDateObj.getDay();
   const { data: scheduledDay } = await supabase.from('workout_schedule').select('*').eq('user_id', user.id).eq('day_of_week', dayOfWeek).single();
 
   // Calculations

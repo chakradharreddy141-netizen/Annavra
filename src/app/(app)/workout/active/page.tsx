@@ -46,8 +46,11 @@ export default async function ActiveWorkoutPage({
   // Deduplicate by name
   const uniqueExercises = Array.from(new Map(allExercises.map(item => [item.name.toLowerCase(), item])).values());
 
-  const today = new Date().toISOString().split('T')[0];
-  const dayOfWeek = new Date().getDay();
+  const { data: profile } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();
+  const tz = profile?.timezone || 'UTC';
+  
+  const localDateObj = new Date(new Date().toLocaleString("en-US", { timeZone: tz }));
+  const dayOfWeek = localDateObj.getDay();
 
   // Fetch Today's Schedule for default workout name
   const { data: scheduledDay } = await supabase

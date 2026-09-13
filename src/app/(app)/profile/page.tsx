@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { calculateNutritionTargets } from '@/lib/nutrition/calculator';
+import { getUserLocalDate } from '@/lib/date';
 import { Profile, Goal, FitnessGoal, ActivityLevel } from '@/lib/types/database';
 import { 
   UserCircle, 
@@ -123,7 +124,8 @@ export default function ProfilePage() {
     setUpdating(true);
 
     try {
-      const today = new Date().toISOString().split('T')[0];
+      const tz = profile.timezone || 'UTC';
+      const today = getUserLocalDate(tz);
 
       // Calculate new targets
       const targets = calculateNutritionTargets({
@@ -211,6 +213,7 @@ export default function ProfilePage() {
         .update({
           activity_level: newActivity,
           updated_at: new Date().toISOString(),
+          timezone: profile.timezone // Preserve existing timezone
         })
         .eq('id', profile.id);
 

@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { calculateNutritionTargets, CalculatedNutrition } from '@/lib/nutrition/calculator';
+import { calculateNutritionTargets, CalculatedNutrition, generateMealTargets } from '@/lib/nutrition/calculator';
+import { getUserLocalDate } from '@/lib/date';
 import { ActivityLevel, DietaryPreference, FitnessGoal, Gender } from '@/lib/types/database';
 import { 
   User, 
@@ -127,6 +128,7 @@ export default function OnboardingPage() {
           current_workout_split: currentSplit,
           daily_step_target: dailyStepTarget,
           onboarding_completed: true,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           updated_at: new Date().toISOString(),
         });
 
@@ -152,7 +154,7 @@ export default function OnboardingPage() {
           bmi: calculated.bmi,
           bmi_category: calculated.bmi_category,
           is_active: true,
-          effective_from: new Date().toISOString().split('T')[0],
+          effective_from: getUserLocalDate(Intl.DateTimeFormat().resolvedOptions().timeZone),
         })
         .select()
         .single();
@@ -161,7 +163,20 @@ export default function OnboardingPage() {
 
       // 3. Insert Meal Targets
       if (goalData && calculated.meal_targets.length > 0) {
-        const mealTargetsToInsert = calculated.meal_targets.map((mt) => ({
+        const finalCalories = overrideCalories || calculated.daily_calories;
+        const finalProtein = overrideProtein || calculated.daily_protein_g;
+        const finalCarbs = overrideCarbs || calculated.daily_carbs_g;
+        const finalFat = overrideFat || calculated.daily_fat_g;
+        
+        const finalMealTargets = generateMealTargets(
+          mealsPerDay,
+          finalCalories,
+          finalProtein,
+          finalCarbs,
+          finalFat
+        );
+
+        const mealTargetsToInsert = finalMealTargets.map((mt: any) => ({
           goal_id: goalData.id,
           user_id: userId,
           meal_number: mt.meal_number,
@@ -179,7 +194,7 @@ export default function OnboardingPage() {
       // 4. Record Initial Weight Entry
       await supabase.from('weight_entries').insert({
         user_id: userId,
-        date: new Date().toISOString().split('T')[0],
+        date: getUserLocalDate(Intl.DateTimeFormat().resolvedOptions().timeZone),
         weight_kg: weightKg,
         notes: 'Starting weight recorded during onboarding',
       });
@@ -633,7 +648,7 @@ export default function OnboardingPage() {
                   Suggested Meal Split ({mealsPerDay} meals)
                 </h3>
                 <div className="space-y-2">
-                  {calculated.meal_targets.map((m) => (
+                  {calculated.meal_targets.map((m: any, i: number) => (
                     <div
                       key={m.meal_number}
                       className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 flex items-center justify-between text-xs"

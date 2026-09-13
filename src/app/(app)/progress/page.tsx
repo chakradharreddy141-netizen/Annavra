@@ -1,20 +1,30 @@
 import React from 'react';
 import { createClient } from '@/lib/supabase/server';
+import { ArrowLeft, Target, TrendingUp, Scale, Flame, CalendarDays, Footprints } from 'lucide-react';
+import Link from 'next/link';
 import { WeightChart, ConsistencyHeatmap, StepChart } from './ProgressCharts';
+import { getUserLocalDate } from '@/lib/date';
+import { redirect } from 'next/navigation';
 import { StepLogger } from './StepLogger';
 import { WeightLogger, StepTargetEditor } from './ProgressInputs';
-import { TrendingUp, Scale, Target, Flame, CalendarDays, Footprints } from 'lucide-react';
 
 export default async function ProgressPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return redirect('/login');
 
-  if (!user) return null;
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('daily_step_target, timezone')
+    .eq('id', user.id)
+    .single();
+
+  const tz = profile?.timezone || 'UTC';
 
   // 1. Fetch Weight Entries (last 30 days)
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  const startDateStr = thirtyDaysAgo.toISOString().split('T')[0];
+  const startDateStr = getUserLocalDate(tz, thirtyDaysAgo);
 
   const { data: weightEntries } = await supabase
     .from('weight_entries')
@@ -38,13 +48,6 @@ export default async function ProgressPage() {
     .eq('user_id', user.id)
     .gte('date', startDateStr);
 
-  // 4. Fetch Profile for step target
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('daily_step_target')
-    .eq('id', user.id)
-    .single();
-
   const stepTarget = profile?.daily_step_target || 10000;
 
   // Prepare Chart Data
@@ -65,7 +68,7 @@ export default async function ProgressPage() {
     steps: Number(s.steps || 0)
   }));
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getUserLocalDate(tz);
   const todayStepsStr = stepData.find(s => s.date === todayStr)?.steps || 0;
 
   const latestWeight = weightData.length > 0 ? weightData[0].weight : (activeGoal?.current_weight_kg || 0);

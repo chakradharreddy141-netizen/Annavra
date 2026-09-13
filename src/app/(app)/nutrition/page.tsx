@@ -5,6 +5,8 @@ import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, UtensilsCrossed } 
 import MealCard from './MealCard';
 import { QuickLogModal } from './QuickLogModal';
 
+import { getUserLocalDate } from '@/lib/date';
+
 export default async function NutritionPage(props: {
   searchParams: Promise<{ date?: string }>
 }) {
@@ -14,8 +16,12 @@ export default async function NutritionPage(props: {
 
   if (!user) return null;
 
+  // Fetch timezone
+  const { data: profile } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();
+  const tz = profile?.timezone || 'UTC';
+
   // Determine target date
-  const today = new Date().toISOString().split('T')[0];
+  const today = getUserLocalDate(tz);
   const currentDateStr = searchParams?.date || today;
   
   // Validate date format (YYYY-MM-DD)
@@ -23,14 +29,14 @@ export default async function NutritionPage(props: {
   const targetDate = isValidDate ? currentDateStr : today;
 
   // Calculate prev/next dates for navigation
-  const dateObj = new Date(targetDate);
+  const dateObj = new Date(`${targetDate}T12:00:00Z`); // Use midday to avoid tz shift issues
   const prevDateObj = new Date(dateObj);
   prevDateObj.setDate(prevDateObj.getDate() - 1);
-  const prevDateStr = prevDateObj.toISOString().split('T')[0];
+  const prevDateStr = getUserLocalDate(tz, prevDateObj);
 
   const nextDateObj = new Date(dateObj);
   nextDateObj.setDate(nextDateObj.getDate() + 1);
-  const nextDateStr = nextDateObj.toISOString().split('T')[0];
+  const nextDateStr = getUserLocalDate(tz, nextDateObj);
 
   const isToday = targetDate === today;
 
