@@ -202,7 +202,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="w-12 h-12 bg-[#00f0ff] hover:bg-[#ff4500]/10 text-black rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
+        className="w-12 h-12 bg-[#ff4500] hover:bg-[#ff4500]/10 text-white rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
       >
         <Plus className="w-6 h-6" />
       </button>
@@ -210,22 +210,22 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-md bg-[#ffffff] border border-[#1a1a1a]/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
-            <div className="p-4 border-b border-[#1a1a1a]/10 flex items-center justify-between bg-[#0b0c10]">
+            <div className="p-4 border-b border-[#1a1a1a]/10 flex items-center justify-between bg-[#fafafa]">
               <h3 className="font-bold text-[#1a1a1a] font-space">Quick Log</h3>
               <button onClick={() => setIsOpen(false)} className="p-1 text-[#6b7280] hover:text-[#1a1a1a] bg-[#ff4500]/10 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="flex border-b border-[#1a1a1a]/10 bg-[#0b0c10]">
+            <div className="flex border-b border-[#1a1a1a]/10 bg-[#fafafa]">
               <button 
-                className={`flex-1 py-3 text-sm font-bold font-space text-center border-b-2 transition-colors ${activeTab === 'manual' ? 'border-[#00f0ff] text-[#ff4500]' : 'border-transparent text-[#6b7280] hover:text-[#1a1a1a]'}`}
+                className={`flex-1 py-3 text-sm font-bold font-space text-center border-b-2 transition-colors ${activeTab === 'manual' ? 'border-[#ff4500] text-[#ff4500]' : 'border-transparent text-[#6b7280] hover:text-[#1a1a1a]'}`}
                 onClick={() => setActiveTab('manual')}
               >
                 Manual Entry
               </button>
               <button 
-                className={`flex-1 py-3 text-sm font-bold font-space text-center border-b-2 transition-colors ${activeTab === 'saved' ? 'border-[#00f0ff] text-[#ff4500]' : 'border-transparent text-[#6b7280] hover:text-[#1a1a1a]'}`}
+                className={`flex-1 py-3 text-sm font-bold font-space text-center border-b-2 transition-colors ${activeTab === 'saved' ? 'border-[#ff4500] text-[#ff4500]' : 'border-transparent text-[#6b7280] hover:text-[#1a1a1a]'}`}
                 onClick={() => setActiveTab('saved')}
               >
                 Saved Meals
@@ -240,7 +240,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                     <select 
                       value={mealName}
                       onChange={(e) => setMealName(e.target.value)}
-                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
+                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] outline-none focus:border-[#ff4500]"
                     >
                       <option value="Breakfast">Breakfast</option>
                       <option value="Lunch">Lunch</option>
@@ -257,7 +257,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                       value={foodName}
                       onChange={(e) => setFoodName(e.target.value)}
                       placeholder="e.g. 2 Eggs & Toast"
-                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder-gray-500 outline-none focus:border-[#00f0ff]"
+                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder-gray-500 outline-none focus:border-[#ff4500]"
                     />
                   </div>
 
@@ -269,7 +269,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                       value={calories}
                       onChange={(e) => setCalories(e.target.value)}
                       placeholder="Kcal"
-                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder-gray-500 outline-none focus:border-[#00f0ff]"
+                      className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] placeholder-gray-500 outline-none focus:border-[#ff4500]"
                     />
                   </div>
 
@@ -281,7 +281,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                         value={protein}
                         onChange={(e) => setProtein(e.target.value)}
                         placeholder="0"
-                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
+                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#ff4500]"
                       />
                     </div>
                     <div className="space-y-1">
@@ -291,7 +291,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                         value={carbs}
                         onChange={(e) => setCarbs(e.target.value)}
                         placeholder="0"
-                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
+                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#ff4500]"
                       />
                     </div>
                     <div className="space-y-1">
@@ -301,7 +301,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                         value={fat}
                         onChange={(e) => setFat(e.target.value)}
                         placeholder="0"
-                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#00f0ff]"
+                        className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-3 py-2.5 text-sm text-[#1a1a1a] outline-none focus:border-[#ff4500]"
                       />
                     </div>
                   </div>
@@ -331,7 +331,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                           key={meal.id} 
                           onClick={() => handleLogSaved(meal)}
                           disabled={loading}
-                          className="w-full text-left p-4 rounded-xl border border-[#1a1a1a]/10 bg-[#0b0c10] hover:border-[#1a1a1a]/10 transition-colors disabled:opacity-50 disabled:pointer-events-none group"
+                          className="w-full text-left p-4 rounded-xl border border-[#1a1a1a]/10 bg-[#fafafa] hover:border-[#1a1a1a]/10 transition-colors disabled:opacity-50 disabled:pointer-events-none group"
                         >
                           <p className="font-bold text-[#1a1a1a] font-space group-hover:text-[#ff4500]">{meal.name}</p>
                           <div className="flex gap-3 text-xs text-[#6b7280] mt-1">

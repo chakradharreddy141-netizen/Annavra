@@ -8,11 +8,14 @@ import {
 } from 'lucide-react';
 import { saveWorkout } from '../actions';
 import Link from 'next/link';
+import WorkoutMuscleMap from '../WorkoutMuscleMap';
 
 type Exercise = {
   id: string;
   name: string;
   muscle_group: string;
+  primary_muscles?: string[];
+  secondary_muscles?: string[];
 };
 
 type WorkoutSet = {
@@ -26,6 +29,8 @@ type ActiveExercise = {
   id: string; // temp id for UI
   exercise_id: string;
   exercise_name: string;
+  primary_muscles?: string[];
+  secondary_muscles?: string[];
   sets: WorkoutSet[];
 };
 
@@ -72,6 +77,8 @@ export default function ActiveWorkoutClient({
         id: Math.random().toString(36).substr(2, 9),
         exercise_id: exercise.id,
         exercise_name: exercise.name,
+        primary_muscles: exercise.primary_muscles,
+        secondary_muscles: exercise.secondary_muscles,
         sets: [
           { id: Math.random().toString(36).substr(2, 9), reps: '', weight_kg: '', isCompleted: false }
         ]
@@ -202,6 +209,16 @@ export default function ActiveWorkoutClient({
       </div>
 
       <div className="p-4 space-y-6">
+        <WorkoutMuscleMap 
+          workoutType={workoutName} 
+          loggedExercises={activeExercises.map(ex => ({
+            id: ex.id,
+            name: ex.exercise_name,
+            primary_muscles: ex.primary_muscles || [],
+            secondary_muscles: ex.secondary_muscles || [],
+            setsCount: ex.sets.filter(s => s.isCompleted).length
+          }))}
+        />
         {activeExercises.length === 0 ? (
           <div className="py-12 text-center border border-dashed border-[#1a1a1a]/10 rounded-2xl bg-[#ffffff]/50">
             <div className="w-12 h-12 rounded-full bg-[#fafafa] flex items-center justify-center mx-auto mb-3">

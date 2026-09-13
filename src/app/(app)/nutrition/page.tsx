@@ -135,7 +135,7 @@ export default async function NutritionPage(props: {
             </div>
             <div className="h-1.5 w-full bg-[#f4f4f4] rounded-full overflow-hidden border border-[#1a1a1a]/10">
               <div 
-                className="h-full bg-[#00f0ff] rounded-full"
+                className="h-full bg-[#1a1a1a] rounded-full"
                 style={{ width: `${Math.min(100, (consumedProtein / targetProtein) * 100)}%` }}
               />
             </div>
@@ -150,7 +150,7 @@ export default async function NutritionPage(props: {
             </div>
             <div className="h-1.5 w-full bg-[#f4f4f4] rounded-full overflow-hidden border border-[#1a1a1a]/10">
               <div 
-                className="h-full bg-[#a855f7] rounded-full"
+                className="h-full bg-[#1a1a1a] rounded-full"
                 style={{ width: `${Math.min(100, (consumedCarbs / targetCarbs) * 100)}%` }}
               />
             </div>
@@ -160,12 +160,12 @@ export default async function NutritionPage(props: {
           {/* Fat */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="font-semibold text-[#10b981]">Fat</span>
+              <span className="font-semibold text-[#1a1a1a]">Fat</span>
               <span className="text-[#6b7280] font-space">{Math.round(consumedFat)}g</span>
             </div>
-            <div className="h-1.5 w-full bg-[#f4f4f4] rounded-full overflow-hidden border border-[#10b981]/20">
+            <div className="h-1.5 w-full bg-[#f4f4f4] rounded-full overflow-hidden border border-[#1a1a1a]/10">
               <div 
-                className="h-full bg-[#10b981] rounded-full"
+                className="h-full bg-[#1a1a1a] rounded-full"
                 style={{ width: `${Math.min(100, (consumedFat / targetFat) * 100)}%` }}
               />
             </div>
@@ -175,12 +175,12 @@ export default async function NutritionPage(props: {
           {/* Fiber */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="font-semibold text-[#ef4444]">Fiber</span>
+              <span className="font-semibold text-[#6b7280]">Fiber</span>
               <span className="text-[#6b7280] font-space">{Math.round(consumedFiber)}g</span>
             </div>
-            <div className="h-1.5 w-full bg-[#f4f4f4] rounded-full overflow-hidden border border-[#ef4444]/20">
+            <div className="h-1.5 w-full bg-[#f4f4f4] rounded-full overflow-hidden border border-[#1a1a1a]/10">
               <div 
-                className="h-full bg-[#ef4444] rounded-full"
+                className="h-full bg-[#1a1a1a] rounded-full"
                 style={{ width: `${Math.min(100, (consumedFiber / targetFiber) * 100)}%` }}
               />
             </div>

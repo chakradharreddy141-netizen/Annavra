@@ -139,7 +139,7 @@ export default function SignupPage() {
         type="button"
         onClick={handleGoogleLogin}
         disabled={googleLoading}
-        className="w-full py-2.5 px-4 rounded-xl bg-[#fafafa] hover:bg-[#202433] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm font-medium transition-colors flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50"
+        className="w-full py-2.5 px-4 rounded-xl bg-[#fafafa] hover:bg-[#ebebeb] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm font-medium transition-colors flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50"
       >
         {googleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
         <svg className="w-4 h-4" viewBox="0 0 24 24">

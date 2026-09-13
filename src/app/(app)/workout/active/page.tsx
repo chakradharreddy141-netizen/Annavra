@@ -2,11 +2,18 @@ import React from 'react';
 import { createClient } from '@/lib/supabase/server';
 import ActiveWorkoutClient from './ActiveWorkoutClient';
 
-export default async function ActiveWorkoutPage() {
+export default async function ActiveWorkoutPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ type?: string }>;
+}) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) return null;
+
+  // Await searchParams in Next.js 15
+  const params = await searchParams;
 
   // Fetch exercises (preset + user's custom exercises)
   const { data: exercises } = await supabase
@@ -50,9 +57,9 @@ export default async function ActiveWorkoutPage() {
     .eq('day_of_week', dayOfWeek)
     .single();
 
-  const defaultName = scheduledDay?.is_rest_day 
+  const defaultName = params.type || (scheduledDay?.is_rest_day 
     ? 'Ad-hoc Workout' 
-    : (scheduledDay?.workout_type || 'Workout');
+    : (scheduledDay?.workout_type || 'Workout'));
 
   return (
     <ActiveWorkoutClient 

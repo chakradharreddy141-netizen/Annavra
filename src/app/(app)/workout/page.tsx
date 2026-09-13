@@ -83,6 +83,22 @@ export default async function WorkoutHubPage() {
         </div>
       </div>
 
+      {/* Quick Log */}
+      <div className="space-y-3">
+        <h2 className="text-sm font-bold text-[#1a1a1a] uppercase tracking-wider pl-1 font-space">Quick Log</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {['Push Day', 'Pull Day', 'Leg Day', 'Upper Body', 'Lower Body', 'Full Body', 'Cardio'].map(type => (
+            <Link
+              key={type}
+              href={`/workout/active?type=${encodeURIComponent(type)}`}
+              className="py-3 px-2 text-center text-xs font-bold text-[#1a1a1a] bg-[#fafafa] border border-[#1a1a1a]/10 hover:border-[#ff4500] hover:text-[#ff4500] rounded-xl transition-all active:scale-95"
+            >
+              {type}
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Recent History */}
       <div className="space-y-4">
         <div className="flex items-center justify-between px-1">
