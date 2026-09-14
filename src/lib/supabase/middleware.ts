@@ -34,7 +34,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const url = request.nextUrl.clone();
-  const isAuthPage = url.pathname.startsWith('/login') || url.pathname.startsWith('/signup');
+  const isAuthPage = url.pathname.startsWith('/login') || url.pathname.startsWith('/signup') || url.pathname.startsWith('/forgot-password');
   const isPublicAsset = url.pathname.startsWith('/_next') || url.pathname.startsWith('/api') || url.pathname.includes('.');
 
   if (!user && !isAuthPage && !isPublicAsset && url.pathname !== '/' && url.pathname !== '/onboarding') {

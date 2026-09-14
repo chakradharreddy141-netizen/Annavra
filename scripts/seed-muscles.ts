@@ -23,6 +23,7 @@ const muscleMap: Record<string, string> = {
   'middle back': 'upper-back',
   'lower back': 'lower-back',
   'abductors': 'gluteal', // Fold into gluteal
+  'adductors': 'adductor',
   'glutes': 'gluteal',
   'traps': 'trapezius',
   'forearms': 'forearm',
@@ -39,7 +40,7 @@ const muscleMap: Record<string, string> = {
 
 // Patterns for "shoulders" disambiguation
 const frontDeltPatterns = ['bench press', 'overhead press', 'military press', 'front raise', 'arnold press', 'push press', 'lateral raise'];
-const backDeltPatterns = ['rear delt', 'face pull', 'reverse fly', 'pull', 'row'];
+const backDeltPatterns = ['rear delt', 'face pull', 'reverse fly', 'pull-up', 'pulldown', 'row'];
 
 function mapMuscles(muscles: string[], exerciseName: string): string[] {
   if (!muscles) return [];
@@ -93,6 +94,17 @@ async function run() {
     });
   }
   
+  // Explicit synonym mapping for our core seed lifts
+  const coreLiftsSynonyms: Record<string, string> = {
+    'barbell bench press': 'barbell bench press - medium grip',
+    'barbell row': 'bent over barbell row',
+    'overhead press': 'standing military press',
+    'barbell bicep curl': 'barbell curl',
+    'pull-up': 'pullups',
+    'barbell squat': 'barbell full squat',
+    'romanian deadlift': 'romanian deadlift'
+  };
+  
   console.log('Fetching existing exercises from Supabase...');
   const { data: exercises, error } = await supabase.from('exercises').select('*');
   
@@ -106,7 +118,18 @@ async function run() {
   
   for (const ex of exercises) {
     const name = ex.name.toLowerCase();
-    const mapping = lookup.get(name);
+    
+    // 1. Try explicit synonym map
+    let mapping = lookup.get(coreLiftsSynonyms[name] || name);
+    
+    // 2. Try substring match fallback (and log it)
+    if (!mapping) {
+      const fallbackKey = Array.from(lookup.keys()).find(k => k.includes(name) || name.includes(k));
+      if (fallbackKey) {
+        console.warn(`[MANUAL REVIEW] Falling back to substring match for '${name}' -> '${fallbackKey}'`);
+        mapping = lookup.get(fallbackKey);
+      }
+    }
     
     if (mapping) {
       const { error: updateError } = await supabase

@@ -57,22 +57,22 @@ export default async function CustomMealsPage() {
         <div className="w-9" />
       </div>
 
-      <div className="cyber-panel rounded-2xl p-5 mb-8">
+      <div className="bg-white border border-[#1a1a1a]/10 rounded-2xl p-5 mb-8">
         <h2 className="text-sm font-bold text-[#ff4500] mb-4 font-space">Create New</h2>
         <form action={createMeal} className="space-y-4">
           <input 
             name="name" 
             required 
             placeholder="Meal Name (e.g. Morning Protein Shake)" 
-            className="w-full bg-[#0b0c10] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#1a1a1a]/10 outline-none"
+            className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#ff4500] outline-none transition-colors"
           />
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <input name="calories" required type="number" placeholder="Kcal" className="w-full bg-[#0b0c10] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#1a1a1a]/10 outline-none" />
-            <input name="protein_g" type="number" placeholder="Pro (g)" className="w-full bg-[#0b0c10] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#1a1a1a]/10 outline-none" />
-            <input name="carbs_g" type="number" placeholder="Carb (g)" className="w-full bg-[#0b0c10] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#1a1a1a]/10 outline-none" />
-            <input name="fat_g" type="number" placeholder="Fat (g)" className="w-full bg-[#0b0c10] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#1a1a1a]/10 outline-none" />
+            <input name="calories" required type="number" placeholder="Kcal" className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#ff4500] outline-none transition-colors" />
+            <input name="protein_g" type="number" placeholder="Pro (g)" className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#ff4500] outline-none transition-colors" />
+            <input name="carbs_g" type="number" placeholder="Carb (g)" className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#ff4500] outline-none transition-colors" />
+            <input name="fat_g" type="number" placeholder="Fat (g)" className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl px-4 py-3 text-sm text-[#1a1a1a] focus:border-[#ff4500] outline-none transition-colors" />
           </div>
-          <button type="submit" className="w-full py-3 btn-cyber text-[#1a1a1a] rounded-xl font-bold flex items-center justify-center gap-2">
+          <button type="submit" className="w-full py-3 bg-[#1a1a1a] hover:bg-[#ff4500] text-white transition-colors rounded-xl font-bold flex items-center justify-center gap-2">
             <Plus className="w-5 h-5" /> Save Meal
           </button>
         </form>
@@ -84,7 +84,7 @@ export default async function CustomMealsPage() {
           <p className="text-sm text-[#6b7280]">No saved meals yet.</p>
         ) : (
           customMeals.map(meal => (
-            <div key={meal.id} className="cyber-panel rounded-xl p-4 flex items-center justify-between group">
+            <div key={meal.id} className="bg-white border border-[#1a1a1a]/10 rounded-xl p-4 flex items-center justify-between group">
               <div>
                 <p className="font-bold text-[#1a1a1a] font-space">{meal.name}</p>
                 <div className="flex gap-3 text-xs text-[#6b7280] mt-1">

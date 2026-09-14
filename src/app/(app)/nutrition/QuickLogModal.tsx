@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 export function QuickLogModal({ date, goalId }: { date: string, goalId: string | undefined }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
 
@@ -18,6 +19,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
   // Fetch saved meals when modal opens
   React.useEffect(() => {
     if (isOpen) {
+      setError(null);
       setOperationId(crypto.randomUUID());
       const fetchSaved = async () => {
         const { data: { user } } = await supabase.auth.getUser();
@@ -41,6 +43,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
     e.preventDefault();
     if (!foodName || !calories) return;
     setLoading(true);
+    setError(null);
 
     try {
       const { logMeal } = await import('@/app/(app)/scan/actions');
@@ -68,7 +71,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
       router.refresh();
     } catch (e) {
       console.error(e);
-      alert("Failed to log meal");
+      setError("Failed to log meal");
     } finally {
       setLoading(false);
     }
@@ -76,6 +79,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
 
   const handleLogSaved = async (meal: any) => {
     setLoading(true);
+    setError(null);
     try {
       const { logMeal } = await import('@/app/(app)/scan/actions');
       const item = {
@@ -97,7 +101,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
       router.refresh();
     } catch (err) {
       console.error(err);
-      alert("Failed to log saved meal");
+      setError("Failed to log saved meal");
     } finally {
       setLoading(false);
     }
@@ -138,6 +142,11 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
             </div>
 
             <div className="p-5 overflow-y-auto max-h-[60vh]">
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm">
+                  {error}
+                </div>
+              )}
               {activeTab === 'manual' ? (
                 <form onSubmit={handleSave} className="space-y-4">
                   <div className="space-y-1">
@@ -214,7 +223,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
                   <button 
                     type="submit"
                     disabled={loading || !foodName || !calories}
-                    className="w-full py-4 mt-2 btn-cyber text-[#1a1a1a] rounded-xl font-bold flex justify-center items-center gap-2 disabled:opacity-50 disabled:pointer-events-none"
+                    className="w-full py-4 mt-2 bg-[#1a1a1a] hover:bg-[#ff4500] text-white transition-colors rounded-xl font-bold flex justify-center items-center gap-2 disabled:opacity-50 disabled:pointer-events-none"
                   >
                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
                     {loading ? 'Logging...' : 'Log Meal'}

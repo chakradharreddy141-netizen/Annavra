@@ -27,13 +27,13 @@ export function WeightLogger({ todayWeight }: { todayWeight: number }) {
           placeholder="Weight (kg)"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl pl-9 pr-4 py-2 text-sm text-[#1a1a1a] focus:border-emerald-500 outline-none transition-colors"
+          className="w-full bg-[#fafafa] border border-[#1a1a1a]/10 rounded-xl pl-9 pr-4 py-2 text-sm text-[#1a1a1a] focus:border-[#ff4500] outline-none transition-colors"
         />
       </div>
       <button
         onClick={handleSave}
         disabled={isSaving || !weight}
-        className="px-3 py-2 bg-[#1a1a1a] hover:bg-black text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 flex items-center gap-1.5"
+        className="px-3 py-2 bg-[#1a1a1a] hover:bg-[#fafafa] text-[#1a1a1a] rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 flex items-center gap-1.5"
       >
         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
         Log
@@ -59,7 +59,7 @@ export function StepTargetEditor({ currentTarget }: { currentTarget: number }) {
     return (
       <button
         onClick={() => setIsEditing(true)}
-        className="text-xs text-[#6b7280] hover:text-emerald-400 flex items-center gap-1 transition-colors"
+        className="text-xs text-[#6b7280] hover:text-[#ff4500] flex items-center gap-1 transition-colors"
       >
         <Settings className="w-3 h-3" /> Edit target
       </button>
@@ -73,12 +73,12 @@ export function StepTargetEditor({ currentTarget }: { currentTarget: number }) {
         step="500"
         value={target}
         onChange={(e) => setTarget(e.target.value)}
-        className="w-24 bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg px-2 py-1 text-xs text-[#1a1a1a] focus:border-emerald-500 outline-none"
+        className="w-24 bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg px-2 py-1 text-xs text-[#1a1a1a] focus:border-[#ff4500] outline-none"
       />
       <button
         onClick={handleSave}
         disabled={isSaving}
-        className="text-xs text-emerald-400 font-semibold disabled:opacity-50"
+        className="text-xs text-[#ff4500] font-semibold disabled:opacity-50"
       >
         {isSaving ? '...' : 'Save'}
       </button>

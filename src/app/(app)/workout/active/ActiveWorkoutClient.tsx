@@ -52,6 +52,7 @@ export default function ActiveWorkoutClient({
   const [workoutName, setWorkoutName] = useState(defaultWorkoutName);
   const [activeExercises, setActiveExercises] = useState<ActiveExercise[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   
   // Modal state
@@ -193,6 +194,7 @@ export default function ActiveWorkoutClient({
     }
 
     setIsSaving(true);
+    setError(null);
 
     try {
       const res = await saveWorkout({
@@ -208,7 +210,8 @@ export default function ActiveWorkoutClient({
       localStorage.removeItem('annavra_active_workout');
       router.push('/workout');
     } catch (e) {
-      alert("Failed to save workout");
+      console.error(e);
+      setError("Failed to save workout");
       setIsSaving(false);
     }
   };
@@ -251,6 +254,12 @@ export default function ActiveWorkoutClient({
           Finish
         </button>
       </div>
+
+      {error && (
+        <div className="mx-4 mt-4 p-3 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm">
+          {error}
+        </div>
+      )}
 
       <div className="p-4 space-y-6">
         <WorkoutMuscleMap 

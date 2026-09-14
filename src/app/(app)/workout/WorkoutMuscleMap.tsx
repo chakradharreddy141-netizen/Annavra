@@ -35,25 +35,27 @@ const splitMap: Record<string, string[]> = {
 };
 
 export default function WorkoutMuscleMap({ workoutType, loggedExercises }: WorkoutMuscleMapProps) {
-  const data = useMemo(() => {
-    const result: any[] = [];
+  const plannedData = useMemo(() => {
+    const plannedMuscles = splitMap[workoutType] || [];
+    if (plannedMuscles.length > 0) {
+      return [{
+        name: 'Planned Split',
+        muscles: plannedMuscles
+      }];
+    }
+    return [];
+  }, [workoutType]);
 
+  const actualData = useMemo(() => {
+    const result: any[] = [];
     if (loggedExercises && loggedExercises.length > 0) {
-      // Actual Layer: Feed the real logged exercises. 
-      // We pass the primary muscles multiple times depending on setsCount to increase intensity.
-      // E.g. if 3 sets, we can add 3 dummy exercise entries to increase frequency.
-      
       loggedExercises.forEach(ex => {
-        // primary -> full intensity
-        // secondary -> medium intensity
-        
         for (let i = 0; i < ex.setsCount; i++) {
           result.push({
             name: `${ex.name} - Set ${i + 1} (Primary)`,
             muscles: ex.primary_muscles || []
           });
           
-          // Only add secondary muscles for some sets to keep them at a lower intensity
           if (i === 0 || i === 2) {
              result.push({
                name: `${ex.name} - Set ${i + 1} (Secondary)`,
@@ -62,26 +64,10 @@ export default function WorkoutMuscleMap({ workoutType, loggedExercises }: Worko
           }
         }
       });
-
-    } else {
-      // Planned Layer: Only if no exercises logged yet
-      const plannedMuscles = splitMap[workoutType] || [];
-      if (plannedMuscles.length > 0) {
-        result.push({
-          name: 'Planned Split',
-          muscles: plannedMuscles
-        });
-      }
     }
-
     return result;
-  }, [workoutType, loggedExercises]);
+  }, [loggedExercises]);
 
-  // Accent colors for intensities (frequency - 1 = index)
-  // 1 hit: very light orange
-  // 2 hits: light orange
-  // 3 hits: solid orange
-  // 4+ hits: deep orange/red
   const highlightedColors = [
     'rgba(255, 69, 0, 0.3)', // Low
     'rgba(255, 69, 0, 0.6)', // Medium
@@ -95,25 +81,56 @@ export default function WorkoutMuscleMap({ workoutType, loggedExercises }: Worko
         <p className="text-[#a1a1aa] font-medium text-sm">Muscle map temporarily unavailable</p>
       </div>
     }>
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center p-4 bg-[#fafafa] rounded-2xl border border-[#1a1a1a]/10">
-        <div className="w-1/2 flex justify-center">
-          <Model 
-            type="anterior" 
-            data={data} 
-            highlightedColors={highlightedColors}
-            bodyColor="#e5e7eb" // Tailwind gray-200
-            style={{ width: '100%', maxWidth: '200px' }}
-          />
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center p-4 bg-[#fafafa] rounded-2xl border border-[#1a1a1a]/10 pointer-events-none">
+        
+        {/* Anterior */}
+        <div className="w-1/2 relative flex justify-center items-center aspect-[1/2] max-h-[300px]">
+          {/* Base Layer (Planned) */}
+          <div className="absolute inset-0 flex justify-center items-center opacity-30">
+            <Model 
+              type="anterior" 
+              data={plannedData as any} 
+              highlightedColors={['#6b7280']} 
+              bodyColor="#e5e7eb" 
+              style={{ width: '100%', height: '100%', padding: '10px' }}
+            />
+          </div>
+          {/* Overlay Layer (Actual) */}
+          <div className="relative z-10 w-full h-full flex justify-center items-center">
+            <Model 
+              type="anterior" 
+              data={actualData as any} 
+              highlightedColors={highlightedColors}
+              bodyColor="transparent"
+              style={{ width: '100%', height: '100%', padding: '10px' }}
+            />
+          </div>
         </div>
-        <div className="w-1/2 flex justify-center">
-          <Model 
-            type="posterior" 
-            data={data} 
-            highlightedColors={highlightedColors}
-            bodyColor="#e5e7eb"
-            style={{ width: '100%', maxWidth: '200px' }}
-          />
+
+        {/* Posterior */}
+        <div className="w-1/2 relative flex justify-center items-center aspect-[1/2] max-h-[300px]">
+          {/* Base Layer (Planned) */}
+          <div className="absolute inset-0 flex justify-center items-center opacity-30">
+            <Model 
+              type="posterior" 
+              data={plannedData as any} 
+              highlightedColors={['#6b7280']} 
+              bodyColor="#e5e7eb" 
+              style={{ width: '100%', height: '100%', padding: '10px' }}
+            />
+          </div>
+          {/* Overlay Layer (Actual) */}
+          <div className="relative z-10 w-full h-full flex justify-center items-center">
+            <Model 
+              type="posterior" 
+              data={actualData as any} 
+              highlightedColors={highlightedColors}
+              bodyColor="transparent"
+              style={{ width: '100%', height: '100%', padding: '10px' }}
+            />
+          </div>
         </div>
+
       </div>
     </ErrorBoundary>
   );

@@ -95,7 +95,7 @@ export function ConsistencyHeatmap({
   for (let i = 27; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
+    const dateStr = d.toLocaleDateString("en-CA");
     
     const summary = data.find(item => item.date === dateStr);
     let status = 'none'; // none, partial, perfect
@@ -114,8 +114,8 @@ export function ConsistencyHeatmap({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'perfect': return 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]';
-      case 'partial': return 'bg-emerald-500/50';
+      case 'perfect': return 'bg-[#ff4500] shadow-[0_0_8px_rgba(16,185,129,0.5)]';
+      case 'partial': return 'bg-[#ff4500]/50';
       case 'poor': return 'bg-red-500/50';
       default: return 'bg-[#fafafa] border border-[#1a1a1a]/10';
     }
@@ -142,8 +142,8 @@ export function ConsistencyHeatmap({
         <span className="uppercase">Less</span>
         <div className="flex gap-1">
           <div className="w-3 h-3 rounded-sm bg-[#fafafa] border border-[#1a1a1a]/10" />
-          <div className="w-3 h-3 rounded-sm bg-emerald-500/50" />
-          <div className="w-3 h-3 rounded-sm bg-emerald-500" />
+          <div className="w-3 h-3 rounded-sm bg-[#ff4500]/50" />
+          <div className="w-3 h-3 rounded-sm bg-[#ff4500]" />
         </div>
         <span className="uppercase">More</span>
       </div>
@@ -175,7 +175,7 @@ export function StepChart({
   for (let i = daysToShow - 1; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
+    const dateStr = d.toLocaleDateString("en-CA");
     const existing = data.find(item => item.date === dateStr);
     
     chartData.push({
@@ -200,13 +200,13 @@ export function StepChart({
         <div className="flex bg-[#fafafa] border border-[#1a1a1a]/10 rounded-lg p-0.5">
           <button 
             onClick={() => setView('weekly')}
-            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'weekly' ? 'bg-[#1a1a1a] text-white' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
+            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'weekly' ? 'bg-[#1a1a1a] text-[#1a1a1a]' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
           >
             Weekly
           </button>
           <button 
             onClick={() => setView('monthly')}
-            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'monthly' ? 'bg-[#1a1a1a] text-white' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
+            className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${view === 'monthly' ? 'bg-[#1a1a1a] text-[#1a1a1a]' : 'text-[#6b7280] hover:text-[#1a1a1a]'}`}
           >
             Monthly
           </button>

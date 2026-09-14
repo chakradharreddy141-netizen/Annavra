@@ -85,8 +85,8 @@ export default async function ProgressPage() {
       {/* Goal Summary */}
       <div className="bg-[#ffffff] border border-[#1a1a1a]/10 rounded-2xl p-5 shadow-xl flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
-            <Target className="w-6 h-6 text-emerald-400" />
+          <div className="w-12 h-12 rounded-full bg-[#ff4500]/10 flex items-center justify-center">
+            <Target className="w-6 h-6 text-[#ff4500]" />
           </div>
           <div>
             <div className="text-sm font-semibold text-[#1a1a1a] capitalize">
@@ -97,7 +97,7 @@ export default async function ProgressPage() {
         </div>
         <div className="text-right">
           <div className="text-xl font-bold text-[#1a1a1a]">{targetWeight} <span className="text-sm text-[#6b7280] font-normal">kg</span></div>
-          <div className="text-xs text-emerald-400 font-medium">Goal Weight</div>
+          <div className="text-xs text-[#ff4500] font-medium">Goal Weight</div>
         </div>
       </div>
 
@@ -106,7 +106,7 @@ export default async function ProgressPage() {
         <div className="flex items-start justify-between mb-6">
           <div>
             <h2 className="text-base font-bold text-[#1a1a1a] flex items-center gap-2">
-              <Scale className="w-4 h-4 text-emerald-400" />
+              <Scale className="w-4 h-4 text-[#ff4500]" />
               Weight Trend
             </h2>
             <p className="text-xs text-[#6b7280] mt-1">Past 30 days</p>
@@ -114,7 +114,7 @@ export default async function ProgressPage() {
           <div className="text-right">
             <div className="text-xl font-bold text-[#1a1a1a]">{latestWeight} <span className="text-sm text-[#6b7280] font-normal">kg</span></div>
             {weightData.length > 1 && (
-              <div className={`text-xs font-semibold flex items-center gap-1 justify-end mt-1 ${weightChange <= 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
+              <div className={`text-xs font-semibold flex items-center gap-1 justify-end mt-1 ${weightChange <= 0 ? 'text-[#ff4500]' : 'text-amber-400'}`}>
                 <TrendingUp className={`w-3 h-3 ${weightChange <= 0 ? 'rotate-180' : ''}`} />
                 {Math.abs(weightChange).toFixed(1)} kg {weightChange <= 0 ? 'down' : 'up'}
               </div>

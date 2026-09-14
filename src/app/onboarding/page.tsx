@@ -231,8 +231,8 @@ export default function OnboardingPage() {
 
   if (fetchingUser) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
-        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[#fafafa]">
+        <Loader2 className="w-8 h-8 text-[#ff4500] animate-spin" />
       </div>
     );
   }
@@ -246,15 +246,15 @@ export default function OnboardingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-gray-100 flex flex-col justify-between p-4 sm:p-8 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[#fafafa] text-[#1a1a1a] flex flex-col justify-between p-4 sm:p-8 max-w-2xl mx-auto">
       {/* Header & Steps Progress */}
       <div>
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ff4500]/10 border border-[#ff4500]/30 text-[#ff4500] text-xs font-semibold uppercase tracking-wider mb-2">
             First-Time Setup
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Personalize Annavra</h1>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1">We tailor daily calorie, macro, and workout metrics to your exact physiology.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold font-space text-[#1a1a1a] tracking-tight">Personalize Annavra</h1>
+          <p className="text-xs sm:text-sm text-[#6b7280] mt-1">We tailor daily calorie, macro, and workout metrics to your exact physiology.</p>
         </div>
 
         {/* Step Indicator */}
@@ -268,15 +268,15 @@ export default function OnboardingPage() {
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center font-semibold text-xs transition-all ${
                     isActive
-                      ? 'bg-emerald-500 text-gray-950 ring-4 ring-emerald-500/20'
+                      ? 'bg-[#ff4500] text-white ring-4 ring-[#ff4500]/20'
                       : isCompleted
-                      ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
-                      : 'bg-zinc-900 text-zinc-400 border border-zinc-800'
+                      ? 'bg-[#ff4500]/10 text-[#ff4500] border border-[#ff4500]/20'
+                      : 'bg-[#fafafa] text-[#6b7280] border border-[#1a1a1a]/10'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
-                <span className={`text-[10px] mt-1.5 font-medium ${isActive ? 'text-emerald-400' : 'text-zinc-400'}`}>
+                <span className={`text-[10px] mt-1.5 font-medium ${isActive ? 'text-[#ff4500]' : 'text-[#6b7280]'}`}>
                   {s.label}
                 </span>
               </div>
@@ -291,40 +291,40 @@ export default function OnboardingPage() {
         )}
 
         {/* Card Content */}
-        <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div className="bg-white border border-[#1a1a1a]/10 rounded-2xl p-6 sm:p-8 shadow-xl">
           <div key={currentStep} className="animate-fade-in-up">
             {/* STEP 1: Personal Bio */}
             {currentStep === 1 && (
               <div className="space-y-4">
-                <h2 className="text-lg font-bold text-white mb-2">Tell us about yourself</h2>
+                <h2 className="text-lg font-bold font-space text-[#1a1a1a] mb-2">Tell us about yourself</h2>
               
               <div>
-                <label className="block text-xs font-medium text-white mb-1">Your Name</label>
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Your Name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your Name"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-white mb-1">Age</label>
+                  <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Age</label>
                   <input
                     type="number"
                     value={age}
                     onChange={(e) => setAge(parseInt(e.target.value) || 0)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white mb-1">Gender</label>
+                  <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Gender</label>
                   <select
                     value={gender}
                     onChange={(e) => setGender(e.target.value as Gender)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                   >
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -335,44 +335,44 @@ export default function OnboardingPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-white mb-1">Height (cm)</label>
+                  <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Height (cm)</label>
                   <input
                     type="number"
                     value={heightCm}
                     onChange={(e) => setHeightCm(parseFloat(e.target.value) || 0)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white mb-1">Current Weight (kg)</label>
+                  <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Current Weight (kg)</label>
                   <input
                     type="number"
                     step="0.1"
                     value={weightKg}
                     onChange={(e) => setWeightKg(parseFloat(e.target.value) || 0)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-white mb-1">Body Fat % (Optional)</label>
+                  <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Body Fat % (Optional)</label>
                   <input
                     type="number"
                     step="0.1"
                     value={bodyFatPct}
                     onChange={(e) => setBodyFatPct(e.target.value)}
                     placeholder="e.g. 16"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white mb-1">Daily Activity Level</label>
+                  <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Daily Activity Level</label>
                   <select
                     value={activityLevel}
                     onChange={(e) => setActivityLevel(e.target.value as ActivityLevel)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                   >
                     <option value="sedentary">Sedentary (Desk Job)</option>
                     <option value="lightly_active">Lightly Active (1-2 days/wk)</option>
@@ -388,7 +388,7 @@ export default function OnboardingPage() {
           {/* STEP 2: Goal */}
           {currentStep === 2 && (
             <div className="space-y-4">
-              <h2 className="text-lg font-bold text-white mb-2">What is your primary fitness goal?</h2>
+              <h2 className="text-lg font-bold font-space text-[#1a1a1a] mb-2">What is your primary fitness goal?</h2>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
@@ -405,25 +405,25 @@ export default function OnboardingPage() {
                     onClick={() => setFitnessGoal(item.key as FitnessGoal)}
                     className={`p-3.5 rounded-xl text-left border transition-all cursor-pointer ${
                       fitnessGoal === item.key
-                        ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.15)]'
-                        : 'bg-zinc-900 border-zinc-800 text-white hover:border-gray-700'
+                        ? 'bg-[#ff4500]/10 border-[#ff4500] text-[#1a1a1a] shadow-[0_0_15px_rgba(16,185,129,0.15)]'
+                        : 'bg-[#fafafa] border-[#1a1a1a]/10 text-[#1a1a1a] hover:border-gray-700'
                     }`}
                   >
                     <div className="font-semibold text-sm">{item.label}</div>
-                    <div className="text-[11px] text-zinc-400 mt-0.5">{item.desc}</div>
+                    <div className="text-[11px] text-[#6b7280] mt-0.5">{item.desc}</div>
                   </button>
                 ))}
               </div>
 
-              <div className="mt-4 pt-4 border-t border-zinc-800">
-                <label className="block text-xs font-medium text-white mb-1">Target Weight (kg) - Optional</label>
+              <div className="mt-4 pt-4 border-t border-[#1a1a1a]/10">
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Target Weight (kg) - Optional</label>
                 <input
                   type="number"
                   step="0.1"
                   value={targetWeightKg}
                   onChange={(e) => setTargetWeightKg(e.target.value)}
                   placeholder="e.g. 76"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                 />
               </div>
             </div>
@@ -432,10 +432,10 @@ export default function OnboardingPage() {
           {/* STEP 3: Lifestyle */}
           {currentStep === 3 && (
             <div className="space-y-4">
-              <h2 className="text-lg font-bold text-white mb-2">Your routine and habits</h2>
+              <h2 className="text-lg font-bold font-space text-[#1a1a1a] mb-2">Your routine and habits</h2>
 
               <div>
-                <label className="block text-xs font-medium text-white mb-1.5">
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1.5">
                   How many meals do you eat per day? ({mealsPerDay} meals)
                 </label>
                 <div className="flex gap-2">
@@ -446,8 +446,8 @@ export default function OnboardingPage() {
                       onClick={() => setMealsPerDay(num)}
                       className={`flex-1 py-2.5 rounded-xl text-sm font-semibold border transition-all ${
                         mealsPerDay === num
-                          ? 'bg-emerald-500 text-gray-950 border-emerald-500'
-                          : 'bg-zinc-900 border-zinc-800 text-white hover:border-gray-700'
+                          ? 'bg-[#ff4500] text-white border-[#ff4500]'
+                          : 'bg-[#fafafa] border-[#1a1a1a]/10 text-[#1a1a1a] hover:border-gray-700'
                       }`}
                     >
                       {num}
@@ -457,7 +457,7 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-white mb-1.5">
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1.5">
                   Workout frequency ({workoutFrequency} days per week)
                 </label>
                 <input
@@ -466,9 +466,9 @@ export default function OnboardingPage() {
                   max="7"
                   value={workoutFrequency}
                   onChange={(e) => setWorkoutFrequency(parseInt(e.target.value))}
-                  className="w-full accent-emerald-500"
+                  className="w-full accent-[#ff4500]"
                 />
-                <div className="flex justify-between text-[11px] text-zinc-400">
+                <div className="flex justify-between text-[11px] text-[#6b7280]">
                   <span>0 (Rest only)</span>
                   <span>3-4 (Moderate)</span>
                   <span>7 (Daily)</span>
@@ -476,11 +476,11 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-white mb-1">Workout Split</label>
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Workout Split</label>
                 <select
                   value={currentSplit}
                   onChange={(e) => setCurrentSplit(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                 >
                   <option value="Push / Pull / Legs">Push / Pull / Legs (PPL)</option>
                   <option value="Upper / Lower">Upper / Lower</option>
@@ -492,13 +492,13 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-white mb-1">Daily Step Target</label>
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">Daily Step Target</label>
                 <input
                   type="number"
                   step="500"
                   value={dailyStepTarget}
                   onChange={(e) => setDailyStepTarget(parseInt(e.target.value) || 0)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                 />
               </div>
             </div>
@@ -507,7 +507,7 @@ export default function OnboardingPage() {
           {/* STEP 4: Dietary Preferences */}
           {currentStep === 4 && (
             <div className="space-y-4">
-              <h2 className="text-lg font-bold text-white mb-2">Dietary preferences & restrictions</h2>
+              <h2 className="text-lg font-bold font-space text-[#1a1a1a] mb-2">Dietary preferences & restrictions</h2>
 
               <div className="grid grid-cols-2 gap-3">
                 {[
@@ -523,8 +523,8 @@ export default function OnboardingPage() {
                     onClick={() => setDietaryPreference(item.key as DietaryPreference)}
                     className={`p-3 rounded-xl text-center border font-semibold text-sm transition-all ${
                       dietaryPreference === item.key
-                        ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-[0_0_15px_rgba(16,185,129,0.15)]'
-                        : 'bg-zinc-900 border-zinc-800 text-white hover:border-gray-700'
+                        ? 'bg-[#ff4500]/10 border-[#ff4500] text-[#1a1a1a] shadow-[0_0_15px_rgba(16,185,129,0.15)]'
+                        : 'bg-[#fafafa] border-[#1a1a1a]/10 text-[#1a1a1a] hover:border-gray-700'
                     }`}
                   >
                     {item.label}
@@ -533,7 +533,7 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-white mb-1">
+                <label className="block text-xs font-medium text-[#1a1a1a] mb-1">
                   Allergies or Dietary Restrictions (Optional)
                 </label>
                 <textarea
@@ -541,7 +541,7 @@ export default function OnboardingPage() {
                   onChange={(e) => setDietaryRestrictions(e.target.value)}
                   placeholder="e.g. Lactose intolerant, peanut allergy, gluten sensitive..."
                   rows={3}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:border-emerald-500 outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-[#1a1a1a] text-sm focus:border-[#ff4500] outline-none"
                 />
               </div>
             </div>
@@ -551,36 +551,36 @@ export default function OnboardingPage() {
           {currentStep === 5 && calculated && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-white">Your Personalized Targets</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                <h2 className="text-lg font-bold font-space text-[#1a1a1a]">Your Personalized Targets</h2>
+                <p className="text-xs text-[#6b7280] mt-0.5">
                   Calculated using the Mifflin-St Jeor equation. These are scientific estimates and can be modified at any time.
                 </p>
               </div>
 
               {/* Stat Badges */}
               <div className="grid grid-cols-3 gap-3">
-                <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-center">
-                  <div className="text-[10px] text-zinc-400 uppercase font-semibold">BMR</div>
-                  <div className="text-base font-bold text-white mt-0.5">{calculated.bmr} <span className="text-xs text-zinc-400 font-normal">kcal</span></div>
+                <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-center">
+                  <div className="text-[10px] text-[#6b7280] uppercase font-semibold">BMR</div>
+                  <div className="text-base font-bold text-[#1a1a1a] mt-0.5">{calculated.bmr} <span className="text-xs text-[#6b7280] font-normal">kcal</span></div>
                 </div>
-                <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-center">
-                  <div className="text-[10px] text-zinc-400 uppercase font-semibold">TDEE</div>
-                  <div className="text-base font-bold text-white mt-0.5">{calculated.tdee} <span className="text-xs text-zinc-400 font-normal">kcal</span></div>
+                <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-center">
+                  <div className="text-[10px] text-[#6b7280] uppercase font-semibold">TDEE</div>
+                  <div className="text-base font-bold text-[#1a1a1a] mt-0.5">{calculated.tdee} <span className="text-xs text-[#6b7280] font-normal">kcal</span></div>
                 </div>
-                <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-center">
-                  <div className="text-[10px] text-zinc-400 uppercase font-semibold">BMI ({calculated.bmi_category})</div>
-                  <div className="text-base font-bold text-white mt-0.5">{calculated.bmi}</div>
+                <div className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 text-center">
+                  <div className="text-[10px] text-[#6b7280] uppercase font-semibold">BMI ({calculated.bmi_category})</div>
+                  <div className="text-base font-bold text-[#1a1a1a] mt-0.5">{calculated.bmi}</div>
                 </div>
               </div>
 
               {/* Daily Macro Targets with Overrides */}
-              <div className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 space-y-4">
-                <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <div className="p-4 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 space-y-4">
+                <div className="flex items-center justify-between border-b border-[#1a1a1a]/10 pb-3">
                   <div className="flex items-center gap-2">
-                    <Flame className="w-5 h-5 text-emerald-400" />
+                    <Flame className="w-5 h-5 text-[#ff4500]" />
                     <div>
-                      <span className="text-xs font-semibold text-white">Daily Calorie Target</span>
-                      <div className="text-[11px] text-zinc-400">Based on {fitnessGoal.replace('_', ' ')}</div>
+                      <span className="text-xs font-semibold text-[#1a1a1a]">Daily Calorie Target</span>
+                      <div className="text-[11px] text-[#6b7280]">Based on {fitnessGoal.replace('_', ' ')}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -588,76 +588,76 @@ export default function OnboardingPage() {
                       type="number"
                       value={overrideCalories}
                       onChange={(e) => setOverrideCalories(parseInt(e.target.value) || 0)}
-                      className="w-20 px-2 py-1 rounded-lg bg-zinc-950 border border-zinc-800 text-right font-bold text-emerald-400 text-sm focus:border-emerald-500 outline-none"
+                      className="w-20 px-2 py-1 rounded-lg bg-white border border-[#1a1a1a]/10 text-right font-bold text-[#ff4500] text-sm focus:border-[#ff4500] outline-none"
                     />
-                    <span className="text-xs text-zinc-400">kcal</span>
+                    <span className="text-xs text-[#6b7280]">kcal</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-[11px] font-medium text-blue-400 mb-1">Protein</label>
+                    <label className="block text-[11px] font-medium text-[#1a1a1a] mb-1">Protein</label>
                     <div className="flex items-center gap-1">
                       <input
                         type="number"
                         value={overrideProtein}
                         onChange={(e) => setOverrideProtein(parseInt(e.target.value) || 0)}
-                        className="w-full px-2 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-center font-bold text-white text-xs outline-none focus:border-blue-500"
+                        className="w-full px-2 py-1.5 rounded-lg bg-white border border-[#1a1a1a]/10 text-center font-bold text-[#1a1a1a] text-xs outline-none focus:border-blue-500"
                       />
-                      <span className="text-[10px] text-zinc-400">g</span>
+                      <span className="text-[10px] text-[#6b7280]">g</span>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-amber-400 mb-1">Carbs</label>
+                    <label className="block text-[11px] font-medium text-[#1a1a1a] mb-1">Carbs</label>
                     <div className="flex items-center gap-1">
                       <input
                         type="number"
                         value={overrideCarbs}
                         onChange={(e) => setOverrideCarbs(parseInt(e.target.value) || 0)}
-                        className="w-full px-2 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-center font-bold text-white text-xs outline-none focus:border-amber-500"
+                        className="w-full px-2 py-1.5 rounded-lg bg-white border border-[#1a1a1a]/10 text-center font-bold text-[#1a1a1a] text-xs outline-none focus:border-amber-500"
                       />
-                      <span className="text-[10px] text-zinc-400">g</span>
+                      <span className="text-[10px] text-[#6b7280]">g</span>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-rose-400 mb-1">Fat</label>
+                    <label className="block text-[11px] font-medium text-[#1a1a1a] mb-1">Fat</label>
                     <div className="flex items-center gap-1">
                       <input
                         type="number"
                         value={overrideFat}
                         onChange={(e) => setOverrideFat(parseInt(e.target.value) || 0)}
-                        className="w-full px-2 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-center font-bold text-white text-xs outline-none focus:border-rose-500"
+                        className="w-full px-2 py-1.5 rounded-lg bg-white border border-[#1a1a1a]/10 text-center font-bold text-[#1a1a1a] text-xs outline-none focus:border-rose-500"
                       />
-                      <span className="text-[10px] text-zinc-400">g</span>
+                      <span className="text-[10px] text-[#6b7280]">g</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex justify-between text-xs text-zinc-400 pt-2 border-t border-zinc-800/50">
+                <div className="flex justify-between text-xs text-[#6b7280] pt-2 border-t border-[#1a1a1a]/10/50">
                   <div className="flex items-center gap-1.5">
                     <Droplets className="w-3.5 h-3.5 text-cyan-400" />
-                    <span>Water: <strong className="text-white">{(calculated.daily_water_ml / 1000).toFixed(1)} L/day</strong></span>
+                    <span>Water: <strong className="text-[#1a1a1a]">{(calculated.daily_water_ml / 1000).toFixed(1)} L/day</strong></span>
                   </div>
                   <div>
-                    <span>Fiber: <strong className="text-white">{calculated.daily_fiber_g}g/day</strong></span>
+                    <span>Fiber: <strong className="text-[#1a1a1a]">{calculated.daily_fiber_g}g/day</strong></span>
                   </div>
                 </div>
               </div>
 
               {/* Suggested Per-Meal Split */}
               <div>
-                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-2">
                   Suggested Meal Split ({mealsPerDay} meals)
                 </h3>
                 <div className="space-y-2">
                   {calculated.meal_targets.map((m: any, i: number) => (
                     <div
                       key={m.meal_number}
-                      className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-between text-xs"
+                      className="p-3 rounded-xl bg-[#fafafa] border border-[#1a1a1a]/10 flex items-center justify-between text-xs"
                     >
-                      <div className="font-semibold text-white">{m.meal_name}</div>
-                      <div className="flex items-center gap-3 text-zinc-400">
-                        <span className="text-emerald-400 font-medium">{m.target_calories} kcal</span>
+                      <div className="font-semibold text-[#1a1a1a]">{m.meal_name}</div>
+                      <div className="flex items-center gap-3 text-[#6b7280]">
+                        <span className="text-[#ff4500] font-medium">{m.target_calories} kcal</span>
                         <span>{m.target_protein_g}g P</span>
                         <span>{m.target_carbs_g}g C</span>
                         <span>{m.target_fat_g}g F</span>
@@ -673,13 +673,13 @@ export default function OnboardingPage() {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between items-center mt-6 pt-4 border-t border-zinc-800">
+      <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#1a1a1a]/10">
         {currentStep > 1 ? (
           <button
             type="button"
             onClick={() => setCurrentStep(currentStep - 1)}
             disabled={loading}
-            className="py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-[#202433] border border-zinc-800 text-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="py-2.5 px-4 rounded-xl bg-[#fafafa] hover:bg-[#1a1a1a]/5 border border-[#1a1a1a]/10 text-[#1a1a1a] text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" /> Back
           </button>
@@ -689,7 +689,7 @@ export default function OnboardingPage() {
           <button
             type="button"
             onClick={() => setCurrentStep(currentStep + 1)}
-            className="py-2.5 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-semibold text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+            className="py-2.5 px-6 rounded-xl bg-[#ff4500] hover:bg-[#e63e00] text-white font-semibold text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
           >
             Continue <ChevronRight className="w-4 h-4" />
           </button>
@@ -698,7 +698,7 @@ export default function OnboardingPage() {
             type="button"
             onClick={handleFinishOnboarding}
             disabled={loading}
-            className="py-2.5 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-gray-950 font-semibold text-xs transition-all shadow-md flex items-center gap-2 cursor-pointer"
+            className="py-2.5 px-6 rounded-xl bg-[#ff4500] hover:bg-[#e63e00] disabled:opacity-50 text-white font-semibold text-xs transition-all shadow-md flex items-center gap-2 cursor-pointer"
           >
             {loading ? (
               <>
