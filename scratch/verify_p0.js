@@ -53,10 +53,21 @@ async function runTests() {
       p_operation_id: opId1,
       p_date: '2026-09-14',
       p_meal_name: 'Test Meal',
-      p_items: [{ food_name: 'Invalid Food', calories: 'NaN', protein_g: -5 }]
+      p_items: [{ food_name: '', calories: 'NaN', protein_g: -5 }]
     });
-    if (!invalidErr) throw new Error("Expected validation error for NaN/-5 protein!");
-    console.log("✓ Validation caught malformed inputs.");
+    if (!invalidErr || !invalidErr.message.includes("Food name is required")) {
+        throw new Error("Expected strict validation error for empty food name!");
+    }
+    const { error: negativeErr } = await clientA.rpc('log_meal_transaction', {
+        p_operation_id: opId1,
+        p_date: '2026-09-14',
+        p_meal_name: 'Test Meal',
+        p_items: [{ food_name: 'Apple', calories: -50, protein_g: 0 }]
+    });
+    if (!negativeErr || !negativeErr.message.includes("finite and >=")) {
+        throw new Error("Expected strict validation error for negative nutrition values!");
+    }
+    console.log("✓ Strict nutrition validation caught malformed inputs.");
     
     // Ensure parent wasn't created
     const { data: mealCheck } = await clientA.from('meals').select('*').eq('operation_id', opId1);
@@ -150,17 +161,15 @@ async function runTests() {
     // 7. Rate Limiter Concurrency
     console.log("\\n--- Testing Rate Limiter Concurrency ---");
     const promises = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 30; i++) {
       // Small stagger to prevent fetch connection resets on windows
       promises.push(new Promise(resolve => setTimeout(resolve, i * 50)).then(() => clientA.rpc('check_and_increment_scan_rate_limit')));
     }
     const results = await Promise.all(promises);
     const successCount = results.filter(r => r.data === true).length;
-    const rateLimitedCount = results.filter(r => r.data === false).length;
-    
-    console.log(`Allowed: ${successCount}, Rejected: ${rateLimitedCount}`);
-    if (successCount > 20) throw new Error(`Rate limit failed! Allowed ${successCount} requests.`);
-    console.log("✓ Atomic rate limiter enforced correctly under concurrency.");
+    const failCount = results.filter(r => r.data === false).length;
+    if (successCount !== 20 || failCount !== 10) throw new Error(`Atomic rate limiter failed: expected 20 true / 10 false, got ${successCount} true / ${failCount} false`);
+    console.log("✓ Atomic rate limiter enforced correctly under concurrency (exactly 20 succeeded, 10 failed).");
 
     // 8. Reconstruction / Daily Summary Invariant
     console.log("\\n--- Testing Daily Summary Reconstruction ---");
