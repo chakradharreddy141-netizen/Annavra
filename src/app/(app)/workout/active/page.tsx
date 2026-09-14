@@ -15,7 +15,7 @@ export default async function ActiveWorkoutPage({
   // Await searchParams in Next.js 15
   const params = await searchParams;
 
-  // Fetch exercises (preset + user's custom exercises)
+  // Fetch exercises (user's custom exercises + globally seeded exercises)
   const { data: exercises, error: exercisesErr } = await supabase
     .from('exercises')
     .select('*')
@@ -23,28 +23,9 @@ export default async function ActiveWorkoutPage({
     .order('name');
   if (exercisesErr) console.error('Active Workout exercises error:', exercisesErr);
 
-  // Provide some default preset exercises if the DB doesn't have them yet
-  const presetExercises = [
-    { id: 'p1', name: 'Bench Press', muscle_group: 'Chest' },
-    { id: 'p2', name: 'Squat', muscle_group: 'Legs' },
-    { id: 'p3', name: 'Deadlift', muscle_group: 'Back' },
-    { id: 'p4', name: 'Overhead Press', muscle_group: 'Shoulders' },
-    { id: 'p5', name: 'Pull-up', muscle_group: 'Back' },
-    { id: 'p6', name: 'Barbell Row', muscle_group: 'Back' },
-    { id: 'p7', name: 'Dumbbell Curl', muscle_group: 'Arms' },
-    { id: 'p8', name: 'Tricep Extension', muscle_group: 'Arms' },
-    { id: 'p9', name: 'Leg Press', muscle_group: 'Legs' },
-    { id: 'p10', name: 'Lateral Raise', muscle_group: 'Shoulders' },
-    { id: 'p11', name: 'Incline Bench Press', muscle_group: 'Chest' },
-    { id: 'p12', name: 'Lat Pulldown', muscle_group: 'Back' },
-    { id: 'p13', name: 'Leg Curl', muscle_group: 'Legs' },
-    { id: 'p14', name: 'Leg Extension', muscle_group: 'Legs' },
-    { id: 'p15', name: 'Calf Raise', muscle_group: 'Legs' },
-  ];
-
-  const allExercises = [...presetExercises, ...(exercises || [])];
+  const allExercises = exercises || [];
   
-  // Deduplicate by name
+  // Deduplicate by name just in case a custom exercise overrides a global one
   const uniqueExercises = Array.from(new Map(allExercises.map(item => [item.name.toLowerCase(), item])).values());
 
   const { data: profile, error: profileErr } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();

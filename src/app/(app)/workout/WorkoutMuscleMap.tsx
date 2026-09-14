@@ -50,7 +50,9 @@ export default function WorkoutMuscleMap({ workoutType, loggedExercises }: Worko
     const result: any[] = [];
     if (loggedExercises && loggedExercises.length > 0) {
       loggedExercises.forEach(ex => {
-        for (let i = 0; i < ex.setsCount; i++) {
+        // Always add at least one entry so the muscle highlights just by adding the exercise
+        const iterations = Math.max(1, ex.setsCount);
+        for (let i = 0; i < iterations; i++) {
           result.push({
             name: `${ex.name} - Set ${i + 1} (Primary)`,
             muscles: (ex.primary_muscles || []).map(m => m === 'hamstrings' ? 'hamstring' : m)
