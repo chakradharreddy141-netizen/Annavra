@@ -132,14 +132,11 @@ export default async function DashboardPage() {
               <span>Today&apos;s Training</span>
             </div>
             <div 
-              className="font-bold text-lg sm:text-xl truncate text-[#1a1a1a] font-space tracking-tight"
+              className="font-bold text-xl sm:text-2xl break-words whitespace-normal text-[#1a1a1a] font-space tracking-tight"
               title={scheduledDay?.is_rest_day ? 'Rest Day' : scheduledDay?.workout_type || 'Push Day'}
             >
               {scheduledDay?.is_rest_day ? 'Rest Day' : scheduledDay?.workout_type || 'Push Day'}
             </div>
-            <p className="text-sm text-[#6b7280] mt-1">
-              {scheduledDay?.is_rest_day ? 'Focus on active recovery' : 'Hit your scheduled routine'}
-            </p>
           </BentoCard>
 
           <BentoCard delay={0.3} className="flex-1">
