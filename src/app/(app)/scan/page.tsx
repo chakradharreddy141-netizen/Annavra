@@ -15,6 +15,11 @@ export default function ScanPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mealItems, setMealItems] = useState<any[]>([]);
+  const operationIdRef = useRef<string>('');
+
+  React.useEffect(() => {
+    operationIdRef.current = crypto.randomUUID();
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -23,6 +28,8 @@ export default function ScanPage() {
       setImagePreview(URL.createObjectURL(file));
       setMealItems([]);
       setError(null);
+      // Reset operation ID for new scan
+      operationIdRef.current = crypto.randomUUID();
     }
   };
 
@@ -79,7 +86,7 @@ export default function ScanPage() {
     setError(null);
 
     try {
-      const result = await logMeal(mealItems);
+      const result = await logMeal(mealItems, operationIdRef.current);
 
       if (result.error) {
         throw new Error(result.error);
