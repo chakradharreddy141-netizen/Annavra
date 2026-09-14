@@ -131,7 +131,10 @@ export default async function DashboardPage() {
               <Dumbbell className="w-4 h-4 text-[#1a1a1a]" />
               <span>Today&apos;s Training</span>
             </div>
-            <div className="font-bold text-xl line-clamp-2 leading-tight text-[#1a1a1a] font-space tracking-tight">
+            <div 
+              className="font-bold text-lg sm:text-xl truncate text-[#1a1a1a] font-space tracking-tight"
+              title={scheduledDay?.is_rest_day ? 'Rest Day' : scheduledDay?.workout_type || 'Push Day'}
+            >
               {scheduledDay?.is_rest_day ? 'Rest Day' : scheduledDay?.workout_type || 'Push Day'}
             </div>
             <p className="text-sm text-[#6b7280] mt-1">

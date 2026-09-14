@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} ${spaceGrotesk.variable} bg-[#f7f7f5] text-[#1a1a1a] min-h-screen font-sans selection:bg-[#ff4500] selection:text-[#1a1a1a]`}>
-        <NextTopLoader color="#ff4500" showSpinner={false} shadow="0 0 10px #ff4500,0 0 5px #ff4500" />
+        <NextTopLoader color="#ff4500" showSpinner={false} shadow={false} height={3} />
         <ThreadCursor />
         {children}
       </body>
