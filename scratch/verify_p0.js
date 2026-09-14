@@ -1,5 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
+import * as dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 // Use the service role key to manage test users and bypass RLS where necessary, 
 // but we will also create client instances with JWTs to test RLS!
