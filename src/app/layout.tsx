@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Outfit, Space_Grotesk } from 'next/font/google';
 import './globals.css';
+import NextTopLoader from 'nextjs-toploader';
 import ThreadCursor from '@/components/ui/ThreadCursor';
 
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-sans' });
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} ${spaceGrotesk.variable} bg-[#f7f7f5] text-[#1a1a1a] min-h-screen font-sans selection:bg-[#ff4500] selection:text-[#1a1a1a]`}>
+        <NextTopLoader color="#ff4500" showSpinner={false} shadow="0 0 10px #ff4500,0 0 5px #ff4500" />
         <ThreadCursor />
         {children}
       </body>
