@@ -248,7 +248,7 @@ export default function ActiveWorkoutClient({
         <button
           onClick={handleFinishWorkout}
           disabled={isSaving}
-          className="px-4 py-2 bg-[#1a1a1a] text-[#1a1a1a] font-bold text-sm rounded-xl hover:bg-[#ff4500] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-1.5"
+          className="px-4 py-2 bg-[#1a1a1a] text-white font-bold text-sm rounded-xl hover:bg-[#ff4500] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-1.5"
         >
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Square className="w-4 h-4 fill-current" />}
           Finish

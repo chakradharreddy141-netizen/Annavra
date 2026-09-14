@@ -26,11 +26,11 @@ interface WorkoutMuscleMapProps {
 const splitMap: Record<string, string[]> = {
   'Push': ['chest', 'front-deltoids', 'triceps'],
   'Pull': ['upper-back', 'lower-back', 'trapezius', 'back-deltoids', 'biceps'],
-  'Legs': ['quadriceps', 'hamstrings', 'gluteal', 'calves'],
+  'Legs': ['quadriceps', 'hamstring', 'gluteal', 'calves'],
   'Upper Body': ['chest', 'upper-back', 'front-deltoids', 'back-deltoids', 'triceps', 'biceps'],
-  'Lower Body': ['quadriceps', 'hamstrings', 'gluteal', 'calves'],
-  'Full Body': ['chest', 'upper-back', 'quadriceps', 'hamstrings', 'gluteal', 'front-deltoids'],
-  'Cardio': ['calves', 'hamstrings', 'quadriceps'],
+  'Lower Body': ['quadriceps', 'hamstring', 'gluteal', 'calves'],
+  'Full Body': ['chest', 'upper-back', 'quadriceps', 'hamstring', 'gluteal', 'front-deltoids'],
+  'Cardio': ['calves', 'hamstring', 'quadriceps'],
   'Rest': []
 };
 
@@ -53,13 +53,13 @@ export default function WorkoutMuscleMap({ workoutType, loggedExercises }: Worko
         for (let i = 0; i < ex.setsCount; i++) {
           result.push({
             name: `${ex.name} - Set ${i + 1} (Primary)`,
-            muscles: ex.primary_muscles || []
+            muscles: (ex.primary_muscles || []).map(m => m === 'hamstrings' ? 'hamstring' : m)
           });
           
           if (i === 0 || i === 2) {
              result.push({
                name: `${ex.name} - Set ${i + 1} (Secondary)`,
-               muscles: ex.secondary_muscles || []
+               muscles: (ex.secondary_muscles || []).map(m => m === 'hamstrings' ? 'hamstring' : m)
              });
           }
         }
