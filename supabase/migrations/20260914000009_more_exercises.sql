@@ -1,1 +1,54 @@
--- 20260914000009_more_exercises.sql\n\nINSERT INTO public.exercises (name, default_equipment, primary_muscles, secondary_muscles)\nVALUES\n  ('Ab Roller', 'barbell', '["abs"]'::jsonb, '["front-deltoids"]'::jsonb),\n  ('Barbell Bench Press - Medium Grip', 'barbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),\n  ('Barbell Curl', 'barbell', '["biceps"]'::jsonb, '["forearm"]'::jsonb),\n  ('Barbell Full Squat', 'barbell', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings","lower-back"]'::jsonb),\n  ('Bench Dips', 'body only', '["triceps"]'::jsonb, '["chest","front-deltoids"]'::jsonb),\n  ('Bent Over Barbell Row', 'barbell', '["upper-back"]'::jsonb, '["biceps","upper-back","back-deltoids"]'::jsonb),\n  ('Cable Crossover', 'cable', '["chest"]'::jsonb, '["front-deltoids"]'::jsonb),\n  ('Cable Crunch', 'cable', '["abs"]'::jsonb, '[]'::jsonb),\n  ('Calf Press On The Leg Press Machine', 'machine', '["calves"]'::jsonb, '[]'::jsonb),\n  ('Concentration Curls', 'dumbbell', '["biceps"]'::jsonb, '["forearm"]'::jsonb),\n  ('Crunches', 'body only', '["abs"]'::jsonb, '[]'::jsonb),\n  ('Decline Barbell Bench Press', 'barbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),\n  ('Dumbbell Alternate Bicep Curl', 'dumbbell', '["biceps"]'::jsonb, '["forearm"]'::jsonb),\n  ('Dumbbell Bench Press', 'dumbbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),\n  ('Dumbbell Flyes', 'dumbbell', '["chest"]'::jsonb, '[]'::jsonb),\n  ('Face Pull', 'cable', '["back-deltoids"]'::jsonb, '["upper-back"]'::jsonb),\n  ('Farmer''s Walk', 'barbell', '["forearm"]'::jsonb, '["abs","gluteal","hamstrings","lower-back","quadriceps","trapezius"]'::jsonb),\n  ('Front Barbell Squat', 'barbell', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings"]'::jsonb),\n  ('Front Dumbbell Raise', 'dumbbell', '["front-deltoids"]'::jsonb, '[]'::jsonb),\n  ('Hack Squat', 'machine', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings"]'::jsonb),\n  ('Hammer Curls', 'dumbbell', '["biceps"]'::jsonb, '[]'::jsonb),\n  ('Hanging Leg Raise', 'body only', '["abs"]'::jsonb, '[]'::jsonb),\n  ('Incline Dumbbell Press', 'dumbbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),\n  ('Leg Extensions', 'machine', '["quadriceps"]'::jsonb, '[]'::jsonb),\n  ('Leg Press', 'machine', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings"]'::jsonb),\n  ('Lying Leg Curls', 'machine', '["hamstrings"]'::jsonb, '[]'::jsonb),\n  ('Lying Triceps Press', 'e-z curl bar', '["triceps"]'::jsonb, '[]'::jsonb),\n  ('Plank', 'body only', '["abs"]'::jsonb, '[]'::jsonb),\n  ('Preacher Curl', 'barbell', '["biceps"]'::jsonb, '[]'::jsonb),\n  ('Pullups', 'body only', '["upper-back"]'::jsonb, '["biceps","upper-back"]'::jsonb),\n  ('Pushups', 'body only', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),\n  ('Rack Pulls', 'barbell', '["lower-back"]'::jsonb, '["forearm","gluteal","hamstrings","trapezius"]'::jsonb),\n  ('Reverse Machine Flyes', 'machine', '["front-deltoids"]'::jsonb, '[]'::jsonb),\n  ('Romanian Deadlift', 'barbell', '["hamstrings"]'::jsonb, '["calves","gluteal","lower-back"]'::jsonb),\n  ('Russian Twist', 'body only', '["abs"]'::jsonb, '["lower-back"]'::jsonb),\n  ('Seated Cable Rows', 'cable', '["upper-back"]'::jsonb, '["biceps","upper-back","back-deltoids"]'::jsonb),\n  ('Seated Calf Raise', 'machine', '["calves"]'::jsonb, '[]'::jsonb),\n  ('Seated Dumbbell Press', 'dumbbell', '["front-deltoids"]'::jsonb, '["triceps"]'::jsonb),\n  ('Seated Leg Curl', 'machine', '["hamstrings"]'::jsonb, '[]'::jsonb),\n  ('Side Lateral Raise', 'dumbbell', '["front-deltoids"]'::jsonb, '[]'::jsonb),\n  ('Standing Calf Raises', 'machine', '["calves"]'::jsonb, '[]'::jsonb),\n  ('Standing Military Press', 'barbell', '["front-deltoids"]'::jsonb, '["triceps"]'::jsonb),\n  ('Tricep Dumbbell Kickback', 'dumbbell', '["triceps"]'::jsonb, '[]'::jsonb),\n  ('Triceps Pushdown', 'cable', '["triceps"]'::jsonb, '[]'::jsonb),\n  ('Upright Barbell Row', 'barbell', '["back-deltoids"]'::jsonb, '["trapezius"]'::jsonb)\nON CONFLICT (name) DO UPDATE SET primary_muscles = EXCLUDED.primary_muscles, secondary_muscles = EXCLUDED.secondary_muscles;\n
+-- 20260914000009_more_exercises.sql
+
+-- First, ensure exercise names are unique to support idempotency and lookups
+ALTER TABLE public.exercises DROP CONSTRAINT IF EXISTS exercises_name_key;
+ALTER TABLE public.exercises ADD CONSTRAINT exercises_name_key UNIQUE (name);
+
+INSERT INTO public.exercises (name, default_equipment, primary_muscles, secondary_muscles)
+VALUES
+  ('Ab Roller', 'barbell', '["abs"]'::jsonb, '["front-deltoids"]'::jsonb),
+  ('Barbell Bench Press - Medium Grip', 'barbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),
+  ('Barbell Curl', 'barbell', '["biceps"]'::jsonb, '["forearm"]'::jsonb),
+  ('Barbell Full Squat', 'barbell', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings","lower-back"]'::jsonb),
+  ('Bench Dips', 'body only', '["triceps"]'::jsonb, '["chest","front-deltoids"]'::jsonb),
+  ('Bent Over Barbell Row', 'barbell', '["upper-back"]'::jsonb, '["biceps","upper-back","back-deltoids"]'::jsonb),
+  ('Cable Crossover', 'cable', '["chest"]'::jsonb, '["front-deltoids"]'::jsonb),
+  ('Cable Crunch', 'cable', '["abs"]'::jsonb, '[]'::jsonb),
+  ('Calf Press On The Leg Press Machine', 'machine', '["calves"]'::jsonb, '[]'::jsonb),
+  ('Concentration Curls', 'dumbbell', '["biceps"]'::jsonb, '["forearm"]'::jsonb),
+  ('Crunches', 'body only', '["abs"]'::jsonb, '[]'::jsonb),
+  ('Decline Barbell Bench Press', 'barbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),
+  ('Dumbbell Alternate Bicep Curl', 'dumbbell', '["biceps"]'::jsonb, '["forearm"]'::jsonb),
+  ('Dumbbell Bench Press', 'dumbbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),
+  ('Dumbbell Flyes', 'dumbbell', '["chest"]'::jsonb, '[]'::jsonb),
+  ('Face Pull', 'cable', '["back-deltoids"]'::jsonb, '["upper-back"]'::jsonb),
+  ('Farmer''s Walk', 'barbell', '["forearm"]'::jsonb, '["abs","gluteal","hamstrings","lower-back","quadriceps","trapezius"]'::jsonb),
+  ('Front Barbell Squat', 'barbell', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings"]'::jsonb),
+  ('Front Dumbbell Raise', 'dumbbell', '["front-deltoids"]'::jsonb, '[]'::jsonb),
+  ('Hack Squat', 'machine', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings"]'::jsonb),
+  ('Hammer Curls', 'dumbbell', '["biceps"]'::jsonb, '[]'::jsonb),
+  ('Hanging Leg Raise', 'body only', '["abs"]'::jsonb, '[]'::jsonb),
+  ('Incline Dumbbell Press', 'dumbbell', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),
+  ('Leg Extensions', 'machine', '["quadriceps"]'::jsonb, '[]'::jsonb),
+  ('Leg Press', 'machine', '["quadriceps"]'::jsonb, '["calves","gluteal","hamstrings"]'::jsonb),
+  ('Lying Leg Curls', 'machine', '["hamstrings"]'::jsonb, '[]'::jsonb),
+  ('Lying Triceps Press', 'e-z curl bar', '["triceps"]'::jsonb, '[]'::jsonb),
+  ('Plank', 'body only', '["abs"]'::jsonb, '[]'::jsonb),
+  ('Preacher Curl', 'barbell', '["biceps"]'::jsonb, '[]'::jsonb),
+  ('Pullups', 'body only', '["upper-back"]'::jsonb, '["biceps","upper-back"]'::jsonb),
+  ('Pushups', 'body only', '["chest"]'::jsonb, '["front-deltoids","triceps"]'::jsonb),
+  ('Rack Pulls', 'barbell', '["lower-back"]'::jsonb, '["forearm","gluteal","hamstrings","trapezius"]'::jsonb),
+  ('Reverse Machine Flyes', 'machine', '["front-deltoids"]'::jsonb, '[]'::jsonb),
+  ('Romanian Deadlift', 'barbell', '["hamstrings"]'::jsonb, '["calves","gluteal","lower-back"]'::jsonb),
+  ('Russian Twist', 'body only', '["abs"]'::jsonb, '["lower-back"]'::jsonb),
+  ('Seated Cable Rows', 'cable', '["upper-back"]'::jsonb, '["biceps","upper-back","back-deltoids"]'::jsonb),
+  ('Seated Calf Raise', 'machine', '["calves"]'::jsonb, '[]'::jsonb),
+  ('Seated Dumbbell Press', 'dumbbell', '["front-deltoids"]'::jsonb, '["triceps"]'::jsonb),
+  ('Seated Leg Curl', 'machine', '["hamstrings"]'::jsonb, '[]'::jsonb),
+  ('Side Lateral Raise', 'dumbbell', '["front-deltoids"]'::jsonb, '[]'::jsonb),
+  ('Standing Calf Raises', 'machine', '["calves"]'::jsonb, '[]'::jsonb),
+  ('Standing Military Press', 'barbell', '["front-deltoids"]'::jsonb, '["triceps"]'::jsonb),
+  ('Tricep Dumbbell Kickback', 'dumbbell', '["triceps"]'::jsonb, '[]'::jsonb),
+  ('Triceps Pushdown', 'cable', '["triceps"]'::jsonb, '[]'::jsonb),
+  ('Upright Barbell Row', 'barbell', '["back-deltoids"]'::jsonb, '["trapezius"]'::jsonb)
+ON CONFLICT (name) DO UPDATE SET primary_muscles = EXCLUDED.primary_muscles, secondary_muscles = EXCLUDED.secondary_muscles;
