@@ -24,15 +24,7 @@ export default function ThreadCursor() {
     }
     setTimeout(() => setIsMobile(false), 0);
     
-    // Set initial canvas size
-    const handleResize = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth;
-        canvasRef.current.height = window.innerHeight;
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
+    // Note: We don't use a 'resize' event listener because we handle resizing dynamically in the render loop.
     
     // Track mouse events
     const handleMouseMove = (e: MouseEvent) => {
@@ -48,6 +40,12 @@ export default function ThreadCursor() {
       if (!canvas || !ctx) {
         requestRef.current = requestAnimationFrame(render);
         return;
+      }
+      
+      // Ensure canvas matches window size (fixes 300x150 default size on initial mount)
+      if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
       }
       
       // Clear canvas
@@ -111,7 +109,6 @@ export default function ThreadCursor() {
     requestRef.current = requestAnimationFrame(render);
     
     return () => {
-      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
