@@ -47,19 +47,8 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Redirect users who haven't completed onboarding
-  if (user && !isAuthPage && !isPublicAsset && url.pathname !== '/onboarding' && url.pathname !== '/') {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('onboarding_completed')
-      .eq('id', user.id)
-      .single();
-
-    if (!profile || !profile.onboarding_completed) {
-      url.pathname = '/onboarding';
-      return NextResponse.redirect(url);
-    }
-  }
+  // Removed onboarding DB check from middleware.
+  // It is now strictly handled in the (app) layout component to prevent edge function timeouts.
 
   return supabaseResponse;
 }
