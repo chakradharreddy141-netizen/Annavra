@@ -3,6 +3,8 @@
 import React, { useMemo } from 'react';
 import Model from 'react-body-highlighter';
 
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+
 // We want to pass an array of objects to react-body-highlighter.
 // Example: { name: 'Bench Press', muscles: ['chest', 'triceps', 'front-deltoids'] }
 // For the 2-layer logic:
@@ -88,25 +90,31 @@ export default function WorkoutMuscleMap({ workoutType, loggedExercises }: Worko
   ];
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 items-center justify-center p-4 bg-[#fafafa] rounded-2xl border border-[#1a1a1a]/10">
-      <div className="w-1/2 flex justify-center">
-        <Model 
-          type="anterior" 
-          data={data} 
-          highlightedColors={highlightedColors}
-          bodyColor="#e5e7eb" // Tailwind gray-200
-          style={{ width: '100%', maxWidth: '200px' }}
-        />
+    <ErrorBoundary fallback={
+      <div className="flex flex-col items-center justify-center p-4 bg-[#fafafa] rounded-2xl border border-[#1a1a1a]/10 min-h-[200px]">
+        <p className="text-[#a1a1aa] font-medium text-sm">Muscle map temporarily unavailable</p>
       </div>
-      <div className="w-1/2 flex justify-center">
-        <Model 
-          type="posterior" 
-          data={data} 
-          highlightedColors={highlightedColors}
-          bodyColor="#e5e7eb"
-          style={{ width: '100%', maxWidth: '200px' }}
-        />
+    }>
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center p-4 bg-[#fafafa] rounded-2xl border border-[#1a1a1a]/10">
+        <div className="w-1/2 flex justify-center">
+          <Model 
+            type="anterior" 
+            data={data} 
+            highlightedColors={highlightedColors}
+            bodyColor="#e5e7eb" // Tailwind gray-200
+            style={{ width: '100%', maxWidth: '200px' }}
+          />
+        </div>
+        <div className="w-1/2 flex justify-center">
+          <Model 
+            type="posterior" 
+            data={data} 
+            highlightedColors={highlightedColors}
+            bodyColor="#e5e7eb"
+            style={{ width: '100%', maxWidth: '200px' }}
+          />
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }

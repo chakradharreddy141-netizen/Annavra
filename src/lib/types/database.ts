@@ -1,4 +1,4 @@
-export type Json =
+﻿export type Json =
   | string
   | number
   | boolean
@@ -348,6 +348,8 @@ export type Database = {
           logged_at: string | null
           meal_name: string
           meal_number: number
+          operation_id: string
+          payload_hash: string | null
           total_calories: number | null
           total_carbs_g: number | null
           total_fat_g: number | null
@@ -366,6 +368,8 @@ export type Database = {
           logged_at?: string | null
           meal_name: string
           meal_number: number
+          operation_id: string
+          payload_hash?: string | null
           total_calories?: number | null
           total_carbs_g?: number | null
           total_fat_g?: number | null
@@ -384,6 +388,8 @@ export type Database = {
           logged_at?: string | null
           meal_name?: string
           meal_number?: number
+          operation_id?: string
+          payload_hash?: string | null
           total_calories?: number | null
           total_carbs_g?: number | null
           total_fat_g?: number | null
@@ -694,6 +700,8 @@ export type Database = {
           id: string
           name: string | null
           notes: string | null
+          operation_id: string
+          payload_hash: string | null
           updated_at: string | null
           user_id: string
           workout_type: string
@@ -705,6 +713,8 @@ export type Database = {
           id?: string
           name?: string | null
           notes?: string | null
+          operation_id: string
+          payload_hash?: string | null
           updated_at?: string | null
           user_id: string
           workout_type: string
@@ -716,6 +726,8 @@ export type Database = {
           id?: string
           name?: string | null
           notes?: string | null
+          operation_id?: string
+          payload_hash?: string | null
           updated_at?: string | null
           user_id?: string
           workout_type?: string
@@ -735,7 +747,32 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_and_increment_scan_rate_limit: { Args: never; Returns: boolean }
+      log_meal_transaction: {
+        Args: {
+          p_date: string
+          p_items: Json
+          p_meal_name: string
+          p_operation_id: string
+        }
+        Returns: Json
+      }
+      log_workout_transaction: {
+        Args: {
+          p_date: string
+          p_duration_minutes: number
+          p_name: string
+          p_notes: string
+          p_operation_id: string
+          p_sets: Json
+          p_workout_type: string
+        }
+        Returns: Json
+      }
+      recalculate_daily_summary: {
+        Args: { p_date: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

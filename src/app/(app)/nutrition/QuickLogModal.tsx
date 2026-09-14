@@ -13,10 +13,12 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
 
   const [activeTab, setActiveTab] = useState<'manual' | 'saved'>('manual');
   const [savedMeals, setSavedMeals] = useState<any[]>([]);
+  const [operationId, setOperationId] = useState<string>('');
 
   // Fetch saved meals when modal opens
   React.useEffect(() => {
     if (isOpen) {
+      setOperationId(crypto.randomUUID());
       const fetchSaved = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
@@ -54,7 +56,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
         nutrition_source: 'user_entered'
       };
 
-      const result = await logMeal([item]);
+      const result = await logMeal([item], operationId);
       if (result.error) throw new Error(result.error);
 
       setIsOpen(false);
@@ -88,7 +90,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
         nutrition_source: 'user_entered'
       };
 
-      const result = await logMeal([item]);
+      const result = await logMeal([item], operationId);
       if (result.error) throw new Error(result.error);
 
       setIsOpen(false);
@@ -105,7 +107,7 @@ export function QuickLogModal({ date, goalId }: { date: string, goalId: string |
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="w-12 h-12 bg-[#ff4500] hover:bg-[#ff4500]/10 text-white rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
+        className="w-12 h-12 bg-[#ff4500] hover:bg-[#ff4500]/10 text-[#1a1a1a] rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
       >
         <Plus className="w-6 h-6" />
       </button>

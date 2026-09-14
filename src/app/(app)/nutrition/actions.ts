@@ -37,7 +37,6 @@ export async function deleteMeal(mealId: string) {
 
     // Recalculate daily summary via RPC
     await supabase.rpc('recalculate_daily_summary', {
-      p_user_id: user.id,
       p_date: meal.date
     });
 

@@ -45,26 +45,65 @@ export default function ActiveWorkoutClient({
   const router = useRouter();
   
   // Timer state
-  const [startTime] = useState(Date.now());
+  const [startTime, setStartTime] = useState(Date.now());
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   
   // Workout state
   const [workoutName, setWorkoutName] = useState(defaultWorkoutName);
   const [activeExercises, setActiveExercises] = useState<ActiveExercise[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   
   // Modal state
   const [isAddingExercise, setIsAddingExercise] = useState(false);
   const [exerciseSearch, setExerciseSearch] = useState('');
   const [creatingCustom, setCreatingCustom] = useState<string | null>(null);
+  const [operationId, setOperationId] = useState<string>(() => crypto.randomUUID());
+
+  // Hydrate from localStorage
+  useEffect(() => {
+    setIsMounted(true);
+    const saved = localStorage.getItem('annavra_active_workout');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Only restore if it's from the last 24 hours to prevent stale workouts
+        if (Date.now() - parsed.startTime < 24 * 60 * 60 * 1000) {
+          setStartTime(parsed.startTime);
+          setWorkoutName(parsed.workoutName);
+          setActiveExercises(parsed.activeExercises);
+          if (parsed.operationId) setOperationId(parsed.operationId);
+        } else {
+          localStorage.removeItem('annavra_active_workout');
+        }
+      } catch (e) {
+        console.error('Failed to parse active workout', e);
+      }
+    }
+  }, []);
+
+  // Save to localStorage
+  useEffect(() => {
+    if (isMounted && activeExercises.length > 0) {
+      localStorage.setItem('annavra_active_workout', JSON.stringify({
+        startTime,
+        workoutName,
+        activeExercises,
+        operationId
+      }));
+    }
+  }, [isMounted, startTime, workoutName, activeExercises, operationId]);
 
   // Update timer
   useEffect(() => {
+    if (!isMounted) return;
     const interval = setInterval(() => {
       setElapsedSeconds(Math.floor((Date.now() - startTime) / 1000));
     }, 1000);
+    // run immediately once
+    setElapsedSeconds(Math.floor((Date.now() - startTime) / 1000));
     return () => clearInterval(interval);
-  }, [startTime]);
+  }, [startTime, isMounted]);
 
   const formatTime = (totalSeconds: number) => {
     const m = Math.floor(totalSeconds / 60);
@@ -133,20 +172,21 @@ export default function ActiveWorkoutClient({
     
     activeExercises.forEach((ex) => {
       let setNum = 1;
-      ex.sets.forEach((s) => {
-        if (s.isCompleted && s.reps && s.weight_kg) {
-          completedSets.push({
-            exercise_id: ex.exercise_id,
-            set_number: setNum++,
-            reps: Number(s.reps),
-            weight_kg: Number(s.weight_kg)
-          });
-        }
-      });
+        ex.sets.forEach((s) => {
+          if (s.isCompleted && s.reps !== '' && s.weight_kg !== '') {
+            completedSets.push({
+              exercise_id: ex.exercise_id,
+              set_number: setNum++,
+              reps: Number(s.reps),
+              weight_kg: Number(s.weight_kg)
+            });
+          }
+        });
     });
 
     if (completedSets.length === 0) {
       if (confirm("You haven't logged any completed sets. Discard workout?")) {
+        localStorage.removeItem('annavra_active_workout');
         router.push('/workout');
       }
       return;
@@ -156,6 +196,7 @@ export default function ActiveWorkoutClient({
 
     try {
       const res = await saveWorkout({
+        operation_id: operationId,
         workout_type: workoutName,
         name: workoutName,
         duration_minutes: Math.ceil(elapsedSeconds / 60),
@@ -164,6 +205,7 @@ export default function ActiveWorkoutClient({
 
       if (res.error) throw new Error(res.error);
       
+      localStorage.removeItem('annavra_active_workout');
       router.push('/workout');
     } catch (e) {
       alert("Failed to save workout");
@@ -203,7 +245,7 @@ export default function ActiveWorkoutClient({
         <button
           onClick={handleFinishWorkout}
           disabled={isSaving}
-          className="px-4 py-2 bg-[#1a1a1a] text-white font-bold text-sm rounded-xl hover:bg-[#ff4500] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-1.5"
+          className="px-4 py-2 bg-[#1a1a1a] text-[#1a1a1a] font-bold text-sm rounded-xl hover:bg-[#ff4500] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-1.5"
         >
           {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Square className="w-4 h-4 fill-current" />}
           Finish
@@ -352,7 +394,7 @@ export default function ActiveWorkoutClient({
           <div className="w-full max-w-md bg-[#ffffff] border border-[#1a1a1a]/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
             <div className="p-4 border-b border-[#1a1a1a]/10 flex items-center justify-between">
               <h3 className="font-bold text-[#1a1a1a]">Select Exercise</h3>
-              <button onClick={() => setIsAddingExercise(false)} className="p-1 text-[#6b7280] hover:text-white bg-[#1a1a1a] rounded-lg">
+              <button onClick={() => setIsAddingExercise(false)} className="p-1 text-[#6b7280] hover:text-[#1a1a1a] bg-[#1a1a1a] rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>

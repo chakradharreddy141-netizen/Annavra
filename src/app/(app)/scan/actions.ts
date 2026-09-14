@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { getUserLocalDate } from "@/lib/date";
 
-export async function logMeal(mealItems: any[], imageUrl?: string) {
+export async function logMeal(mealItems: any[], operation_id: string, imageUrl?: string) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -39,7 +39,8 @@ export async function logMeal(mealItems: any[], imageUrl?: string) {
     }));
 
     // 4. Call RPC Transaction
-    const { data: mealId, error: rpcError } = await supabase.rpc('log_meal_transaction', {
+    const { data: rpcResult, error: rpcError } = await supabase.rpc('log_meal_transaction', {
+      p_operation_id: operation_id,
       p_date: localDate,
       p_meal_name: 'AI Scan', 
       p_items: itemsJson
@@ -50,13 +51,17 @@ export async function logMeal(mealItems: any[], imageUrl?: string) {
       return { error: rpcError.message || "Failed to log meal transaction" };
     }
     
+    // Result is JSONB
+    const mealId = (rpcResult as any)?.id;
+    const isDuplicate = (rpcResult as any)?.already_exists;
+    
     // 5. Update image url if needed
     if (imageUrl && mealId) {
        await supabase.from('meals').update({ image_url: imageUrl }).eq('id', mealId);
     }
 
     revalidatePath('/dashboard');
-    return { success: true, mealId };
+    return { success: true, mealId, isDuplicate };
   } catch (error: any) {
     console.error("Action error:", error);
     return { error: error.message || "An unexpected error occurred" };

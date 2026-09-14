@@ -19,10 +19,10 @@ export default function ThreadCursor() {
   useEffect(() => {
     // Check if device is mobile (coarse pointer)
     if (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setIsMobile(true);
+      setTimeout(() => setIsMobile(true), 0);
       return;
     }
-    setIsMobile(false);
+    setTimeout(() => setIsMobile(false), 0);
     
     // Set initial canvas size
     const handleResize = () => {

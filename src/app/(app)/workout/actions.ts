@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { getUserLocalDate } from "@/lib/date";
 
 export async function saveWorkout(workoutData: {
+  operation_id: string;
   workout_type: string;
   name: string;
   duration_minutes: number;
@@ -68,7 +69,8 @@ export async function saveWorkout(workoutData: {
     }
 
     // 3. Call RPC Transaction
-    const { data: workoutId, error: rpcError } = await supabase.rpc('log_workout_transaction', {
+    const { data: rpcResult, error: rpcError } = await supabase.rpc('log_workout_transaction', {
+      p_operation_id: workoutData.operation_id,
       p_date: localDate,
       p_workout_type: workoutData.workout_type,
       p_name: workoutData.name,
@@ -82,9 +84,12 @@ export async function saveWorkout(workoutData: {
       return { error: rpcError.message || "Failed to log workout transaction" };
     }
 
+    const workoutId = (rpcResult as any)?.id;
+    const isDuplicate = (rpcResult as any)?.already_exists;
+
     revalidatePath('/workout');
     revalidatePath('/dashboard');
-    return { success: true, workoutId };
+    return { success: true, workoutId, isDuplicate };
   } catch (error: any) {
     console.error("Action error:", error);
     return { error: error.message || "An unexpected error occurred" };
@@ -125,7 +130,6 @@ export async function deleteWorkout(workoutId: string) {
     
     // Recalculate daily summary
     await supabase.rpc('recalculate_daily_summary', {
-      p_user_id: user.id,
       p_date: workoutToDelete.date
     });
 
@@ -151,6 +155,7 @@ export async function createCustomExercise(name: string, primaryMuscles: string[
     const { data: newExercise, error } = await supabase
       .from('exercises')
       .insert({
+        user_id: user.id,
         name: name,
         muscle_group: 'Custom',
         primary_muscles: primaryMuscles,

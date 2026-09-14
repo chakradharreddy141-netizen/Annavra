@@ -46,7 +46,7 @@ function mapMuscles(muscles: string[], exerciseName: string): string[] {
   
   const mapped = new Set<string>();
   
-  for (let m of muscles) {
+  for (const m of muscles) {
     const lower = m.toLowerCase();
     
     if (lower === 'shoulders') {

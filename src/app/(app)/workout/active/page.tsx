@@ -16,11 +16,12 @@ export default async function ActiveWorkoutPage({
   const params = await searchParams;
 
   // Fetch exercises (preset + user's custom exercises)
-  const { data: exercises } = await supabase
+  const { data: exercises, error: exercisesErr } = await supabase
     .from('exercises')
     .select('*')
     .or(`user_id.is.null,user_id.eq.${user.id}`)
     .order('name');
+  if (exercisesErr) console.error('Active Workout exercises error:', exercisesErr);
 
   // Provide some default preset exercises if the DB doesn't have them yet
   const presetExercises = [
@@ -46,19 +47,21 @@ export default async function ActiveWorkoutPage({
   // Deduplicate by name
   const uniqueExercises = Array.from(new Map(allExercises.map(item => [item.name.toLowerCase(), item])).values());
 
-  const { data: profile } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();
+  const { data: profile, error: profileErr } = await supabase.from('profiles').select('timezone').eq('id', user.id).single();
+  if (profileErr && profileErr.code !== 'PGRST116') console.error('Active Workout profile error:', profileErr);
   const tz = profile?.timezone || 'UTC';
   
   const localDateObj = new Date(new Date().toLocaleString("en-US", { timeZone: tz }));
   const dayOfWeek = localDateObj.getDay();
 
   // Fetch Today's Schedule for default workout name
-  const { data: scheduledDay } = await supabase
+  const { data: scheduledDay, error: schedErr } = await supabase
     .from('workout_schedule')
     .select('*')
     .eq('user_id', user.id)
     .eq('day_of_week', dayOfWeek)
     .single();
+  if (schedErr && schedErr.code !== 'PGRST116') console.error('Active Workout schedule error:', schedErr);
 
   const defaultName = params.type || (scheduledDay?.is_rest_day 
     ? 'Ad-hoc Workout' 
