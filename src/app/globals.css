@@ -153,3 +153,13 @@ body {
     grid-column: span 12;
   }
 }
+
+/* Position NextTopLoader directly below the header */
+#nprogress .bar {
+  top: 61px !important;
+}
+
+/* Position NextTopLoader directly below the header */
+#nprogress .bar {
+  top: 61px !important;
+}
