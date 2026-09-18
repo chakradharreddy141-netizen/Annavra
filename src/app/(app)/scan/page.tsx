@@ -33,27 +33,76 @@ export default function ScanPage() {
     }
   };
 
+  const compressImage = async (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_SIZE = 1600;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('Canvas not supported'));
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob((blob) => {
+          if (!blob) return reject(new Error('Canvas toBlob failed'));
+          resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+            type: 'image/jpeg',
+            lastModified: Date.now()
+          }));
+        }, 'image/jpeg', 0.9);
+      };
+      img.onerror = () => reject(new Error('Failed to load image for compression (may be an unsupported format)'));
+    });
+  };
+
   const handleScan = async () => {
     if (!imageFile) return;
     setIsScanning(true);
     setError(null);
 
     try {
+      // Compress image client-side to bypass Vercel's 4.5MB payload limit
+      const compressedFile = await compressImage(imageFile);
+      
       const formData = new FormData();
-      formData.append('image', imageFile);
+      formData.append('image', compressedFile);
 
       const res = await fetch('/api/scan', {
         method: 'POST',
         body: formData,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to scan image');
+      // Handle Vercel's "Request Entity Too Large" or other non-JSON HTML errors safely
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed to scan image');
+        }
+        setMealItems(data.items || []);
+      } else {
+        const textData = await res.text();
+        if (res.status === 413) throw new Error("Image is still too large after compression.");
+        throw new Error("API returned an unexpected response (Vercel error). Please try again.");
       }
-
-      setMealItems(data.items || []);
     } catch (err: any) {
       setError(err.message);
     } finally {

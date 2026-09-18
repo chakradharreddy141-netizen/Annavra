@@ -41,8 +41,10 @@ export default function LoginPage() {
           .single();
 
         if (profile && profile.onboarding_completed) {
+          router.refresh();
           router.push('/dashboard');
         } else {
+          router.refresh();
           router.push('/onboarding');
         }
       }

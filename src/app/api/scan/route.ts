@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createClient } from '@/lib/supabase/server';
-import sharp from 'sharp';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
@@ -51,30 +50,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Image too large (max 8MB)' }, { status: 413 });
     }
 
-    // 4. Image Validation and Resizing
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    
-    let processedBuffer;
-    let mimeType;
-    try {
-      const image = sharp(buffer);
-      const metadata = await image.metadata();
-      
-      const allowedFormats = ['jpeg', 'jpg', 'png', 'webp'];
-      if (!metadata.format || !allowedFormats.includes(metadata.format as any)) {
-        return NextResponse.json({ error: 'Unsupported image format' }, { status: 415 });
-      }
-
-      mimeType = `image/${metadata.format}`;
-      
-      processedBuffer = await image
-        .resize(1600, 1600, { fit: 'inside', withoutEnlargement: true })
-        .toBuffer();
-    } catch (e) {
-      console.error("Image validation failed:", e);
-      return NextResponse.json({ error: 'Invalid or malformed image' }, { status: 415 });
-    }
+    const mimeType = file.type || 'image/jpeg';
+    const processedBuffer = buffer;
     
     // Record rate limit AFTER validation passes to avoid punishing invalid uploads
     await supabase.from('scan_rate_limits').insert({ user_id: user.id });

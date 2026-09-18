@@ -46,6 +46,7 @@ export default function SignupPage() {
 
       if (data.user) {
         // Direct to onboarding immediately
+        router.refresh();
         router.push('/onboarding');
       }
     } catch {
