@@ -6,7 +6,7 @@ import {
   Play, Square, Plus, Trash2, Check, Clock, Dumbbell, 
   ChevronDown, X, Loader2, Save, CheckCircle, Search, ArrowLeft, Trophy, HelpCircle
 } from 'lucide-react';
-import { saveWorkout } from '../actions';
+import { saveWorkout, getPreviousPerformance } from '../actions';
 import Link from 'next/link';
 import WorkoutMuscleMap from '../WorkoutMuscleMap';
 import CustomExerciseModal from './CustomExerciseModal';
@@ -32,6 +32,10 @@ type ActiveExercise = {
   exercise_name: string;
   primary_muscles?: string[];
   secondary_muscles?: string[];
+  previousPerformance?: {
+    date: string;
+    sets: { set_number: number, reps: number, weight_kg: number, is_pr: boolean }[];
+  } | null;
   sets: WorkoutSet[];
 };
 
@@ -112,11 +116,14 @@ export default function ActiveWorkoutClient({
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  const handleAddExercise = (exercise: Exercise) => {
-    setActiveExercises([
-      ...activeExercises,
+  const handleAddExercise = async (exercise: Exercise) => {
+    // Optimistically add it
+    const newId = Math.random().toString(36).substr(2, 9);
+    
+    setActiveExercises(prev => [
+      ...prev,
       {
-        id: Math.random().toString(36).substr(2, 9),
+        id: newId,
         exercise_id: exercise.id,
         exercise_name: exercise.name,
         primary_muscles: exercise.primary_muscles,
@@ -128,6 +135,14 @@ export default function ActiveWorkoutClient({
     ]);
     setIsAddingExercise(false);
     setExerciseSearch('');
+
+    // Fetch previous performance in background
+    const prevData = await getPreviousPerformance(exercise.id);
+    if (prevData?.data) {
+      setActiveExercises(current => 
+        current.map(ex => ex.id === newId ? { ...ex, previousPerformance: prevData.data } : ex)
+      );
+    }
   };
 
   const handleAddSet = (exerciseIndex: number) => {
@@ -305,6 +320,22 @@ export default function ActiveWorkoutClient({
                     <div className="flex-1 text-center">Reps</div>
                     <div className="w-12 text-center">Done</div>
                   </div>
+
+                  {ex.previousPerformance && ex.previousPerformance.sets.length > 0 && (
+                    <div className="bg-[#ff4500]/5 border border-[#ff4500]/10 rounded-lg p-2 mb-2 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs text-[#1a1a1a]">
+                        <Clock className="w-3.5 h-3.5 text-[#ff4500]" />
+                        <span className="font-medium text-[#6b7280]">Last time:</span>
+                        <span className="font-bold">
+                          {ex.previousPerformance.sets.length} sets 
+                          (Top: {Math.max(...ex.previousPerformance.sets.map(s => s.weight_kg))}kg)
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-[#6b7280]">
+                        {new Date(ex.previousPerformance.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  )}
 
                   {ex.sets.map((set, setIndex) => (
                     <div 

@@ -175,3 +175,49 @@ export async function createCustomExercise(name: string, primaryMuscles: string[
     return { error: error.message || "An unexpected error occurred" };
   }
 }
+
+export async function getPreviousPerformance(exerciseId: string) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: "Not authenticated" };
+    }
+
+    const { data: lastWorkoutSet, error: setErr } = await supabase
+      .from('workout_sets')
+      .select('workout_id, date')
+      .eq('user_id', user.id)
+      .eq('exercise_id', exerciseId)
+      .order('date', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (setErr || !lastWorkoutSet) {
+      return { data: null };
+    }
+
+    const { data: pastSets, error: setsErr } = await supabase
+      .from('workout_sets')
+      .select('set_number, reps, weight_kg, is_pr')
+      .eq('user_id', user.id)
+      .eq('workout_id', lastWorkoutSet.workout_id)
+      .eq('exercise_id', exerciseId)
+      .order('set_number', { ascending: true });
+
+    if (setsErr) {
+      return { error: "Failed to fetch previous sets" };
+    }
+
+    return { 
+      data: {
+        date: lastWorkoutSet.date,
+        sets: pastSets
+      } 
+    };
+  } catch (error: any) {
+    console.error("Previous performance error:", error);
+    return { error: error.message || "Failed to fetch previous performance" };
+  }
+}
