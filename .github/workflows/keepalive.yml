@@ -21,7 +21,7 @@ jobs:
           fi
           
           echo "Pinging Supabase REST API..."
-          curl -sS -X GET "$SUPABASE_URL/rest/v1/" \
+          curl -sS -X GET "$SUPABASE_URL/rest/v1/profiles?limit=1" \
             -H "apikey: $SUPABASE_KEY" \
             -H "Authorization: Bearer $SUPABASE_KEY" \
             > /dev/null
